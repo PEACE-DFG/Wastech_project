@@ -13,6 +13,54 @@
 	<link href="https://fonts.googleapis.com/css?family=Alata&display=swap" rel="stylesheet">
 	<script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
+		 
+    <style>
+			.modal {
+					display: none; 
+					position: fixed; 
+					z-index: 1; 
+					padding-top: 190px; 
+					left: 0;
+					top: 0;
+					width: 100%; 
+					height: 100%; 
+					overflow: auto; 
+					background-color: rgb(0,0,0); 
+					background-color: rgba(0,0,0,0.4); 
+			}
+
+			.modal-content {
+					background-color: #fefefe;
+					margin: auto;
+					padding: 20px;
+					border: 1px solid #888;
+					width: 80%; 
+			}
+
+			.close {
+					color: #aaa;
+					float: right;
+					font-size: 28px;
+					font-weight: bold;
+			}
+
+			.close:hover,
+			.close:focus {
+					color: black;
+					text-decoration: none;
+					cursor: pointer;
+			}
+			tr>th{
+					font-size:12px;
+					text-align: center;
+			}
+			tr>td{
+					font-size: 12px;
+					text-align: center;
+			}
+	</style>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   
 <body>
@@ -86,67 +134,72 @@
 	 <h1 class="mgt">Single Phase Commercial Load Data</h1>
 	</div>
    </div>
-   <div class="blog_1 clearfix">
-   <div class="col-sm-9">
-    <div class="blog_1l mgt clearfix">
-			<table class="table  table-bordered">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">First</th>
-						<th scope="col">Last</th>
-						<th scope="col">Handle</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th scope="row">1</th>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-				
-				</tbody>
-			</table>
-	</div>
 
-	
-
-   </div>
-   <div class="col-sm-3">
-  <!-- Scrollable modal -->
-	<button id="openModal">Open Modal</button>
-
-	<div id="myModal" class="modal">
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<p>This is a modal!</p>
+	 <div class="blog_1 clearfix">
+		<div class="col-sm-9">
+				<div class="blog_1l mgt clearfix" style="overflow: scroll;width:100%">
+						<table class="table table-bordered">
+								<thead>
+										<tr>
+												<th scope="col">S/N</th>
+												<th scope="col">Load</th>
+												<th scope="col">Rating</th>
+												<th scope="col">Breaker Size</th>
+												<th scope="col">Cable Size</th>
+												<th scope="col">Voltage Drop</th>
+										</tr>
+								</thead>
+								<tbody id="loadTableBody">
+										<!-- Dynamic rows will be added here -->
+								</tbody>
+								<tfoot>
+										<tr>
+												<th colspan="2">Total Power (TP):</th>
+												<td colspan="1" id="totalPowerValue">0 kW</td>
+												<th colspan="2">Recommended Cable Size:</th>
+												<td id="totalCableSizeValue">0mm</td>
+										</tr>
+								</tfoot>
+						</table>
+						
+						<!-- <div id="totalPower" style="margin-top: 20px;">
+								<strong>Total Power (TP): </strong> <span id="totalPowerValue">0</span> kW
+						</div>
+						<div id="totalCableSize" style="margin-top: 10px;" class="pb-5">
+								<strong>Recommended Cable Size for Total Power: </strong> <span id="totalCableSizeValue">0mm</span>
+						</div> -->
+				</div>
+				<button id="performAnalysis" class="btn btn-success" style="margin-top: 10px;">Perform Analysis</button>
+				<button class="btn btn-warning" onclick="window.print()" style="margin-top: 10px;">Print Data</button>
+		 
 		</div>
-	</div>
-	
-	
-   </div>
-  </div>
-  </div>
-  
+		<div class="col-sm-3">
+				<!-- Scrollable modal -->
+				<button id="openModal" class="btn-primary" style="border-radius:10px;padding:10px 15px">Enter Load</button>
+				<button onclick="clearDataAndRefresh()" class="btn-danger" style="border-radius:10px;padding:10px 15px">Clear Data</button>
+				<div id="myModal" class="modal">
+						<div class="modal-content">
+								<span class="close">&times;</span>
+								<p>Select Load Type and Enter Value:</p>
+								<select id="loadType" class="form-control">
+										<option value="">Select Load Type</option>
+										<option value="Lightening circuit">Lightening circuit</option>
+										<option value="Socket 13Amps circuit">Socket 13Amps circuit</option>
+										<option value="Socket 15Amps circuit">Socket 15Amps circuit</option>
+										<!-- <option value="Water heater">Water heater</option> -->
+										<option value="Electric motor (fan)">Electric motor (fan)</option>
+										<option value="Electric motor (pumping machine)">Electric motor (pumping machine)</option>
+										<option value="AC Circuit 1">AC Circuit 1</option>
+										<option value="AC Circuit 2">AC Circuit 2</option>
+										<!-- <option value="Cooker Unit">Cooker Unit</option> -->
+								</select>
+								<input type="text" id="loadValue" class="form-control" style="margin-top: 10px; display: none;" placeholder="Enter Value">
+								<!-- <input type="text" id="lengthValue" class="form-control" style="margin-top: 10px; display: none;" placeholder="Enter Length (meters)"> -->
+								<button id="saveLoad" class="btn btn-primary" style="margin-top: 10px;">Save</button>
+						</div>
+				</div>
+		</div>
+</div>
  </div>
 </section>
  
@@ -204,33 +257,213 @@
 	</div>
  </section>
 
-<script>
-	// Get the modal
-var modal = document.getElementById("myModal");
+ <script>
+	document.addEventListener('DOMContentLoaded', (event) => {
+			const modal = document.getElementById("myModal");
+			const btn = document.getElementById("openModal");
+			const span = document.getElementsByClassName("close")[0];
+			const loadType = document.getElementById("loadType");
+			const loadValue = document.getElementById("loadValue");
+			const lengthValue = document.getElementById("lengthValue");
+			const saveLoad = document.getElementById("saveLoad");
+			const loadTableBody = document.getElementById("loadTableBody");
+			const performAnalysis = document.getElementById("performAnalysis");
+			const totalPowerValue = document.getElementById("totalPowerValue");
+			const totalCableSizeValue = document.getElementById("totalCableSizeValue");
+			const voltage = 230;
+			const powerFactor = 0.8;
+			const resistivity = 1.68; // Copper resistivity in ohms per meter per mm²
 
-// Get the button that opens the modal
-var btn = document.getElementById("openModal");
+			btn.onclick = function() {
+					modal.style.display = "block";
+			}
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+			span.onclick = function() {
+					modal.style.display = "none";
+			}
 
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
+			window.onclick = function(event) {
+					if (event.target == modal) {
+							modal.style.display = "none";
+					}
+			}
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
+			loadType.onchange = function() {
+					if (loadType.value) {
+							loadValue.style.display = "block";
+							lengthValue.style.display = "block";
+					} else {
+							loadValue.style.display = "none";
+							lengthValue.style.display = "none";
+					}
+			}
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
+			saveLoad.onclick = function() {
+					const type = loadType.value;
+					const value = parseFloat(loadValue.value);
+					const length = 3; // Fixed length value
+			
+					if (type && value && length) {
+							// Validation for Lightening circuit and Socket 13Amps circuit
+							if (type === "Lightening circuit" && value > 900) {
+									Swal.fire({
+											icon: 'error',
+											title: 'Invalid Load Value',
+											text: 'The load value for Lightening circuit should not exceed 900W.',
+									});
+									return;
+							}
+							if (type === "Socket 13Amps circuit" && value > 2000) {
+									Swal.fire({
+											icon: 'error',
+											title: 'Invalid Load Value',
+											text: 'The load value for Socket 13Amps circuit should not exceed 2000W.',
+									});
+									return;
+							}
+			
+							let loads = JSON.parse(localStorage.getItem('loads')) || [];
+							loads.push({ type, value, length });
+							localStorage.setItem('loads', JSON.stringify(loads));
+			
+							updateTable();
+							modal.style.display = "none";
+			
+							Swal.fire({
+									icon: 'success',
+									title: 'Load Saved',
+									text: 'The load has been successfully saved.',
+							});
+					} else {
+							Swal.fire({
+									icon: 'error',
+									title: 'Missing Information',
+									text: 'Please select a load type, enter a value, and specify the cable length.',
+							});
+					}
+			}
+			
+			
 
+			function updateTable() {
+					const loads = JSON.parse(localStorage.getItem('loads')) || [];
+					loadTableBody.innerHTML = "";
+
+					loads.forEach((load, index) => {
+							const row = `<tr>
+											<th scope="row">${index + 1}</th>
+											<td>${load.type}</td>
+											<td>${load.value}W</td>
+											<td></td>
+											<td></td>
+											<td></td>
+							</tr>`;
+							loadTableBody.innerHTML += row;
+					});
+			}
+
+			performAnalysis.onclick = function() {
+					const loads = JSON.parse(localStorage.getItem('loads')) || [];
+			
+					if (loads.length === 0) {
+							Swal.fire({
+									icon: 'error',
+									title: 'No Load Data',
+									text: 'Please enter at least one load before performing the analysis.',
+							});
+							return;
+					}
+			
+					let totalPower = 0;
+			
+					loads.forEach((load, index) => {
+							let current = load.value / (voltage * powerFactor);
+			
+							if (isNaN(current) || current <= 0) {
+									Swal.fire({
+											icon: 'error',
+											title: 'Invalid Load Value',
+											text: `Load ${index + 1} has an invalid value. Please check your input.`,
+									});
+									return;
+							}
+			
+							if (load.type.includes("AC Circuit")) {
+									current *= 1.25; // Adjust current for AC circuits
+							}
+			
+							console.log(`Load ${index + 1}: ${load.type}, Power: ${load.value}W, Current: ${current.toFixed(2)}A`);
+			
+							let breakerSize;
+							if (current <= 5) {
+									breakerSize = 5;
+							} else if (current <= 10) {
+									breakerSize = 10;
+							} else if (current <= 15) {
+									breakerSize = 15;
+							} else if (current <= 20) {
+									breakerSize = 20;
+							} else if (current <= 25) {
+									breakerSize = 25;
+							} else {
+									breakerSize = 32; 
+							}
+			
+							const cableSize = breakerSize / (1.03 * 0.7);
+							let cableSizeMM;
+							if (cableSize >= 0 && cableSize <= 11) {
+									cableSizeMM = "1mm";
+							} else if (cableSize > 11 && cableSize <= 15) {
+									cableSizeMM = "1.5mm";
+							} else if (cableSize > 15 && cableSize <= 25) {
+									cableSizeMM = "2.5mm";
+							} else if (cableSize > 25) {
+									cableSizeMM = "4mm";
+							}
+			
+							// Voltage drop calculation
+							const voltageDrop = (2 * current * resistivity * 3) / 1000;
+			
+							const row = document.querySelector(`#loadTableBody tr:nth-child(${index + 1})`);
+							row.cells[3].innerText = breakerSize;
+							row.cells[4].innerText = cableSizeMM;
+							row.cells[5].innerText = voltageDrop.toFixed(2) + "V";
+			
+							// Summing up the power
+							totalPower += load.value;
+					});
+			
+					// Calculate total current and cable size for total power
+					const totalCurrent = totalPower / (voltage * powerFactor);
+					let totalCableSize = totalCurrent / (1.03 * 0.7);
+					let totalCableSizeMM;
+			
+					if (totalCableSize >= 0 && totalCableSize <= 11) {
+							totalCableSizeMM = "1mm";
+					} else if (totalCableSize > 11 && totalCableSize <= 15) {
+							totalCableSizeMM = "1.5mm";
+					} else if (totalCableSize > 15 && totalCableSize <= 20) {
+							totalCableSizeMM = "2.5mm";
+					} else if (totalCableSize > 20 && totalCableSize <= 25) {
+							totalCableSizeMM = "4mm";
+					} else if (totalCableSize > 25 ) {
+							totalCableSizeMM = "6mm";
+					}
+			
+					// Update total power and cable size display in the table footer
+					document.getElementById('totalPowerValue').innerText = (totalPower / 1000).toFixed(2) + " kW";  // Convert to kW
+					document.getElementById('totalCableSizeValue').innerText = totalCableSizeMM;
+			}
+			
+			
+
+			updateTable();
+	});
+
+	function clearDataAndRefresh() {
+			localStorage.clear();
+			location.reload();
+	}
 </script>
 
 </body>

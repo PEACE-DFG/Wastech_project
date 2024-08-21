@@ -162,7 +162,14 @@
                                         <th colspan="2">Recommended Cable Size:</th>
                                         <td id="totalCableSizeValue">0mm</td>
                                     </tr>
+                                    <tr>
+                                        <th colspan="2">Total Breaker Size (TBS):</th>
+                                        <td colspan="1" id="totalBreakerSizeValue">0A</td>
+                                        <th colspan="2">Total Voltage Drop (TVD):</th>
+                                        <td id="totalVoltageDropValue">0V</td>
+                                    </tr>
                                 </tfoot>
+                                
                             </table>
 
 
@@ -362,6 +369,8 @@
                 }
     
                 let totalPower = 0;
+                let totalBreakerSize=0;
+                let totalVoltageDrop = 0;
     
                 loads.forEach((load, index) => {
                     let current = load.value / (voltage * powerFactor);
@@ -410,6 +419,9 @@
     
                     // Voltage drop calculation
                     const voltageDrop = (2 * current * resistivity * 3) / 1000;
+                    // Total Voltage drop calculation
+                    const voltageDrops = (2 * current * resistivity * 5) / 1000;
+                    totalVoltageDrop += voltageDrops;
     
                     const row = document.querySelector(`#loadTableBody tr:nth-child(${index + 1})`);
                     row.cells[3].innerText = breakerSize;
@@ -418,6 +430,10 @@
     
                     // Summing up the power
                     totalPower += load.value;
+                    console.log(totalPower)
+                    
+                   
+                   
                 });
     
                 // Calculate total current and cable size for total power
@@ -436,10 +452,68 @@
                 } else if (totalCableSize > 25) {
                     totalCableSizeMM = "6mm";
                 }
+
+                console.log(totalCurrent)
+
+                if (totalCurrent <= 15) {
+                    totalBreakerSize= 15;
+                } else if (totalCurrent <= 20) {
+                    totalBreakerSize = 20;
+                } else if (totalCurrent <= 25) {
+                    totalBreakerSize = 25;
+                } else if (totalCurrent <= 30) {
+                    totalBreakerSize = 30;
+                } else if (totalCurrent <= 35) {
+                    totalBreakerSize = 35;
+                }else if (totalCurrent <= 40) {
+                    totalBreakerSize = 40;
+                }else if (totalCurrent <= 45) {
+                    totalBreakerSize = 45;
+                }else if (totalCurrent <= 50) {
+                    totalBreakerSize = 50;
+                }else if (totalCurrent <= 60) {
+                    totalBreakerSize = 60;
+                }else if (totalCurrent <= 70) {
+                    totalBreakerSize = 70;
+                }else if (totalCurrent <= 80) {
+                    totalBreakerSize = 80;
+                }else if (totalCurrent <= 90) {
+                    totalBreakerSize = 90;
+                }else if (totalCurrent <= 100) {
+                    totalBreakerSize = 100;
+                }else if (totalCurrent <= 110) {
+                    totalBreakerSize = 110;
+                }else if (totalCurrent <= 125) {
+                    totalBreakerSize = 125;
+                }else if (totalCurrent <= 150) {
+                    totalBreakerSize = 150;
+                }else if (totalCurrent <= 175) {
+                    totalBreakerSize = 175;
+                }else if (totalCurrent <= 200) {
+                    totalBreakerSize = 200;
+                }else if (totalCurrent <= 225) {
+                    totalBreakerSize = 225;
+                }else if (totalCurrent <= 250) {
+                    totalBreakerSize = 250;
+                }else if (totalCurrent <= 250) {
+                    totalBreakerSize = 250;
+                }else if (totalCurrent <= 300) {
+                    totalBreakerSize = 300;
+                }else if (totalCurrent <= 350) {
+                    totalBreakerSize = 350;
+                }
+                else {
+                    totalBreakerSize = 400;
+                }
+
+                console.log(totalBreakerSize)
+
     
-                // Update total power and cable size display in the table footer
+                   // Update total power, cable size, breaker size, and voltage drop in the table footer
                 totalPowerValue.innerText = (totalPower / 1000).toFixed(2) + " kW";  // Convert to kW
                 totalCableSizeValue.innerText = totalCableSizeMM;
+                totalBreakerSizeValue.innerText = totalBreakerSize ;
+                totalVoltageDropValue.innerText = totalVoltageDrop.toFixed(2) + "V";
             }
     
             updateTable();

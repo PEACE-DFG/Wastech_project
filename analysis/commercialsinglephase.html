@@ -440,17 +440,35 @@
                 let totalCableSize = totalCurrent / (1.03 * 0.7);
                 let totalCableSizeMM;
     
-                if (totalCableSize >= 0 && totalCableSize <= 11) {
-                    totalCableSizeMM = "1mm";
-                } else if (totalCableSize > 11 && totalCableSize <= 15) {
-                    totalCableSizeMM = "1.5mm";
-                } else if (totalCableSize > 15 && totalCableSize <= 20) {
-                    totalCableSizeMM = "2.5mm";
-                } else if (totalCableSize > 20 && totalCableSize <= 25) {
-                    totalCableSizeMM = "4mm";
-                } else if (totalCableSize > 25) {
-                    totalCableSizeMM = "6mm";
-                }
+
+                if (totalCableSize >= 0 && totalCableSize <= 12) {
+									totalCableSizeMM = "1mm";
+							} else if (totalCableSize > 12 && totalCableSize <= 15.5) {
+									totalCableSizeMM = "1.5mm";
+							} else if (totalCableSize > 15.5 && totalCableSize <= 21) {
+									totalCableSizeMM = "2.5mm";
+							} else if (totalCableSize > 21 && totalCableSize <= 28) {
+									totalCableSizeMM = "4mm";
+							} else if (totalCableSize > 28 && totalCableSize <=36) {
+									totalCableSizeMM = "6mm";
+							}
+							else if (totalCableSize > 36 && totalCableSize <=50) {
+									totalCableSizeMM = "10mm";
+							} else if (totalCableSize > 50 && totalCableSize <=68) {
+									totalCableSizeMM = "16mm";
+							} else if (totalCableSize > 68 && totalCableSize <=89) {
+									totalCableSizeMM = "25mm";
+							} else if (totalCableSize > 89 && totalCableSize <=110) {
+									totalCableSizeMM = "35mm";
+							} else if (totalCableSize > 110&& totalCableSize <=134) {
+									totalCableSizeMM = "50mm";
+							} else if (totalCableSize > 134 && totalCableSize <=171) {
+									totalCableSizeMM = "70mm";
+							} else if (totalCableSize > 171 && totalCableSize <=207) {
+									totalCableSizeMM = "95mm";
+							}
+							
+							
 
                 console.log(totalCurrent)
 

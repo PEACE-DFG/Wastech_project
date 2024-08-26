@@ -13,225 +13,446 @@
 	<link href="https://fonts.googleapis.com/css?family=Alata&display=swap" rel="stylesheet">
 	<script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
-  </head>
-  
+ <!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<style>
+	.modal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			padding-top: 100px;
+			left: 0;
+			top: 100px;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0,0,0,0.4);
+	}
+	.modal-content {
+			background-color: #fefefe;
+			margin: auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%;
+			max-width: 500px;
+	}
+	.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+	}
+	.close:hover,
+	.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+	}
+	tr > th, tr > td {
+			font-size: 12px;
+			text-align: center;
+	}
+</style>
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+</head>
 <body>
-	<section id="top">
-		<div class="container">
-		 <div class="row">
-			<div class="top_1 clearfix">
-			 <div class="col-sm-4">
-			<div class="top_1l clearfix">
-			 <p class="mgt col"><i class="fa fa-map-marker col_1"></i> Osun State University Osogbo Campus</p>
-			 <p class="col"><i class="fa fa-clock-o col_1"></i> Available</p>
+<section id="top">
+	<div class="container">
+			<div class="row">
+					<div class="top_1 clearfix">
+							<div class="col-sm-4">
+									<div class="top_1l clearfix">
+											<p class="mgt col"><i class="fa fa-map-marker col_1"></i> Osun State University Osogbo Campus</p>
+											<p class="col"><i class="fa fa-clock-o col_1"></i> Available</p>
+									</div>
+							</div>
+							<div class="col-sm-4">
+									<div class="top_1m text-center clearfix">
+											<h1 class="mgt"><a href="index.html">Wastech <span>Wire Sizing Web Application</span></a></h1>
+									</div>
+							</div>
+							<div class="col-sm-4" id="Contact">
+									<div class="top_1r text-center clearfix">
+											<h3 class="mgt"><a href="#"><i class="fa fa-phone col_1"></i> +234 805 577 6749 <span>Call us now. Resistance is futile!</span></a></h3>
+									</div>
+							</div>
+					</div>
 			</div>
-		 </div>
-		 <div class="col-sm-4">
-			<div class="top_1m text-center clearfix">
-			 <h1 class="mgt"><a href="index.html">Wastech <span>Wire Sizing Web Application</span></a></h1>
-			</div>
-		 </div>
-		 <div class="col-sm-4" id="Contact">
-			<div class="top_1r text-center clearfix">
-			 <h3 class="mgt"><a href="#"><i class="fa fa-phone col_1"></i> +234 805 577 6749 <span>Call us now. Resistance is futile!</span></a></h3>
-			</div>
-		 </div>
-			</div>
-		 </div>
-		</div>
-	 </section>
-	 
+	</div>
+</section>
 
 <div class="main clearfix">
-  <section id="header" class="clearfix">
-	 <div class="container">
-	  <div class="row">
-	   <div class="haeder clearfix">
-		<nav class="navbar">
-		<div class="navbar-header">
-			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="index.html">Electronica</a>
-		</div>
-		
-		
-		<div class="collapse navbar-collapse js-navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li><a class="font_tag active_tab" href="../index.html">Home</a></li>
-				<li><a class="font_tag" href="../pages/commercial.html">Commercial</a></li>
-				<li><a class="font_tag" href="../pages/industry.html">Industrial</a></li>
-				<li><a class="font_tag" href="../pages/resident.html">Residential</a></li>
-				<li><a class="font_tag" href="#Service">Services</a></li>
-				<li><a class="font_tag" href="#Contact">Contact Us</a></li>
-				
-			</ul>
-			
-		</div><!-- /.nav-collapse -->
-	</nav>
-	   </div>
-	  </div>
-	 </div>
-    </section>
+	<section id="header" class="clearfix">
+			<div class="container">
+					<div class="row">
+							<div class="header clearfix">
+									<nav class="navbar">
+											<div class="navbar-header">
+													<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
+															<span class="sr-only">Toggle navigation</span>
+															<span class="icon-bar"></span>
+															<span class="icon-bar"></span>
+															<span class="icon-bar"></span>
+													</button>
+													<a class="navbar-brand" href="index.html">Electronica</a>
+											</div>
+											<div class="collapse navbar-collapse js-navbar-collapse">
+													<ul class="nav navbar-nav">
+															<li><a class="font_tag" href="../index.html">Home</a></li>
+															<li><a class="font_tag active_tab" href="../pages/commercial.html">Commercial</a></li>
+															<li><a class="font_tag" href="../pages/industry.html">Industrial</a></li>
+															<li><a class="font_tag" href="../pages/resident.html">Residential</a></li>
+															<li><a class="font_tag" href="#Service">Services</a></li>
+															<li><a class="font_tag" href="#Contact">Contact Us</a></li>
+													</ul>
+											</div>
+									</nav>
+							</div>
+					</div>
+			</div>
+	</section>
 </div>
-	
+
 <section id="center" class="center_shop clearfix">
- <div class="container">
-  <div class="row">
-   <div class="center_shop_1 text-center clearfix">
-    <div class="col-sm-12">
-	 <h1 class="mgt">Three Phase Commercial Load Data</h1>
+	<div class="container">
+			<div class="row">
+					<div class="center_shop_1 text-center clearfix">
+							<div class="col-sm-12">
+									<h1 class="mgt">Three Phase Commercial Load Data</h1>
+							</div>
+					</div>
+					<div class="blog_1 clearfix">
+							<div class="col-sm-9">
+									<div class="blog_1l mgt clearfix" style="overflow: scroll;width:100%">
+											<table class="table table-bordered">
+													<thead>
+															<tr>
+																	<th scope="col">S/N</th>
+																	<th scope="col">Load</th>
+																	<th scope="col">Red (W)</th>
+																	<th scope="col">Yellow (W)</th>
+																	<th scope="col">Blue (W)</th>
+																	<th scope="col">Breaker Size</th>
+																	<th scope="col">Cable Size</th>
+																	<th scope="col">Voltage Drop</th>
+																	<th scope="col">Actions</th>
+															</tr>
+													</thead>
+													<tbody id="loadTableBody">
+															<!-- Dynamic rows will be added here -->
+													</tbody>
+													<tfoot>
+															<tr>
+																	<th colspan="3">Total Power (TP):</th>
+																	<td colspan="1" id="totalPowerValue">0 kW</td>
+																	<th colspan="2">Recommended Cable Size:</th>
+																	<td id="totalCableSizeValue">0mm²</td>
+															</tr>
+															<tr>
+																	<th colspan="3">Total Breaker Size (TBS):</th>
+																	<td colspan="1" id="totalBreakerSizeValue">0A</td>
+																	<th colspan="2">Total Voltage Drop (TVD):</th>
+																	<td id="totalVoltageDropValue">0V</td>
+															</tr>
+													</tfoot>
+											</table>
+									</div>
+									<button id="performAnalysis" class="btn btn-success" style="margin-top: 10px;">Perform Analysis</button>
+									<button class="btn btn-warning" onclick="window.print()" style="margin-top: 10px;">Print Data</button>
+							</div>
+							<div class="col-sm-3">
+									<button id="openModal" class="btn-primary" style="border-radius:10px;padding:10px 15px">Enter Load</button>
+									<button onclick="clearDataAndRefresh()" class="btn-danger" style="border-radius:10px;padding:10px 15px">Clear Data</button>
+									<div id="myModal" class="modal">
+											<div class="modal-content">
+													<span class="close">&times;</span>
+													<p>Select Load Type and Enter Phase Values:</p>
+													<select id="loadType" class="form-control">
+															<option value="">Select Load Type</option>
+															<option value="Lightening circuit">Lightening circuit</option>
+															<option value="Socket 13Amps circuit">Socket 13Amps circuit</option>
+															<option value="Socket 15Amps circuit">Socket 15Amps circuit</option>
+															<option value="Water heater">Water heater</option>
+															<option value="Electric motor (fan)">Electric motor (fan)</option>
+															<option value="Electric motor (pumping machine)">Electric motor (pumping machine)</option>
+															<option value="AC Circuit 1">AC Circuit 1</option>
+															<option value="AC Circuit 2">AC Circuit 2</option>
+													</select>
+													<input type="number" id="redValue" class="form-control" style="margin-top: 10px;" placeholder="Red Phase Value (W)">
+													<input type="number" id="yellowValue" class="form-control" style="margin-top: 10px;" placeholder="Yellow Phase Value (W)">
+													<input type="number" id="blueValue" class="form-control" style="margin-top: 10px;" placeholder="Blue Phase Value (W)">
+													<button id="saveLoad" class="btn btn-primary" style="margin-top: 10px;">Save</button>
+											</div>
+									</div>
+							</div>
+					</div>
+			</div>
 	</div>
-   </div>
-   <div class="blog_1 clearfix">
-   <div class="col-sm-9">
-    <div class="blog_1l mgt clearfix">
-			<table class="table  table-bordered">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">First</th>
-						<th scope="col">Last</th>
-						<th scope="col">Handle</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th scope="row">1</th>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-				
-				</tbody>
-			</table>
-	</div>
-
-	
-
-   </div>
-   <div class="col-sm-3">
-  <!-- Scrollable modal -->
-	<button id="openModal">Open Modal</button>
-
-	<div id="myModal" class="modal">
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<p>This is a modal!</p>
-		</div>
-	</div>
-	
-	
-   </div>
-  </div>
-  </div>
-  
- </div>
 </section>
- 
+
 <section id="proj_h">
 	<div class="container">
-	 <div class="row">
-		<div class="proj_h1 clearfix">
-		 <div class="col-sm-3">
-		<div class="proj_h1i text-center clearfix">
-		 <span><i class="fa fa-users"></i></span>
-		 <h4>Easy to use</h4>
-	 
-		</div>
-	 </div>
-	 <div class="col-sm-3">
-		<div class="proj_h1i text-center clearfix">
-		 <span><i class="fa fa-building"></i></span>
-		 <h4> Trusted Results</h4>
-		
-		</div>
-	 </div>
-	 <div class="col-sm-3">
-		<div class="proj_h1i text-center clearfix">
-		 <span><i class="fa fa-map"></i></span>
-		 <h4>Best Calculations</h4>
-		
-		</div>
-	 </div>
-	 <div class="col-sm-3">
-		<div class="proj_h1i text-center clearfix">
-		 <span><i class="fa fa-user-plus"></i></span>
-		 <h4>100 %</h4>
-		
-		</div>
-	 </div>
-		</div>
-	 </div>
+			<div class="row">
+					<div class="proj_h1 clearfix">
+							<div class="col-sm-3">
+									<div class="proj_h1i text-center clearfix">
+											<span><i class="fa fa-users"></i></span>
+											<h4>Easy to use</h4>
+									</div>
+							</div>
+							<div class="col-sm-3">
+									<div class="proj_h1i text-center clearfix">
+											<span><i class="fa fa-building"></i></span>
+											<h4>Trusted Results</h4>
+									</div>
+							</div>
+							<div class="col-sm-3">
+									<div class="proj_h1i text-center clearfix">
+											<span><i class="fa fa-map"></i></span>
+											<h4>Best Calculations</h4>
+									</div>
+							</div>
+							<div class="col-sm-3">
+									<div class="proj_h1i text-center clearfix">
+											<span><i class="fa fa-user-plus"></i></span>
+											<h4>100 %</h4>
+									</div>
+							</div>
+					</div>
+			</div>
 	</div>
- </section>
- 
- 
- <section id="footer">
+</section>
+
+<section id="footer">
 	<div class="container">
-	 <div class="row">
-		
-		<div class="footer_3 clearfix">
-		<div class="col-sm-7">
-		 <div class="footer_3l clearfix">
-				<p class="mgt col">© 2024 WASTECH. All Rights Reserved | Design by <a class="col" href="http://awofesobipeace1.netlify.app" target="_blank">CODEMaster</a></p>
-		 </div>
-		</div>
-	 
-	 </div>
-	 </div>
+			<div class="row">
+					<div class="footer_3 clearfix">
+							<div class="col-sm-12">
+									<div class="footer_3l clearfix">
+											<p class="mgt col">© 2024 WASTECH. All Rights Reserved | Design by <a class="col" href="http://awofesobipeace1.netlify.app" target="_blank">CODEMaster</a></p>
+									</div>
+							</div>
+					</div>
+			</div>
 	</div>
- </section>
-
+</section>
 <script>
-	// Get the modal
-var modal = document.getElementById("myModal");
+	document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById("myModal");
+    const btn = document.getElementById("openModal");
+    const span = document.getElementsByClassName("close")[0];
+    const loadType = document.getElementById("loadType");
+    const redValue = document.getElementById("redValue");
+    const yellowValue = document.getElementById("yellowValue");
+    const blueValue = document.getElementById("blueValue");
+    const saveLoad = document.getElementById("saveLoad");
+    const loadTableBody = document.getElementById("loadTableBody");
+    const performAnalysis = document.getElementById("performAnalysis");
+    const totalPowerValue = document.getElementById("totalPowerValue");
+    const totalCableSizeValue = document.getElementById("totalCableSizeValue");
+    const totalBreakerSizeValue = document.getElementById("totalBreakerSizeValue");
+    const totalVoltageDropValue = document.getElementById("totalVoltageDropValue");
 
-// Get the button that opens the modal
-var btn = document.getElementById("openModal");
+    // Constants for calculations
+    const VOLTAGE = 415; // Line to line voltage for 3-phase
+    const POWER_FACTOR = 0.85;
+    const RESISTIVITY = 1.68e-3; // Copper resistivity in ohm-meters
+    const CABLE_LENGTH = 30; // Assumed cable length in meters
+    const VOLTAGE_DROP_LIMIT = 0.06 * VOLTAGE; // 6% voltage drop limit
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+    // Modal open and close functions
+    btn.onclick = () => modal.style.display = "block";
+    span.onclick = () => modal.style.display = "none";
+    window.onclick = event => { if (event.target == modal) modal.style.display = "none"; };
 
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
+    // Enable only one phase input at a time
+    [redValue, yellowValue, blueValue].forEach(input => {
+        input.addEventListener('focus', () => {
+            [redValue, yellowValue, blueValue].forEach(i => {
+                if (i !== input) i.disabled = true;
+            });
+        });
+        input.addEventListener('blur', () => {
+            if (!input.value) {
+                [redValue, yellowValue, blueValue].forEach(i => i.disabled = false);
+            }
+        });
+    });
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
+    // Save load data
+    saveLoad.onclick = () => {
+        const type = loadType.value;
+        const red = parseFloat(redValue.value) || 0;
+        const yellow = parseFloat(yellowValue.value) || 0;
+        const blue = parseFloat(blueValue.value) || 0;
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
+        if (!type || (red === 0 && yellow === 0 && blue === 0)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Information',
+                text: 'Please select a load type and enter a value for at least one phase.',
+            });
+            return;
+        }
 
+        // Save load to local storage
+        const loads = JSON.parse(localStorage.getItem('loads')) || [];
+        loads.push({ type, red, yellow, blue });
+        localStorage.setItem('loads', JSON.stringify(loads));
+
+        updateTable();
+        modal.style.display = "none";
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Load Saved',
+            text: 'The load has been successfully saved.',
+        });
+    };
+
+    // Perform load analysis
+    performAnalysis.onclick = () => {
+        const loads = JSON.parse(localStorage.getItem('loads')) || [];
+
+        if (loads.length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'No Load Data',
+                text: 'Please enter at least one load before performing the analysis.',
+            });
+            return;
+        }
+
+        let totalPower = 0;
+        let maxPhaseCurrent = 0;
+
+        loads.forEach((load, index) => {
+            const power = load.red + load.yellow + load.blue;
+            const current = calculateCurrent(power);
+            const phaseCurrent = current / Math.sqrt(3); // Convert line current to phase current
+            maxPhaseCurrent = Math.max(maxPhaseCurrent, phaseCurrent);
+
+            const breakerSize = determineBreakerSize(current);
+            const cableSize = determineCableSize(current);
+            const voltageDrop = calculateVoltageDrop(current, cableSize);
+
+            totalPower += power;
+
+            const row = loadTableBody.rows[index];
+            row.cells[5].innerText = breakerSize + ' A';
+            row.cells[6].innerText = cableSize;
+            row.cells[7].innerText = voltageDrop.toFixed(2) + " V";
+        });
+
+        const totalBreakerSize = determineTotalBreakerSize(maxPhaseCurrent * Math.sqrt(3));
+        const totalCableSize = determineCableSize(maxPhaseCurrent * Math.sqrt(3));
+        const totalVoltageDrop = calculateVoltageDrop(maxPhaseCurrent * Math.sqrt(3), totalCableSize);
+
+        totalPowerValue.innerText = (totalPower / 1000).toFixed(2) + " kW";
+        totalCableSizeValue.innerText = totalCableSize;
+        totalBreakerSizeValue.innerText = totalBreakerSize;
+        totalVoltageDropValue.innerText = totalVoltageDrop.toFixed(2) + " V";
+    };
+
+    function calculateCurrent(power) {
+        return power / (Math.sqrt(3) * VOLTAGE * POWER_FACTOR);
+    }
+
+    function determineBreakerSize(current) {
+        const standardSizes = [10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 320, 400, 500, 630, 800, 1000];
+        return standardSizes.find(size => size >= current * 1.25) || 'Custom';
+    }
+
+    function determineTotalBreakerSize(current) {
+        return determineBreakerSize(current);
+    }
+
+    function determineCableSize(current) {
+        // This is a simplified version. In practice, you'd use tables or more complex calculations
+        const sizes = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300];
+        const ampacities = [18, 25, 34, 43, 60, 80, 106, 131, 159, 202, 245, 284, 330, 375, 430, 497];
+        
+        const index = ampacities.findIndex(amp => amp >= current);
+        return index !== -1 ? sizes[index] + ' mm²' : 'Custom';
+    }
+
+    function calculateVoltageDrop(current, cableSize) {
+        const size = parseFloat(cableSize);
+        if (isNaN(size)) return 0;
+        return (Math.sqrt(3) * RESISTIVITY * CABLE_LENGTH * current * 1000) / size;
+    }
+
+    // Update the load table with current data
+    function updateTable() {
+			const loads = JSON.parse(localStorage.getItem('loads')) || [];
+			loadTableBody.innerHTML = "";
+	
+			let totalRed = 0;
+			let totalYellow = 0;
+			let totalBlue = 0;
+	
+			loads.forEach((load, index) => {
+					const row = `<tr>
+							<th scope="row">${index + 1}</th>
+							<td>${load.type}</td>
+							<td>${load.red}</td>
+							<td>${load.yellow}</td>
+							<td>${load.blue}</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>
+									<button class="btn btn-sm btn-danger" onclick="deleteLoad(${index})">Delete</button>
+							</td>
+					</tr>`;
+					loadTableBody.innerHTML += row;
+	
+					// Update totals
+					totalRed += load.red;
+					totalYellow += load.yellow;
+					totalBlue += load.blue;
+			});
+	
+			// Add a row for the total
+			const totalRow = `<tr>
+					<th scope="row">Total</th>
+					<td></td>
+					<td><b>${totalRed} </b></td>
+					<td><b>${totalYellow}</b></td>
+					<td><b>${totalBlue}</b></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>`;
+			loadTableBody.innerHTML += totalRow;
+	}
+	
+
+    // Delete a load entry
+    window.deleteLoad = (index) => {
+        const loads = JSON.parse(localStorage.getItem('loads')) || [];
+        loads.splice(index, 1);
+        localStorage.setItem('loads', JSON.stringify(loads));
+        updateTable();
+    };
+
+    // Clear all data and refresh the table
+    window.clearDataAndRefresh = () => {
+        localStorage.clear();
+        updateTable();
+        totalPowerValue.innerText = "0 kW";
+        totalCableSizeValue.innerText = "";
+        totalBreakerSizeValue.innerText = "";
+        totalVoltageDropValue.innerText = "";
+    };
+
+    // Initialize the table on page load
+    updateTable();
+});
 </script>
+	
 
 </body>
 

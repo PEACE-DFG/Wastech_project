@@ -4,262 +4,573 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wastech_wire_sizing</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/global.css" rel="stylesheet">
-	<link href="css/index.css" rel="stylesheet">
-	
-	<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Alata&display=swap" rel="stylesheet">
-	<script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <title>Electricmate - Professional Wire Sizing Solutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary: #2E86AB;
+        --secondary: #A23B72;
+        --accent: #F18F01;
+        --dark: #1B1B1E;
+        --light: #F8F9FA;
+        --gray: #6C757D;
+      }
+      
+      body {
+        font-family: 'Roboto', sans-serif;
+        color: var(--dark);
+        line-height: 1.6;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+      }
+      
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--primary);
+      }
+      
+      .navbar-brand span {
+        color: var(--accent);
+      }
+      
+      .hero-section {
+        background: linear-gradient(rgba(30, 30, 30, 0.7), rgba(30, 30, 30, 0.7)), 
+                    url('https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 150px 0 100px;
+        text-align: center;
+      }
+      
+      .hero-section h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+      
+      .hero-section p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      
+      .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        padding: 12px 30px;
+        font-weight: 500;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-primary:hover {
+        background-color: #1c6b8c;
+        border-color: #1c6b8c;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+      
+      .section-title {
+        position: relative;
+        margin-bottom: 3rem;
+        text-align: center;
+      }
+      
+      .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--accent);
+      }
+      
+      .feature-card {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        text-align: center;
+      }
+      
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      }
+      
+      .feature-card i {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+      }
+      
+      .solution-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+      
+      .solution-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      }
+      
+      .solution-card img {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+      }
+      
+      .solution-card-body {
+        padding: 25px;
+      }
+      
+      .service-card {
+        background: white;
+        border-radius: 10px;
+        padding: 40px 30px;
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+      
+      .service-card:hover {
+        transform: scale(1.05);
+      }
+      
+      .service-card.commercial {
+        background: linear-gradient(135deg, var(--primary), #1c6b8c);
+      }
+      
+      .service-card.industrial {
+        background: linear-gradient(135deg, var(--secondary), #7d2a57);
+      }
+      
+      .service-card.residential {
+        background: linear-gradient(135deg, var(--accent), #c57101);
+      }
+      
+      .stats-section {
+        background: linear-gradient(rgba(46, 134, 171, 0.9), rgba(46, 134, 171, 0.9)), 
+                    url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 80px 0;
+      }
+      
+      .stat-item {
+        text-align: center;
+      }
+      
+      .stat-item i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      
+      .stat-item h3 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      
+      footer {
+        background-color: var(--dark);
+        color: white;
+        padding: 60px 0 30px;
+      }
+      
+      .footer-links h5 {
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 10px;
+      }
+      
+      .footer-links h5:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: var(--accent);
+      }
+      
+      .footer-links ul {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .footer-links ul li {
+        margin-bottom: 10px;
+      }
+      
+      .footer-links ul li a {
+        color: #adb5bd;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      
+      .footer-links ul li a:hover {
+        color: white;
+        padding-left: 5px;
+      }
+      
+      .copyright {
+        border-top: 1px solid #343a40;
+        padding-top: 20px;
+        margin-top: 40px;
+        text-align: center;
+        color: #adb5bd;
+      }
+      
+      .top-bar {
+        background-color: var(--dark);
+        color: white;
+        padding: 10px 0;
+        font-size: 0.9rem;
+      }
+      
+      .top-bar a {
+        color: white;
+        text-decoration: none;
+      }
+      
+      .navbar {
+        padding: 15px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      
+      .navbar-nav .nav-link {
+        font-weight: 500;
+        padding: 8px 15px;
+        margin: 0 5px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+      }
+      
+      .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+        background-color: var(--primary);
+        color: white;
+      }
+      
+      @media (max-width: 768px) {
+        .hero-section h1 {
+          font-size: 2.5rem;
+        }
+        
+        .hero-section p {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
   </head>
   
-<body>
-<section id="top">
- <div class="container">
-  <div class="row">
-   <div class="top_1 clearfix">
-    <div class="col-sm-4">
-	 <div class="top_1l clearfix">
-	  <p class="mgt col"><i class="fa fa-map-marker col_1"></i> Osun State University Osogbo Campus</p>
-	  <p class="col"><i class="fa fa-clock-o col_1"></i> Available</p>
-	 </div>
-	</div>
-	<div class="col-sm-4">
-	 <div class="top_1m text-center clearfix">
-	  <h1 class="mgt"><a href="index.html">Wastech <span>Wire Sizing Web Application</span></a></h1>
-	 </div>
-	</div>
-	<div class="col-sm-4" id="Contact">
-	 <div class="top_1r text-center clearfix">
-	  <h3 class="mgt"><a href="#"><i class="fa fa-phone col_1"></i> +234 805 577 6749 <span>Call us now. Resistance is futile!</span></a></h3>
-	 </div>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
+  <body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div class="d-flex flex-wrap">
+              <p class="mb-0 me-4"><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</p>
+              <p class="mb-0"><i class="far fa-clock me-2"></i> Available 24/7</p>
+            </div>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <p class="mb-0"><i class="fas fa-phone me-2"></i> +234 805 577 6749 <span class="d-none d-md-inline"> | Call us now. Resistance is futile!</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<div class="main clearfix">
- <section id="header" class="clearfix">
-	 <div class="container">
-	  <div class="row">
-	   <div class="haeder clearfix">
-		<nav class="navbar">
-		<div class="navbar-header">
-			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="index.html">Electronica</a>
-		</div>
-		
-		<div class="collapse navbar-collapse js-navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li><a class="font_tag active_tab" href="index.html">Home</a></li>
-				<li><a class="font_tag" href="pages/commercial.html">Commercial</a></li>
-				<li><a class="font_tag" href="pages/industry.html">Industrial</a></li>
-				<li><a class="font_tag" href="pages/resident.html">Residential</a></li>
-				<li><a class="font_tag" href="#Service">Services</a></li>
-				<li><a class="font_tag" href="#Contact">Contact Us</a></li>
-				
-			</ul>
-			
-		</div><!-- /.nav-collapse -->
-	</nav>
-	   </div>
-	  </div>
-	 </div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Electric<span>mate</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pages/commercial.html">Commercial</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pages/industry.html">Industrial</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pages/resident.html">Residential</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#services">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <h1>Electricmate</h1>
+            <p>Professional Wire Sizing Solutions</p>
+            <p class="lead">Accurate calculations for optimal performance and safety in electrical installations</p>
+            <a href="#services" class="btn btn-primary btn-lg">Get Started <i class="fas fa-arrow-right ms-2"></i></a>
+          </div>
+        </div>
+      </div>
     </section>
-	
- <section id="center" class="center_home clearfix">
-<div class="center_main clearfix">
- <div class="w3-content w3-section clearfix">
-  <img class="mySlides w3-animate-top" src="https://i0.wp.com/www.anelectricalengineer.com/wp-content/uploads/2017/07/Cable-Classification-and-Specification.jpg" alt="abc" style="width: 100%; height:100%" >
-</div>
- <div class="center_main_1 text-center clearfix">
-  <h1>WASTECH  </h1>
-  <p>WIRE SIZING</p>
-  <h4>WEB APPLICATION</h4>
-  <h4><a class="button" href="#Service">GET STARTED</a></h4>
- </div>
-</div>
-</section>
- 
-</div>
 
+    <!-- About Section -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                 alt="Electrical Wiring" class="img-fluid rounded shadow">
+          </div>
+          <div class="col-lg-6">
+            <h2 class="section-title">About <span class="text-primary">Electricmate</span></h2>
+            <p class="mb-4">Electricmate is a sophisticated web application designed to meet the intricate demands of determining the ideal wire size tailored to precise load requirements. It serves as an indispensable tool for electrical professionals and enthusiasts alike.</p>
+            <p class="mb-4">Our application provides comprehensive solutions for sizing wires with unparalleled accuracy, ensuring optimal performance and paramount safety in all electrical installations.</p>
+            <ul class="list-unstyled">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Intuitive and User-Friendly Interface</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Precise Wire Sizing Calculations</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Accurate Load Calculations</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Solutions for All Electrical Needs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section id="about_home">
- <div class="container">
-  <div class="row">
-   <div class="about_home_1 text-center clearfix">
-    <div class="col-sm-12">
-	 <h1 class="mgt">About <span class="col_1">Application</span></h1>
-	 <p>This web application serves the purpose of determining the appropriate wire size according to the specific load requirements applied. It provides a comprehensive solution for accurately sizing wires to ensure optimal performance and safety in electrical installations.</p>
-	</div>
-   </div>
-   <div class="about_home_2 clearfix">
-    <div class="col-sm-5">
-     <div class="about_home_2l clearfix">
-	  <img src="https://www.kei-ind.com/wp-content/uploads/2023/06/benefits-and-types-of-electrical-wire.jpg" class="iw" alt="abc">
-	 </div>
-	</div>
-	<div class="col-sm-7">
-     <div class="about_home_2r clearfix">
-	  <p class="mgt">This web application stands as a formidable pillar in the realm of electrical engineering, meticulously crafted to meet the intricate demands of determining the ideal wire size tailored to precise load requirements. It serves as an indispensable tool, offering a panoramic solution for sizing wires with unparalleled accuracy, thereby guaranteeing not only optimal performance but also paramount safety in electrical installations.</p>
-	  <ul>
-	   <li><i class="fa fa-check col_1"></i> Good and Intuitive User Interface</li>
-	   <li><i class="fa fa-check col_1"></i> Wiring Sizing</li>
-	   <li><i class="fa fa-check col_1"></i> Load Calulations</li>
-	   <li><i class="fa fa-check col_1"></i> Virtually any electrical needs you have – just ask!</li>
-	  </ul>
-	  <!-- <h5><a class="button" href="#"><i class="fa fa-fire"></i> Know More</a></h5> -->
-	 </div>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
+    <!-- Services Section -->
+    <section id="services" class="py-5 bg-light">
+      <div class="container">
+        <h2 class="section-title">Our <span class="text-primary">Services</span></h2>
+        <p class="text-center mb-5">We provide specialized wire sizing solutions for different applications</p>
+        
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="service-card commercial">
+              <h3>Commercial</h3>
+              <p>Professional wire sizing for commercial buildings and facilities</p>
+              <a href="pages/commercial.html" class="btn btn-light mt-3">More Info</a>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="service-card industrial">
+              <h3>Industrial</h3>
+              <p>Robust solutions for industrial applications and heavy machinery</p>
+              <a href="pages/industry.html" class="btn btn-light mt-3">More Info</a>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="service-card residential">
+              <h3>Residential</h3>
+              <p>Safe and efficient wire sizing for homes and residential buildings</p>
+              <a href="pages/resident.html" class="btn btn-light mt-3">More Info</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section id="info">
- <div class="container" id="Service">
-  <div class="row">
-   <div class="info_1 clearfix">
-    <div class="col-sm-4">
-	 <div class="info_1i text-center clearfix">
-	  <div class="info_1im clearfix">
-	   	  <h3 class="mgt col">Commercial</h3>
-	     <h5><a class="button" href="pages/commercial.html">More Info</a></h5>
-	  </div>
-	 </div>
-	</div>
-	<div class="col-sm-4">
-	 <div class="info_1i info_1io text-center clearfix">
-	  <div class="info_1im clearfix">
-	   	  <h3 class="mgt col">Industrial</h3>
-	      <h5><a class="button" href="pages/industry.html">More Info</a></h5>
-	  </div>
-	 </div>
-	</div>
-	<div class="col-sm-4">
-	 <div class="info_1i info_1io1 text-center clearfix">
-	  <div class="info_1im clearfix">
-	   	 <h3 class="mgt col">Residential</h3>
-	     <h5><a class="button" href="pages/resident.html">More Info</a></h5>
-	  </div>
-	 </div>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
+    <!-- Solutions Section -->
+    <section class="py-5">
+      <div class="container">
+        <h2 class="section-title">Our <span class="text-primary">Solutions</span></h2>
+        <p class="text-center mb-5">Comprehensive electrical solutions for all your needs</p>
+        
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="solution-card">
+              <img src="https://www.goconstruct.org/media/51xlzktg/electrical-engineer-ss2434604441.jpg?width=1600&height=900&format=WebP&quality=75&v=1db885fa1c981d0" alt="Single Phase">
+              <div class="solution-card-body">
+                <h3>Single Phase Solutions</h3>
+                <p>Precise calculations for single-phase electrical systems to ensure quality work and safety.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="solution-card">
+              <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" alt="Three Phase">
+              <div class="solution-card-body">
+                <h3>Three Phase Solutions</h3>
+                <p>Advanced calculations for three-phase systems used in commercial and industrial applications.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="solution-card">
+              <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Comprehensive">
+              <div class="solution-card-body">
+                <h3>Comprehensive Solutions</h3>
+                <p>Complete solutions covering both single and three-phase systems for all your electrical needs.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <h2 class="section-title">Why Choose <span class="text-primary">Electricmate</span></h2>
+        <p class="text-center mb-5">Our application stands out with these key features</p>
+        
+        <div class="row">
+          <div class="col-md-3 mb-4">
+            <div class="feature-card">
+              <i class="fas fa-bolt"></i>
+              <h4>Accurate Calculations</h4>
+              <p>Precise wire sizing based on advanced algorithms and industry standards.</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="feature-card">
+              <i class="fas fa-shield-alt"></i>
+              <h4>Safety First</h4>
+              <p>Ensuring all calculations prioritize electrical safety and compliance.</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="feature-card">
+              <i class="fas fa-tachometer-alt"></i>
+              <h4>Fast Results</h4>
+              <p>Get accurate wire sizing recommendations in seconds.</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="feature-card">
+              <i class="fas fa-mobile-alt"></i>
+              <h4>Mobile Friendly</h4>
+              <p>Access our application on any device, anywhere, anytime.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <h3>5000+</h3>
+              <p>Satisfied Users</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-calculator"></i>
+              <h3>25000+</h3>
+              <p>Calculations Done</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-check-circle"></i>
+              <h3>100%</h3>
+              <p>Accuracy Rate</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-clock"></i>
+              <h3>24/7</h3>
+              <p>Availability</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section id="switch">
- <div class="container">
-  <div class="row">
-   <div class="switch_1 text-center clearfix">
-    <div class="col-sm-4">
-	  <div class="switch_1i clearfix">
-	   <img src="https://theengineeringmindset.com/wp-content/uploads/2019/05/single-phase-electricity-explained-fb.png" class="iw" alt="abc">
-	   <h3>Single <br> Phase <span class="col_1">Solutions</span></h3>
-	   <p>for quality work and safety</p>
-	  </div>
-	</div>
-	<div class="col-sm-4">
-	  <div class="switch_1i clearfix">
-	   <img src="https://theengineeringmindset.com/wp-content/uploads/2019/05/3-phase-fb.png" class="iw" alt="abc">
-	   <h3>Three <br> Phase <span class="col_1">Solutions</span></h3>
-	   <p>for quality work and safety</p>
-	  </div>
-	</div>
-	<div class="col-sm-4">
-	  <div class="switch_1i clearfix">
-	   <img src="https://cdn.crownenergy.co.uk/wp-content/uploads/2023/06/CE-Blog-Image-Size-min.png" class="iw" alt="abc">
-	   <h3>Both <br> Single and Three Phase <span class="col_1">Solutions</span></h3>
-	   <p>for quality work and safety</p>
-	  </div>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
+    <!-- Footer -->
+    <footer id="contact">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="footer-links">
+              <h5>Electricmate</h5>
+              <p>Professional wire sizing solutions for commercial, industrial, and residential applications. Ensuring safety and efficiency in all electrical installations.</p>
+              <div class="mt-4">
+                <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-6 mb-4">
+            <div class="footer-links">
+              <h5>Quick Links</h5>
+              <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pages/commercial.html">Commercial</a></li>
+                <li><a href="pages/industry.html">Industrial</a></li>
+                <li><a href="pages/resident.html">Residential</a></li>
+                <li><a href="#services">Services</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="footer-links">
+              <h5>Contact Info</h5>
+              <ul>
+                <li><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</li>
+                <li><i class="fas fa-phone me-2"></i> +234 805 577 6749</li>
+                <li><i class="fas fa-envelope me-2"></i> info@electricmate.com</li>
+                <li><i class="far fa-clock me-2"></i> Available 24/7</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="footer-links">
+              <h5>Newsletter</h5>
+              <p>Subscribe to our newsletter for the latest updates and features.</p>
+              <form>
+                <div class="input-group mb-3">
+                  <input type="email" class="form-control" placeholder="Your Email" aria-label="Your Email">
+                  <button class="btn btn-primary" type="button">Subscribe</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <p class="mb-0">© 2024 Electricmate. All Rights Reserved | Design by <a href="http://awofesobipeace1.netlify.app" target="_blank" class="text-white">CODEMaster</a></p>
+        </div>
+      </div>
+    </footer>
 
-
-<section id="proj_h">
- <div class="container">
-  <div class="row">
-   <div class="proj_h1 clearfix">
-    <div class="col-sm-3">
-	 <div class="proj_h1i text-center clearfix">
-	  <span><i class="fa fa-users"></i></span>
-	  <h4>Easy to use</h4>
-	
-	 </div>
-	</div>
-	<div class="col-sm-3">
-	 <div class="proj_h1i text-center clearfix">
-	  <span><i class="fa fa-building"></i></span>
-	  <h4> Trusted Results</h4>
-	 
-	 </div>
-	</div>
-	<div class="col-sm-3">
-	 <div class="proj_h1i text-center clearfix">
-	  <span><i class="fa fa-map"></i></span>
-	  <h4>Best Calculations</h4>
-	 
-	 </div>
-	</div>
-	<div class="col-sm-3">
-	 <div class="proj_h1i text-center clearfix">
-	  <span><i class="fa fa-user-plus"></i></span>
-	  <h4>100 %</h4>
-	 
-	 </div>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
-
-
-<section id="footer">
- <div class="container">
-  <div class="row">
-   
-   <div class="footer_3 clearfix">
-	 <div class="col-sm-7">
-	  <div class="footer_3l clearfix">
-       <p class="mgt col">© 2024 WASTECH. All Rights Reserved | Design by <a class="col" href="http://awofesobipeace1.netlify.app" target="_blank">CODEMaster</a></p>
-	  </div>
-	 </div>
-	
-	</div>
-  </div>
- </div>
-</section>
-
-<script>
-var myIndex = 0;
-carousel();
-
-function carousel() {
-  var i;
-  var x = document.getElementsByClassName("mySlides");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";  
-  }
-  myIndex++;
-  if (myIndex > x.length) {myIndex = 1}    
-  x[myIndex-1].style.display = "block";  
-  setTimeout(carousel, 2500);    
-}
-</script>
-</body>
- 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>

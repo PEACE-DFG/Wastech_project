@@ -5,609 +5,1171 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wastech_wire_sizing</title>
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/global.css" rel="stylesheet">
-    <link href="../css/blog.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css" />
-    <link href="https://fonts.googleapis.com/css?family=Alata&display=swap" rel="stylesheet">
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-
+    <title>Electricmate - Commercial Single Phase Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            padding-top: 190px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.4);
+        :root {
+            --primary: #2E86AB;
+            --secondary: #A23B72;
+            --accent: #F18F01;
+            --dark: #1B1B1E;
+            --light: #F8F9FA;
+            --gray: #6C757D;
         }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: #f5f7fa;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .navbar-brand span {
+            color: var(--accent);
+        }
+        
+        .top-bar {
+            background-color: var(--dark);
+            color: white;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+        
+        .navbar {
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .page-header {
+            background: linear-gradient(rgba(46, 134, 171, 0.9), rgba(46, 134, 171, 0.9)), 
+                        url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 60px 0 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1c6b8c;
+            border-color: #1c6b8c;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-warning {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-warning:hover {
+            background-color: #c57101;
+            border-color: #c57101;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+        
+        .table th {
+            background-color: var(--light);
+            font-weight: 600;
+            border-top: none;
+        }
+        
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, var(--primary), #1c6b8c);
+            color: white;
+            border-radius: 10px;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+            margin-bottom: 20px;
         }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+        
+        .summary-card h5 {
+            margin-bottom: 15px;
+            font-weight: 600;
         }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
         }
-
-        tr>th {
-            font-size: 12px;
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(46, 134, 171, 0.25);
+        }
+        
+        .feature-item {
             text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 100%;
         }
-
-        tr>td {
-            font-size: 12px;
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-item i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .copyright {
+            border-top: 1px solid #343a40;
+            padding-top: 20px;
+            margin-top: 30px;
             text-align: center;
+            color: #adb5bd;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .badge-voltage {
+            background-color: #17a2b8;
+        }
+        
+        .badge-current {
+            background-color: #28a745;
+        }
+        
+        .badge-power {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-cable {
+            background-color: #6f42c1;
+        }
+        
+        .action-buttons .btn {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .action-buttons .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
     </style>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-    <section id="top">
+    <!-- Top Bar -->
+    <div class="top-bar">
         <div class="container">
-            <div class="row">
-                <div class="top_1 clearfix">
-                    <div class="col-sm-4">
-                        <div class="top_1l clearfix">
-                            <p class="mgt col"><i class="fa fa-map-marker col_1"></i> Osun State University Osogbo
-                                Campus</p>
-                            <p class="col"><i class="fa fa-clock-o col_1"></i> Available</p>
-                        </div>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex flex-wrap">
+                        <p class="mb-0 me-4"><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</p>
+                        <p class="mb-0"><i class="far fa-clock me-2"></i> Available 24/7</p>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="top_1m text-center clearfix">
-                            <h1 class="mgt"><a href="index.html">Wastech <span>Wire Sizing Web Application</span></a>
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="col-sm-4" id="Contact">
-                        <div class="top_1r text-center clearfix">
-                            <h3 class="mgt"><a href="#"><i class="fa fa-phone col_1"></i> +234 805 577 6749 <span>Call
-                                        us now. Resistance is futile!</span></a></h3>
-                        </div>
-                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0"><i class="fas fa-phone me-2"></i> +234 805 577 6749 <span class="d-none d-md-inline"> | Call us now. Resistance is futile!</span></p>
                 </div>
             </div>
         </div>
-    </section>
-
-    <div class="main clearfix">
-        <section id="header" class="clearfix">
-            <div class="container">
-                <div class="row">
-                    <div class="haeder clearfix">
-                        <nav class="navbar">
-                            <div class="navbar-header">
-                                <button class="navbar-toggle" type="button" data-toggle="collapse"
-                                    data-target=".js-navbar-collapse">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="index.html">Electronica</a>
-                            </div>
-
-                            <div class="collapse navbar-collapse js-navbar-collapse">
-                                <ul class="nav navbar-nav">
-                                    <li><a class="font_tag " href="../index.html">Home</a></li>
-                                    <li><a class="font_tag active_tab" href="../pages/commercial.html">Commercial</a></li>
-                                    <li><a class="font_tag" href="../pages/industry.html">Industrial</a></li>
-                                    <li><a class="font_tag " href="../pages/resident.html">Residential</a>
-                                    </li>
-                                    <li><a class="font_tag" href="#Service">Services</a></li>
-                                    <li><a class="font_tag" href="#Contact">Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </section>
     </div>
 
-    <section id="center" class="center_shop clearfix">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="center_shop_1 text-center clearfix">
-                    <div class="col-sm-12">
-                        <h2 class="mgt">Single Phase Commercial Load Data</h2>
-                    </div>
-                </div>
-                <div class="blog_1 clearfix">
-                    <div class="col-sm-9">
-                        <div class="blog_1l mgt clearfix" style="overflow: scroll;width:100%">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">S/N</th>
-                                        <th scope="col">Load</th>
-                                        <th scope="col">Rating</th>
-                                        <th scope="col">Breaker Size</th>
-                                        <th scope="col">Cable Size</th>
-                                        <th scope="col">Voltage Drop</th>
-                                        <th scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="loadTableBody">
-                                    <!-- Dynamic rows will be added here -->
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="2">Total Power (TP):</th>
-                                        <td colspan="1" id="totalPowerValue">0 kW</td>
-                                        <th colspan="2">Recommended Cable Size:</th>
-                                        <td id="totalCableSizeValue">0mm</td>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">Total Breaker Size (TBS):</th>
-                                        <td colspan="1" id="totalBreakerSizeValue">0A</td>
-                                        <th colspan="2">Total Voltage Drop (TVD):</th>
-                                        <td id="totalVoltageDropValue">0V</td>
-                                    </tr>
-                                </tfoot>
-                                
-                            </table>
-
-
-                            <!-- <div id="totalPower" style="margin-top: 20px;">
-                                <strong>Total Power (TP): </strong> <span id="totalPowerValue">0</span> kW
-                            </div>
-                            <div id="totalCableSize" style="margin-top: 10px;" class="pb-5">
-                                <strong>Recommended Cable Size for Total Power: </strong> <span id="totalCableSizeValue">0mm</span>
-                            </div> -->
-                        </div>
-                        <button id="performAnalysis" class="btn btn-success" style="margin-top: 10px;">Perform
-                            Analysis</button>
-                        <button class="btn btn-warning" onclick="window.print()" style="margin-top: 10px;">Print
-                            Data</button>
-
-                    </div>
-                    <div class="col-sm-3">
-                        <!-- Scrollable modal -->
-                        <button id="openModal" class="btn-primary" style="border-radius:10px;padding:10px 15px">Enter
-                            Load</button>
-                        <button onclick="clearDataAndRefresh()" class="btn-danger"
-                            style="border-radius:10px;padding:10px 15px">Clear Data</button>
-                        <div id="myModal" class="modal">
-                            <div class="modal-content">
-                                <span class="close">&times;</span>
-                                <p>Select Load Type and Enter Value:</p>
-                                <select id="loadType" class="form-control">
-                                    <option value="">Select Load Type</option>
-                                    <option value="Lightening circuit">Lightening circuit</option>
-                                    <option value="Socket 13Amps circuit">Socket 13Amps circuit</option>
-                                    <option value="Socket 15Amps circuit">Socket 15Amps circuit</option>
-                                    <option value="Water heater">Water heater</option>
-                                    <option value="Electric motor (fan)">Electric motor (fan)</option>
-                                    <option value="Electric motor (pumping machine)">Electric motor (pumping machine)
-                                    </option>
-                                    <option value="AC Circuit 1">AC Circuit 1</option>
-                                    <option value="AC Circuit 2">AC Circuit 2</option>
-                                </select>
-                                <input type="text" id="loadValue" class="form-control"
-                                    style="margin-top: 10px; display: none;" placeholder="Enter Value">
-                                <!-- <input type="text" id="lengthValue" class="form-control" style="margin-top: 10px; display: none;" placeholder="Enter Length (meters)"> -->
-                                <button id="saveLoad" class="btn btn-primary" style="margin-top: 10px;">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">Electric<span>mate</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../pages/commercial.html">Commercial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/industry.html">Industrial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/resident.html">Residential</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact Us</a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </section>
+    </nav>
 
-    <section id="proj_h">
+    <!-- Page Header -->
+    <section class="page-header">
         <div class="container">
             <div class="row">
-                <div class="proj_h1 clearfix">
-                    <div class="col-sm-3">
-                        <div class="proj_h1i text-center clearfix">
-                            <span><i class="fa fa-users"></i></span>
-                            <h4>Easy to use</h4>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="proj_h1i text-center clearfix">
-                            <span><i class="fa fa-database"></i></span>
-                            <h4>Accurate data</h4>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="proj_h1i text-center clearfix">
-                            <span><i class="fa fa-cogs"></i></span>
-                            <h4>Industry certified</h4>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="proj_h1i text-center clearfix">
-                            <span><i class="fa fa-clock-o"></i></span>
-                            <h4>Quick calculation</h4>
-                        </div>
-                    </div>
+                <div class="col-12">
+                    <h1>Commercial Single Phase Analysis</h1>
+                    <p class="lead">Accurate wire sizing calculations for commercial single-phase electrical systems</p>
                 </div>
             </div>
         </div>
     </section>
-    <section id="footer">
+
+    <!-- Main Content -->
+    <section class="main-content">
         <div class="container">
             <div class="row">
-
-                <div class="footer_3 clearfix">
-                    <div class="col-sm-7">
-                        <div class="footer_3l clearfix">
-                            <p class="mgt col">© 2024 WASTECH. All Rights Reserved | Design by <a class="col"
-                                    href="http://awofesobipeace1.netlify.app" target="_blank">CODEMaster</a></p>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-table me-2"></i> Load Data Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Load Type</th>
+                                            <th scope="col">Rating</th>
+                                            <th scope="col">Current</th>
+                                            <th scope="col">Breaker Size</th>
+                                            <th scope="col">Cable Size</th>
+                                            <th scope="col">Voltage Drop</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="loadTableBody">
+                                        <!-- Dynamic rows will be added here -->
+                                    </tbody>
+                                    <tfoot class="table-group-divider">
+                                        <tr>
+                                            <th colspan="2">Total Power:</th>
+                                            <td id="totalPowerValue">0 kW</td>
+                                            <th>Total Current:</th>
+                                            <td id="totalCurrentValue">0 A</td>
+                                            <th>Total Breaker Size:</th>
+                                            <td id="totalBreakerSizeValue">0 A</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2">Recommended Cable Size:</th>
+                                            <td id="totalCableSizeValue">0 mm²</td>
+                                            <th>Total Voltage Drop:</th>
+                                            <td id="totalVoltageDropValue">0 V</td>
+                                            <th>Voltage Drop %:</th>
+                                            <td id="voltageDropPercent">0 %</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            
+                            <div class="action-buttons mt-4">
+                                <button id="performAnalysis" class="btn btn-success">
+                                    <i class="fas fa-calculator me-2"></i>Perform Analysis
+                                </button>
+                                <button id="openModal" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Add Load
+                                </button>
+                                <button onclick="clearDataAndRefresh()" class="btn btn-danger">
+                                    <i class="fas fa-trash me-2"></i>Clear Data
+                                </button>
+                                <button class="btn btn-warning" onclick="window.print()">
+                                    <i class="fas fa-print me-2"></i>Print Report
+                                </button>
+                            </div>
                         </div>
                     </div>
-
+                    
+                    <!-- Results Visualization -->
+                    <div class="chart-container">
+                        <h5 class="mb-3"><i class="fas fa-chart-bar me-2"></i>Load Distribution</h5>
+                        <canvas id="loadChart" height="250"></canvas>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <!-- Summary Card -->
+                    <div class="summary-card">
+                        <h5><i class="fas fa-clipboard-list me-2"></i>Analysis Summary</h5>
+                        <div class="summary-item">
+                            <span>System Voltage:</span>
+                            <span>230V AC</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Power Factor:</span>
+                            <span>0.85</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Ambient Temperature:</span>
+                            <span>30°C</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Cable Type:</span>
+                            <span>Copper</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Installation Method:</span>
+                            <span>Conduit</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Safety Standard:</span>
+                            <span>IEEE & IEC</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="quickLighting">
+                                    <i class="fas fa-lightbulb me-2"></i>Add Lighting Circuit
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickSocket">
+                                    <i class="fas fa-plug me-2"></i>Add Socket Circuit
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickAC">
+                                    <i class="fas fa-wind me-2"></i>Add AC Circuit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Standards Reference -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-book me-2"></i>Standards Reference</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    IEEE Std 141
+                                    <span class="badge bg-primary rounded-pill">i</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    IEEE Std 242
+                                    <span class="badge bg-primary rounded-pill">i</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    IEC 60364
+                                    <span class="badge bg-primary rounded-pill">i</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    NEC Article 310
+                                    <span class="badge bg-primary rounded-pill">i</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2>Why Choose Electricmate?</h2>
+                    <p class="lead">Professional electrical calculations with industry standards compliance</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-bolt"></i>
+                        <h5>IEEE Compliant</h5>
+                        <p>All calculations follow IEEE standards for safety and accuracy</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-calculator"></i>
+                        <h5>Precise Calculations</h5>
+                        <p>Accurate wire sizing with voltage drop and current capacity analysis</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h5>Safety First</h5>
+                        <p>Prioritizing electrical safety with proper breaker sizing and protection</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h5>Visual Reports</h5>
+                        <p>Clear visualizations and comprehensive analysis reports</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5>Electricmate</h5>
+                    <p>Professional wire sizing solutions for commercial, industrial, and residential applications. Ensuring safety and efficiency in all electrical installations.</p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="../index.html" class="text-white-50 text-decoration-none">Home</a></li>
+                        <li><a href="../pages/commercial.html" class="text-white-50 text-decoration-none">Commercial</a></li>
+                        <li><a href="../pages/industry.html" class="text-white-50 text-decoration-none">Industrial</a></li>
+                        <li><a href="../pages/resident.html" class="text-white-50 text-decoration-none">Residential</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</li>
+                        <li><i class="fas fa-phone me-2"></i> +234 805 577 6749</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@electricmate.com</li>
+                        <li><i class="far fa-clock me-2"></i> Available 24/7</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Newsletter</h5>
+                    <p>Subscribe to our newsletter for the latest updates and features.</p>
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" aria-label="Your Email">
+                            <button class="btn btn-primary" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="mb-0">© 2024 Electricmate. All Rights Reserved | Design by <a href="http://awofesobipeace1.netlify.app" target="_blank" class="text-white">CODEMaster</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Load Modal -->
+    <div class="modal fade" id="loadModal" tabindex="-1" aria-labelledby="loadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loadModalLabel">Add New Load</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="loadType" class="form-label">Load Type</label>
+                        <select id="loadType" class="form-select">
+                            <option value="">Select Load Type</option>
+                            <option value="Lighting circuit">Lighting Circuit</option>
+                            <option value="Socket 13A circuit">Socket 13A Circuit</option>
+                            <option value="Socket 15A circuit">Socket 15A Circuit</option>
+                            <option value="Water heater">Water Heater</option>
+                            <option value="Electric motor (fan)">Electric Motor (Fan)</option>
+                            <option value="Electric motor (pump)">Electric Motor (Pump)</option>
+                            <option value="AC Circuit 1">AC Circuit (1.5HP)</option>
+                            <option value="AC Circuit 2">AC Circuit (2HP)</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loadValue" class="form-label">Load Value (Watts)</label>
+                        <input type="number" class="form-control" id="loadValue" placeholder="Enter load in watts">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cableLength" class="form-label">Cable Length (meters)</label>
+                        <input type="number" class="form-control" id="cableLength" placeholder="Enter cable length" value="10">
+                    </div>
+                    <div class="mb-3">
+                        <label for="loadDescription" class="form-label">Description (Optional)</label>
+                        <input type="text" class="form-control" id="loadDescription" placeholder="Enter description">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveLoad">Save Load</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const modal = document.getElementById("myModal");
-            const btn = document.getElementById("openModal");
-            const span = document.getElementsByClassName("close")[0];
-            const loadType = document.getElementById("loadType");
-            const loadValue = document.getElementById("loadValue");
-            const lengthValue = document.getElementById("lengthValue");
-            const saveLoad = document.getElementById("saveLoad");
-            const loadTableBody = document.getElementById("loadTableBody");
-            const performAnalysis = document.getElementById("performAnalysis");
-            const totalPowerValue = document.getElementById("totalPowerValue");
-            const totalCableSizeValue = document.getElementById("totalCableSizeValue");
-            const voltage = 230;
-            const powerFactor = 0.8;
-            const resistivity = 1.68; // Copper resistivity in ohms per meter per mm²
-    
-            btn.onclick = function () {
-                modal.style.display = "block";
+        // Constants based on IEEE standards
+        const VOLTAGE = 230; // Single-phase voltage
+        const POWER_FACTOR = 0.85; // Standard power factor for commercial loads
+        const RESISTIVITY_COPPER = 0.0172; // Ohm-mm²/m at 20°C
+        const MAX_VOLTAGE_DROP_PERCENT = 3; // IEEE recommended max voltage drop
+        
+        // Cable sizing table based on IEC 60364-5-52
+        const CABLE_SIZES = [
+            { current: 16, size: 1.5 },
+            { current: 21, size: 2.5 },
+            { current: 28, size: 4 },
+            { current: 36, size: 6 },
+            { current: 46, size: 10 },
+            { current: 63, size: 16 },
+            { current: 81, size: 25 },
+            { current: 99, size: 35 },
+            { current: 119, size: 50 },
+            { current: 146, size: 70 },
+            { current: 180, size: 95 },
+            { current: 218, size: 120 },
+            { current: 250, size: 150 }
+        ];
+        
+        // Standard breaker sizes
+        const BREAKER_SIZES = [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400];
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize modal
+            const loadModal = new bootstrap.Modal(document.getElementById('loadModal'));
+            
+            // Open modal button
+            document.getElementById('openModal').addEventListener('click', function() {
+                resetModal();
+                loadModal.show();
+            });
+            
+            // Quick action buttons
+            document.getElementById('quickLighting').addEventListener('click', function() {
+                setQuickLoad('Lighting circuit', 800);
+            });
+            
+            document.getElementById('quickSocket').addEventListener('click', function() {
+                setQuickLoad('Socket 13A circuit', 2000);
+            });
+            
+            document.getElementById('quickAC').addEventListener('click', function() {
+                setQuickLoad('AC Circuit 1', 1500);
+            });
+            
+            // Save load button
+            document.getElementById('saveLoad').addEventListener('click', function() {
+                saveLoad();
+            });
+            
+            // Perform analysis button
+            document.getElementById('performAnalysis').addEventListener('click', function() {
+                performAnalysis();
+            });
+            
+            // Load table on page load
+            updateTable();
+            
+            // Function to set quick load values
+            function setQuickLoad(type, value) {
+                document.getElementById('loadType').value = type;
+                document.getElementById('loadValue').value = value;
+                loadModal.show();
             }
-    
-            span.onclick = function () {
-                modal.style.display = "none";
+            
+            // Function to reset modal
+            function resetModal() {
+                document.getElementById('loadType').value = '';
+                document.getElementById('loadValue').value = '';
+                document.getElementById('cableLength').value = '10';
+                document.getElementById('loadDescription').value = '';
             }
-    
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-    
-            loadType.onchange = function () {
-                if (loadType.value) {
-                    loadValue.style.display = "block";
-                    lengthValue.style.display = "block";
-                } else {
-                    loadValue.style.display = "none";
-                    lengthValue.style.display = "none";
-                }
-            }
-    
-            saveLoad.onclick = function () {
-                const type = loadType.value;
-                const value = parseFloat(loadValue.value);
-                const length = 3; // Fixed length value
-    
-                if (type && value && length) {
-                    // Validation for Lightening circuit and Socket 13Amps circuit
-                    if (type === "Lightening circuit" && value > 900) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Invalid Load Value',
-                            text: 'The load value for Lightening circuit should not exceed 900W.',
-                        });
-                        return;
-                    }
-                    if (type === "Socket 13Amps circuit" && value > 2000) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Invalid Load Value',
-                            text: 'The load value for Socket 13Amps circuit should not exceed 2000W.',
-                        });
-                        return;
-                    }
-    
-                    let loads = JSON.parse(localStorage.getItem('loads')) || [];
-                    loads.push({ type, value, length });
-                    localStorage.setItem('loads', JSON.stringify(loads));
-    
-                    updateTable();
-                    modal.style.display = "none";
-    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Load Saved',
-                        text: 'The load has been successfully saved.',
-                    });
-                } else {
+            
+            // Function to save load
+            function saveLoad() {
+                const type = document.getElementById('loadType').value;
+                const value = parseFloat(document.getElementById('loadValue').value);
+                const length = parseFloat(document.getElementById('cableLength').value);
+                const description = document.getElementById('loadDescription').value;
+                
+                if (!type || !value || !length) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Missing Information',
-                        text: 'Please select a load type, enter a value, and specify the cable length.',
+                        text: 'Please fill in all required fields.',
                     });
+                    return;
                 }
+                
+                // Validation for specific load types
+                if (type === "Lighting circuit" && value > 1200) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Load Value',
+                        text: 'Lighting circuit typically should not exceed 1200W.',
+                    });
+                    return;
+                }
+                
+                if ((type === "Socket 13A circuit" || type === "Socket 15A circuit") && value > 3000) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Load Value',
+                        text: 'Socket circuit typically should not exceed 3000W.',
+                    });
+                    return;
+                }
+                
+                let loads = JSON.parse(localStorage.getItem('commercialSinglePhaseLoads')) || [];
+                loads.push({ 
+                    type, 
+                    value, 
+                    length,
+                    description: description || type
+                });
+                localStorage.setItem('commercialSinglePhaseLoads', JSON.stringify(loads));
+                
+                updateTable();
+                loadModal.hide();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Load Saved',
+                    text: 'The load has been successfully added.',
+                });
             }
-    
-            performAnalysis.onclick = function () {
-                const loads = JSON.parse(localStorage.getItem('loads')) || [];
-    
+            
+            // Function to update the table
+            function updateTable() {
+                const loads = JSON.parse(localStorage.getItem('commercialSinglePhaseLoads')) || [];
+                const loadTableBody = document.getElementById('loadTableBody');
+                loadTableBody.innerHTML = '';
+                
+                if (loads.length === 0) {
+                    loadTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                                <p class="text-muted">No loads added yet. Click "Add Load" to get started.</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                loads.forEach((load, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>${load.description}</td>
+                        <td>${load.value} W</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="editLoad(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteLoad(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    loadTableBody.appendChild(row);
+                });
+            }
+            
+            // Function to perform analysis
+            function performAnalysis() {
+                const loads = JSON.parse(localStorage.getItem('commercialSinglePhaseLoads')) || [];
+                
                 if (loads.length === 0) {
                     Swal.fire({
                         icon: 'error',
                         title: 'No Load Data',
-                        text: 'Please enter at least one load before performing the analysis.',
+                        text: 'Please add at least one load before performing analysis.',
                     });
                     return;
                 }
-    
+                
                 let totalPower = 0;
-                let totalBreakerSize=0;
+                let totalCurrent = 0;
                 let totalVoltageDrop = 0;
-    
+                const loadTableBody = document.getElementById('loadTableBody');
+                
+                // Clear previous results
+                loadTableBody.innerHTML = '';
+                
                 loads.forEach((load, index) => {
-                    let current = load.value / (voltage * powerFactor);
-    
-                    if (isNaN(current) || current <= 0) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Invalid Load Value',
-                            text: `Load ${index + 1} has an invalid value. Please check your input.`,
-                        });
-                        return;
+                    // Calculate current
+                    let current = load.value / (VOLTAGE * POWER_FACTOR);
+                    
+                    // Adjust for motor loads (starting current)
+                    if (load.type.includes("motor") || load.type.includes("Motor")) {
+                        current *= 1.25; // 25% extra for starting current
                     }
-    
-                    if (load.type.includes("AC Circuit")) {
-                        current *= 1.25; // Adjust current for AC circuits
-                    }
-    
-                    console.log(`Load ${index + 1}: ${load.type}, Power: ${load.value}W, Current: ${current.toFixed(2)}A`);
-    
-                    let breakerSize;
-                    if (current <= 5) {
-                        breakerSize = 5;
-                    } else if (current <= 10) {
-                        breakerSize = 10;
-                    } else if (current <= 15) {
-                        breakerSize = 15;
-                    } else if (current <= 20) {
-                        breakerSize = 20;
-                    } else if (current <= 25) {
-                        breakerSize = 25;
-                    } else {
-                        breakerSize = 32;
-                    }
-    
-                    const cableSize = breakerSize / (1.03 * 0.7);
-                    let cableSizeMM;
-                    if (cableSize >= 0 && cableSize <= 11) {
-                        cableSizeMM = "1mm";
-                    } else if (cableSize > 11 && cableSize <= 15) {
-                        cableSizeMM = "1.5mm";
-                    } else if (cableSize > 15 && cableSize <= 25) {
-                        cableSizeMM = "2.5mm";
-                    } else if (cableSize > 25) {
-                        cableSizeMM = "4mm";
-                    }
-    
-                    // Voltage drop calculation
-                    const voltageDrop = (2 * current * resistivity * 3) / 1000;
-                    // Total Voltage drop calculation
-                    const voltageDrops = (2 * current * resistivity * 5) / 1000;
-                    totalVoltageDrop += voltageDrops;
-    
-                    const row = document.querySelector(`#loadTableBody tr:nth-child(${index + 1})`);
-                    row.cells[3].innerText = breakerSize;
-                    row.cells[4].innerText = cableSizeMM;
-                    row.cells[5].innerText = voltageDrop.toFixed(2) + "V";
-    
-                    // Summing up the power
+                    
+                    // Calculate breaker size
+                    const breakerSize = calculateBreakerSize(current);
+                    
+                    // Calculate cable size
+                    const cableSize = calculateCableSize(current);
+                    
+                    // Calculate voltage drop
+                    const voltageDrop = calculateVoltageDrop(current, cableSize, load.length);
+                    totalVoltageDrop += voltageDrop;
+                    
+                    // Update totals
                     totalPower += load.value;
-                    console.log(totalPower)
+                    totalCurrent += current;
                     
-                   
-                   
+                    // Add row to table
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>${load.description}</td>
+                        <td>${load.value} W</td>
+                        <td><span class="badge badge-current">${current.toFixed(2)} A</span></td>
+                        <td><span class="badge bg-primary">${breakerSize} A</span></td>
+                        <td><span class="badge badge-cable">${cableSize} mm²</span></td>
+                        <td><span class="badge badge-voltage">${voltageDrop.toFixed(2)} V</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="editLoad(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteLoad(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    loadTableBody.appendChild(row);
                 });
-    
-                // Calculate total current and cable size for total power
-                const totalCurrent = totalPower / (voltage * powerFactor);
-                let totalCableSize = totalCurrent / (1.03 * 0.7);
-                let totalCableSizeMM;
-    
-
-                if (totalCableSize >= 0 && totalCableSize <= 12) {
-									totalCableSizeMM = "1mm";
-							} else if (totalCableSize > 12 && totalCableSize <= 15.5) {
-									totalCableSizeMM = "1.5mm";
-							} else if (totalCableSize > 15.5 && totalCableSize <= 21) {
-									totalCableSizeMM = "2.5mm";
-							} else if (totalCableSize > 21 && totalCableSize <= 28) {
-									totalCableSizeMM = "4mm";
-							} else if (totalCableSize > 28 && totalCableSize <=36) {
-									totalCableSizeMM = "6mm";
-							}
-							else if (totalCableSize > 36 && totalCableSize <=50) {
-									totalCableSizeMM = "10mm";
-							} else if (totalCableSize > 50 && totalCableSize <=68) {
-									totalCableSizeMM = "16mm";
-							} else if (totalCableSize > 68 && totalCableSize <=89) {
-									totalCableSizeMM = "25mm";
-							} else if (totalCableSize > 89 && totalCableSize <=110) {
-									totalCableSizeMM = "35mm";
-							} else if (totalCableSize > 110&& totalCableSize <=134) {
-									totalCableSizeMM = "50mm";
-							} else if (totalCableSize > 134 && totalCableSize <=171) {
-									totalCableSizeMM = "70mm";
-							} else if (totalCableSize > 171 && totalCableSize <=207) {
-									totalCableSizeMM = "95mm";
-							}
-							
-							
-
-                console.log(totalCurrent)
-
-                if (totalCurrent <= 15) {
-                    totalBreakerSize= 15;
-                } else if (totalCurrent <= 20) {
-                    totalBreakerSize = 20;
-                } else if (totalCurrent <= 25) {
-                    totalBreakerSize = 25;
-                } else if (totalCurrent <= 30) {
-                    totalBreakerSize = 30;
-                } else if (totalCurrent <= 35) {
-                    totalBreakerSize = 35;
-                }else if (totalCurrent <= 40) {
-                    totalBreakerSize = 40;
-                }else if (totalCurrent <= 45) {
-                    totalBreakerSize = 45;
-                }else if (totalCurrent <= 50) {
-                    totalBreakerSize = 50;
-                }else if (totalCurrent <= 60) {
-                    totalBreakerSize = 60;
-                }else if (totalCurrent <= 70) {
-                    totalBreakerSize = 70;
-                }else if (totalCurrent <= 80) {
-                    totalBreakerSize = 80;
-                }else if (totalCurrent <= 90) {
-                    totalBreakerSize = 90;
-                }else if (totalCurrent <= 100) {
-                    totalBreakerSize = 100;
-                }else if (totalCurrent <= 110) {
-                    totalBreakerSize = 110;
-                }else if (totalCurrent <= 125) {
-                    totalBreakerSize = 125;
-                }else if (totalCurrent <= 150) {
-                    totalBreakerSize = 150;
-                }else if (totalCurrent <= 175) {
-                    totalBreakerSize = 175;
-                }else if (totalCurrent <= 200) {
-                    totalBreakerSize = 200;
-                }else if (totalCurrent <= 225) {
-                    totalBreakerSize = 225;
-                }else if (totalCurrent <= 250) {
-                    totalBreakerSize = 250;
-                }else if (totalCurrent <= 250) {
-                    totalBreakerSize = 250;
-                }else if (totalCurrent <= 300) {
-                    totalBreakerSize = 300;
-                }else if (totalCurrent <= 350) {
-                    totalBreakerSize = 350;
-                }
-                else {
-                    totalBreakerSize = 400;
-                }
-
-                console.log(totalBreakerSize)
-
-    
-                   // Update total power, cable size, breaker size, and voltage drop in the table footer
-                totalPowerValue.innerText = (totalPower / 1000).toFixed(2) + " kW";  // Convert to kW
-                totalCableSizeValue.innerText = totalCableSizeMM;
-                totalBreakerSizeValue.innerText = totalBreakerSize ;
-                totalVoltageDropValue.innerText = totalVoltageDrop.toFixed(2) + "V";
-            }
-    
-            updateTable();
-        });
-    
-        function deleteLoad(index) {
-            let loads = JSON.parse(localStorage.getItem('loads')) || [];
-            loads.splice(index, 1);  // Remove the specific load
-            localStorage.setItem('loads', JSON.stringify(loads));
-            updateTable();  // Refresh the table
-        }
-    
-        function editLoad(index) {
-            let loads = JSON.parse(localStorage.getItem('loads')) || [];
-            let load = loads[index];
-        
-            // Populate the modal with the existing load data
-            document.getElementById("loadType").value = load.type;
-            document.getElementById("loadValue").value = load.value;
-        
-            // Show the modal
-            modal.style.display = "block";
-        
-            // Update the save button functionality to save the edited load
-            saveLoad.onclick = function() {
-                const type = loadType.value;
-                const value = parseFloat(loadValue.value);
-                const length = 3; // Fixed length value
-        
-                if (type && value && length) {
-                    loads[index] = { type, value, length };  // Update the specific load
-                    localStorage.setItem('loads', JSON.stringify(loads));
-                    updateTable();
-                    modal.style.display = "none";
-                    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Load Updated',
-                        text: 'The load has been successfully updated.',
-                    });
+                
+                // Calculate totals
+                const totalCableSize = calculateCableSize(totalCurrent);
+                const totalBreakerSize = calculateBreakerSize(totalCurrent);
+                const voltageDropPercent = (totalVoltageDrop / VOLTAGE) * 100;
+                
+                // Update summary
+                document.getElementById('totalPowerValue').textContent = (totalPower / 1000).toFixed(2) + ' kW';
+                document.getElementById('totalCurrentValue').textContent = totalCurrent.toFixed(2) + ' A';
+                document.getElementById('totalBreakerSizeValue').textContent = totalBreakerSize + ' A';
+                document.getElementById('totalCableSizeValue').textContent = totalCableSize + ' mm²';
+                document.getElementById('totalVoltageDropValue').textContent = totalVoltageDrop.toFixed(2) + ' V';
+                document.getElementById('voltageDropPercent').textContent = voltageDropPercent.toFixed(2) + ' %';
+                
+                // Visual feedback for voltage drop
+                const voltageDropCell = document.getElementById('voltageDropPercent');
+                if (voltageDropPercent > MAX_VOLTAGE_DROP_PERCENT) {
+                    voltageDropCell.classList.remove('badge-voltage');
+                    voltageDropCell.classList.add('bg-danger');
                 } else {
+                    voltageDropCell.classList.remove('bg-danger');
+                    voltageDropCell.classList.add('badge-voltage');
+                }
+                
+                // Update chart
+                updateChart(loads);
+                
+                // Show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Analysis Complete',
+                    html: `
+                        <div class="text-start">
+                            <p><strong>Total Power:</strong> ${(totalPower / 1000).toFixed(2)} kW</p>
+                            <p><strong>Total Current:</strong> ${totalCurrent.toFixed(2)} A</p>
+                            <p><strong>Recommended Cable:</strong> ${totalCableSize} mm²</p>
+                            <p><strong>Voltage Drop:</strong> ${voltageDropPercent.toFixed(2)}% 
+                            ${voltageDropPercent > MAX_VOLTAGE_DROP_PERCENT ? 
+                                '<span class="badge bg-danger">Exceeds Limit</span>' : 
+                                '<span class="badge bg-success">Within Limit</span>'}
+                            </p>
+                        </div>
+                    `,
+                });
+            }
+            
+            // Function to calculate breaker size
+            function calculateBreakerSize(current) {
+                // Find the next standard breaker size that is >= 125% of current (NEC requirement)
+                const requiredSize = current * 1.25;
+                
+                for (let size of BREAKER_SIZES) {
+                    if (size >= requiredSize) {
+                        return size;
+                    }
+                }
+                
+                // If current exceeds largest breaker, return the largest
+                return BREAKER_SIZES[BREAKER_SIZES.length - 1];
+            }
+            
+            // Function to calculate cable size
+            function calculateCableSize(current) {
+                // Apply derating factors (ambient temperature, grouping, etc.)
+                const deratedCurrent = current * 0.9; // Simple derating for example
+                
+                // Find appropriate cable size
+                for (let cable of CABLE_SIZES) {
+                    if (deratedCurrent <= cable.current) {
+                        return cable.size;
+                    }
+                }
+                
+                // If current exceeds table, return the largest size
+                return CABLE_SIZES[CABLE_SIZES.length - 1].size;
+            }
+            
+            // Function to calculate voltage drop
+            function calculateVoltageDrop(current, cableSize, length) {
+                // VD = (2 × I × R × L) / 1000
+                // R = resistivity / cableSize
+                const resistance = RESISTIVITY_COPPER / cableSize;
+                return (2 * current * resistance * length) / 1000;
+            }
+            
+            // Function to update the chart
+            function updateChart(loads) {
+                const ctx = document.getElementById('loadChart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (window.loadChartInstance) {
+                    window.loadChartInstance.destroy();
+                }
+                
+                const labels = loads.map((load, index) => `Load ${index + 1}`);
+                const data = loads.map(load => load.value);
+                
+                window.loadChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Load Power (W)',
+                            data: data,
+                            backgroundColor: 'rgba(46, 134, 171, 0.7)',
+                            borderColor: 'rgba(46, 134, 171, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Load Distribution'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Power (W)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        
+        // Global functions for table actions
+        function deleteLoad(index) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let loads = JSON.parse(localStorage.getItem('commercialSinglePhaseLoads')) || [];
+                    loads.splice(index, 1);
+                    localStorage.setItem('commercialSinglePhaseLoads', JSON.stringify(loads));
+                    updateTable();
+                    
+                    Swal.fire(
+                        'Deleted!',
+                        'The load has been deleted.',
+                        'success'
+                    );
+                }
+            });
+        }
+        
+        function editLoad(index) {
+            const loads = JSON.parse(localStorage.getItem('commercialSinglePhaseLoads')) || [];
+            const load = loads[index];
+            
+            document.getElementById('loadType').value = load.type;
+            document.getElementById('loadValue').value = load.value;
+            document.getElementById('cableLength').value = load.length;
+            document.getElementById('loadDescription').value = load.description || '';
+            
+            const loadModal = new bootstrap.Modal(document.getElementById('loadModal'));
+            loadModal.show();
+            
+            // Update save button to edit mode
+            document.getElementById('saveLoad').onclick = function() {
+                const type = document.getElementById('loadType').value;
+                const value = parseFloat(document.getElementById('loadValue').value);
+                const length = parseFloat(document.getElementById('cableLength').value);
+                const description = document.getElementById('loadDescription').value;
+                
+                if (!type || !value || !length) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Missing Information',
-                        text: 'Please select a load type, enter a value, and specify the cable length.',
+                        text: 'Please fill in all required fields.',
                     });
+                    return;
                 }
+                
+                loads[index] = { 
+                    type, 
+                    value, 
+                    length,
+                    description: description || type
+                };
+                localStorage.setItem('commercialSinglePhaseLoads', JSON.stringify(loads));
+                updateTable();
+                loadModal.hide();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Load Updated',
+                    text: 'The load has been successfully updated.',
+                });
             };
         }
-    
-        function updateTable() {
-            const loads = JSON.parse(localStorage.getItem('loads')) || [];
-            const loadTableBody = document.getElementById("loadTableBody");
-            loadTableBody.innerHTML = "";
-    
-            loads.forEach((load, index) => {
-                const row = `<tr>
-                    <th scope="row">${index + 1}</th>
-                    <td>${load.type}</td>
-                    <td>${load.value}W</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button class="btn btn-sm btn-danger" onclick="deleteLoad(${index})">Delete</button>
-                    </td>
-                </tr>`;
-                loadTableBody.innerHTML += row;
+        
+        function clearDataAndRefresh() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will delete all your load data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, clear all data!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('commercialSinglePhaseLoads');
+                    location.reload();
+                }
             });
         }
-    
-        function clearDataAndRefresh() {
-            localStorage.clear();
-            location.reload();
-        }
+        
+        // Make updateTable function globally available
+        window.updateTable = function() {
+            const loads = JSON.parse(localStorage.getItem('commercialSinglePhaseLoads')) || [];
+            const loadTableBody = document.getElementById('loadTableBody');
+            loadTableBody.innerHTML = '';
+            
+            if (loads.length === 0) {
+                loadTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-4">
+                            <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                            <p class="text-muted">No loads added yet. Click "Add Load" to get started.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            loads.forEach((load, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${index + 1}</th>
+                    <td>${load.description}</td>
+                    <td>${load.value} W</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editLoad(${index})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteLoad(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                loadTableBody.appendChild(row);
+            });
+        };
     </script>
-    
 </body>
 
 </html>

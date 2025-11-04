@@ -1,239 +1,1465 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wastech_wire_sizing</title>
-	<link href="../css/bootstrap.min.css" rel="stylesheet">
-	<link href="../css/global.css" rel="stylesheet">
-	<link href="../css/blog.css" rel="stylesheet">
+    <title>Electricmate - Industrial Three Phase Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #A23B72;
+            --accent: #F18F01;
+            --dark: #1B1B1E;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: #f5f7fa;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .navbar-brand span {
+            color: var(--accent);
+        }
+        
+        .top-bar {
+            background-color: var(--dark);
+            color: white;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+        
+        .navbar {
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .page-header {
+            background: linear-gradient(rgba(46, 134, 171, 0.9), rgba(46, 134, 171, 0.9)), 
+                        url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 60px 0 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1c6b8c;
+            border-color: #1c6b8c;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-warning {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-warning:hover {
+            background-color: #c57101;
+            border-color: #c57101;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+        
+        .table th {
+            background-color: var(--light);
+            font-weight: 600;
+            border-top: none;
+        }
+        
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, var(--secondary), #7d2a57);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-card h5 {
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(46, 134, 171, 0.25);
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-item i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .copyright {
+            border-top: 1px solid #343a40;
+            padding-top: 20px;
+            margin-top: 30px;
+            text-align: center;
+            color: #adb5bd;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .badge-voltage {
+            background-color: #17a2b8;
+        }
+        
+        .badge-current {
+            background-color: #28a745;
+        }
+        
+        .badge-power {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-cable {
+            background-color: #6f42c1;
+        }
+        
+        .action-buttons .btn {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .machine-badge {
+            font-size: 0.75rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .load-category {
+            background: rgba(46, 134, 171, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .phase-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .badge-red {
+            background-color: #dc3545;
+        }
+        
+        .badge-yellow {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-blue {
+            background-color: #0d6efd;
+        }
+        
+        .motor-settings {
+            background: rgba(255, 193, 7, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .high-power-indicator {
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #dc3545;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .action-buttons .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
 
-	<link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Alata&display=swap" rel="stylesheet">
-	<script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-  </head>
-  
 <body>
-	<section id="top">
-		<div class="container">
-		 <div class="row">
-			<div class="top_1 clearfix">
-			 <div class="col-sm-4">
-			<div class="top_1l clearfix">
-			 <p class="mgt col"><i class="fa fa-map-marker col_1"></i> Osun State University Osogbo Campus</p>
-			 <p class="col"><i class="fa fa-clock-o col_1"></i> Available</p>
-			</div>
-		 </div>
-		 <div class="col-sm-4">
-			<div class="top_1m text-center clearfix">
-			 <h1 class="mgt"><a href="index.html">Wastech <span>Wire Sizing Web Application</span></a></h1>
-			</div>
-		 </div>
-		 <div class="col-sm-4" id="Contact">
-			<div class="top_1r text-center clearfix">
-			 <h3 class="mgt"><a href="#"><i class="fa fa-phone col_1"></i> +234 805 577 6749 <span>Call us now. Resistance is futile!</span></a></h3>
-			</div>
-		 </div>
-			</div>
-		 </div>
-		</div>
-	 </section>
-	 
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex flex-wrap">
+                        <p class="mb-0 me-4"><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</p>
+                        <p class="mb-0"><i class="far fa-clock me-2"></i> Available 24/7</p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0"><i class="fas fa-phone me-2"></i> +234 805 577 6749 <span class="d-none d-md-inline"> | Call us now. Resistance is futile!</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="main clearfix">
-  <section id="header" class="clearfix">
-	 <div class="container">
-	  <div class="row">
-	   <div class="haeder clearfix">
-		<nav class="navbar">
-		<div class="navbar-header">
-			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="index.html">Electronica</a>
-		</div>
-		
-		
-		<div class="collapse navbar-collapse js-navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li><a class="font_tag active_tab" href="../index.html">Home</a></li>
-				<li><a class="font_tag" href="../pages/commercial.html">Commercial</a></li>
-				<li><a class="font_tag" href="../pages/industry.html">Industrial</a></li>
-				<li><a class="font_tag" href="../pages/resident.html">Residential</a></li>
-				<li><a class="font_tag" href="#Service">Services</a></li>
-				<li><a class="font_tag" href="#Contact">Contact Us</a></li>
-				
-			</ul>
-			
-		</div><!-- /.nav-collapse -->
-	</nav>
-	   </div>
-	  </div>
-	 </div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">Electric<span>mate</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/commercial.html">Commercial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../pages/industry.html">Industrial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/resident.html">Residential</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1>Industrial Three Phase Analysis</h1>
+                    <p class="lead">Heavy-duty wire sizing calculations for industrial machinery and equipment</p>
+                </div>
+            </div>
+        </div>
     </section>
-</div>
-	
-<section id="center" class="center_shop clearfix">
- <div class="container">
-  <div class="row">
-   <div class="center_shop_1 text-center clearfix">
-    <div class="col-sm-12">
-	 <h1 class="mgt">Industrial Load Data</h1>
-	</div>
-   </div>
-   <div class="blog_1 clearfix">
-   <div class="col-sm-9">
-    <div class="blog_1l mgt clearfix">
-			<table class="table  table-bordered">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">First</th>
-						<th scope="col">Last</th>
-						<th scope="col">Handle</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th scope="row">1</th>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-				
-				</tbody>
-			</table>
-	</div>
 
-	
+    <!-- Main Content -->
+    <section class="main-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-industry me-2"></i> Industrial Machine Load Data Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Machine/Equipment</th>
+                                            <th scope="col">Power (kW)</th>
+                                            <th scope="col">Current</th>
+                                            <th scope="col">Breaker Size</th>
+                                            <th scope="col">Cable Size</th>
+                                            <th scope="col">Voltage Drop</th>
+                                            <th scope="col">Starting Current</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="loadTableBody">
+                                        <!-- Dynamic rows will be added here -->
+                                    </tbody>
+                                    <tfoot class="table-group-divider">
+                                        <tr>
+                                            <th colspan="2">Total Connected Power:</th>
+                                            <td id="totalPowerValue">0 kW</td>
+                                            <th>Total Running Current:</th>
+                                            <td id="totalCurrentValue">0 A</td>
+                                            <th>Main Breaker Size:</th>
+                                            <td id="totalBreakerSizeValue">0 A</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2">Maximum Starting Current:</th>
+                                            <td id="maxStartingCurrent">0 A</td>
+                                            <th>Main Cable Size:</th>
+                                            <td id="totalCableSizeValue">0 mm²</td>
+                                            <th>Voltage Drop:</th>
+                                            <td id="totalVoltageDropValue">0 V</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            
+                            <div class="action-buttons mt-4">
+                                <button id="performAnalysis" class="btn btn-success">
+                                    <i class="fas fa-calculator me-2"></i>Perform Analysis
+                                </button>
+                                <button id="openModal" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Add Machine
+                                </button>
+                                <button onclick="clearDataAndRefresh()" class="btn btn-danger">
+                                    <i class="fas fa-trash me-2"></i>Clear Data
+                                </button>
+                                <button class="btn btn-warning" onclick="window.print()">
+                                    <i class="fas fa-print me-2"></i>Print Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Load Distribution Visualization -->
+                    <div class="chart-container">
+                        <h5 class="mb-3"><i class="fas fa-chart-bar me-2"></i>Machine Load Distribution</h5>
+                        <canvas id="loadChart" height="250"></canvas>
+                    </div>
+                    
+                    <!-- Motor Starting Analysis -->
+                    <div class="chart-container">
+                        <h5 class="mb-3"><i class="fas fa-tachometer-alt me-2"></i>Motor Starting Current Analysis</h5>
+                        <canvas id="startingCurrentChart" height="250"></canvas>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <!-- Summary Card -->
+                    <div class="summary-card">
+                        <h5><i class="fas fa-clipboard-list me-2"></i>Industrial Analysis Summary</h5>
+                        <div class="summary-item">
+                            <span>System Voltage:</span>
+                            <span>400V / 690V</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Power Factor:</span>
+                            <span>0.85</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Efficiency:</span>
+                            <span>0.92</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Cable Type:</span>
+                            <span>Copper XLPE</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Ambient Temp:</span>
+                            <span>40°C</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Safety Standard:</span>
+                            <span>IEEE & IEC</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Add Machines</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="quickInductionMotor">
+                                    <i class="fas fa-cog me-2"></i>Induction Motor
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickPump">
+                                    <i class="fas fa-tint me-2"></i>Industrial Pump
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickCompressor">
+                                    <i class="fas fa-wind me-2"></i>Air Compressor
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickConveyor">
+                                    <i class="fas fa-conveyor-belt me-2"></i>Conveyor System
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickHeater">
+                                    <i class="fas fa-fire me-2"></i>Industrial Heater
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Common Industrial Machines -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-list me-2"></i>Common Industrial Loads</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="load-category">
+                                <h6 class="text-primary">Motors & Drives</h6>
+                                <span class="badge machine-badge bg-light text-dark">Small Motor: 5-15 kW</span>
+                                <span class="badge machine-badge bg-light text-dark">Medium Motor: 15-75 kW</span>
+                                <span class="badge machine-badge bg-light text-dark">Large Motor: 75-300 kW</span>
+                                <span class="badge machine-badge bg-light text-dark">HV Motor: 300+ kW</span>
+                            </div>
+                            <div class="load-category">
+                                <h6 class="text-primary">Heating & Process</h6>
+                                <span class="badge machine-badge bg-light text-dark">Oven: 20-100 kW</span>
+                                <span class="badge machine-badge bg-light text-dark">Furnace: 50-500 kW</span>
+                                <span class="badge machine-badge bg-light text-dark">Heater: 10-200 kW</span>
+                            </div>
+                            <div class="load-category">
+                                <h6 class="text-primary">Pumps & Compressors</h6>
+                                <span class="badge machine-badge bg-light text-dark">Water Pump: 7.5-75 kW</span>
+                                <span class="badge machine-badge bg-light text-dark">Air Compressor: 15-150 kW</span>
+                                <span class="badge machine-badge bg-light text-dark">Vacuum Pump: 5-50 kW</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Motor Starting Information -->
+                    <div class="motor-settings">
+                        <h6><i class="fas fa-info-circle me-2"></i>Motor Starting Considerations</h6>
+                        <ul class="small mb-0">
+                            <li>Direct Online: 6-8x Full Load Current</li>
+                            <li>Star-Delta: 2-3x Full Load Current</li>
+                            <li>Soft Starter: 2-4x Full Load Current</li>
+                            <li>VFD: 1-1.5x Full Load Current</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- High Power Warning -->
+                    <div class="high-power-indicator">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>High Power Equipment</h6>
+                        <p class="small mb-0">For equipment above 300kW, consider:</p>
+                        <ul class="small mb-0">
+                            <li>Medium Voltage Supply (3.3kV/6.6kV/11kV)</li>
+                            <li>HV/LV Transformer Sizing</li>
+                            <li>Power Factor Correction</li>
+                            <li>Harmonic Filtering</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-   </div>
-   <div class="col-sm-3">
-  <!-- Scrollable modal -->
-	<button id="openModal">Open Modal</button>
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2>Industrial Electrical Solutions</h2>
+                    <p class="lead">Heavy-duty calculations for industrial machinery and equipment</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-industry"></i>
+                        <h5>Heavy Machinery</h5>
+                        <p>Specialized calculations for industrial motors, pumps, and high-power equipment</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-bolt"></i>
+                        <h5>Motor Starting</h5>
+                        <p>Accurate starting current calculations for different motor starting methods</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h5>IEEE Compliant</h5>
+                        <p>Following IEEE Std 141, 242, and IEC standards for industrial installations</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-cogs"></i>
+                        <h5>Process Equipment</h5>
+                        <p>Calculations for heaters, ovens, furnaces, and other process equipment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<div id="myModal" class="modal">
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<p>This is a modal!</p>
-		</div>
-	</div>
-	
-	
-   </div>
-  </div>
-  </div>
-  
- </div>
-</section>
- 
-<section id="proj_h">
-	<div class="container">
-	 <div class="row">
-		<div class="proj_h1 clearfix">
-		 <div class="col-sm-3">
-		<div class="proj_h1i text-center clearfix">
-		 <span><i class="fa fa-users"></i></span>
-		 <h4>Easy to use</h4>
-	 
-		</div>
-	 </div>
-	 <div class="col-sm-3">
-		<div class="proj_h1i text-center clearfix">
-		 <span><i class="fa fa-building"></i></span>
-		 <h4> Trusted Results</h4>
-		
-		</div>
-	 </div>
-	 <div class="col-sm-3">
-		<div class="proj_h1i text-center clearfix">
-		 <span><i class="fa fa-map"></i></span>
-		 <h4>Best Calculations</h4>
-		
-		</div>
-	 </div>
-	 <div class="col-sm-3">
-		<div class="proj_h1i text-center clearfix">
-		 <span><i class="fa fa-user-plus"></i></span>
-		 <h4>100 %</h4>
-		
-		</div>
-	 </div>
-		</div>
-	 </div>
-	</div>
- </section>
- 
- 
- <section id="footer">
-	<div class="container">
-	 <div class="row">
-		
-		<div class="footer_3 clearfix">
-		<div class="col-sm-7">
-		 <div class="footer_3l clearfix">
-				<p class="mgt col">© 2024 WASTECH. All Rights Reserved | Design by <a class="col" href="http://awofesobipeace1.netlify.app" target="_blank">CODEMaster</a></p>
-		 </div>
-		</div>
-	 
-	 </div>
-	 </div>
-	</div>
- </section>
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5>Electricmate</h5>
+                    <p>Professional wire sizing solutions for commercial, industrial, and residential applications. Ensuring safety and efficiency in all electrical installations.</p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="../index.html" class="text-white-50 text-decoration-none">Home</a></li>
+                        <li><a href="../pages/commercial.html" class="text-white-50 text-decoration-none">Commercial</a></li>
+                        <li><a href="../pages/industry.html" class="text-white-50 text-decoration-none">Industrial</a></li>
+                        <li><a href="../pages/resident.html" class="text-white-50 text-decoration-none">Residential</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</li>
+                        <li><i class="fas fa-phone me-2"></i> +234 805 577 6749</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@electricmate.com</li>
+                        <li><i class="far fa-clock me-2"></i> Available 24/7</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Newsletter</h5>
+                    <p>Subscribe to our newsletter for the latest updates and features.</p>
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" aria-label="Your Email">
+                            <button class="btn btn-primary" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="mb-0">© 2024 Electricmate. All Rights Reserved | Design by <a href="http://awofesobipeace1.netlify.app" target="_blank" class="text-white">CODEMaster</a></p>
+            </div>
+        </div>
+    </footer>
 
-<script>
-	// Get the modal
-var modal = document.getElementById("myModal");
+    <!-- Add Machine Modal -->
+    <div class="modal fade" id="machineModal" tabindex="-1" aria-labelledby="machineModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="machineModalLabel">Add Industrial Machine</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="machineType" class="form-label">Machine Type</label>
+                                <select id="machineType" class="form-select">
+                                    <option value="">Select Machine Type</option>
+                                    <option value="Induction Motor">Induction Motor</option>
+                                    <option value="Synchronous Motor">Synchronous Motor</option>
+                                    <option value="Centrifugal Pump">Centrifugal Pump</option>
+                                    <option value="Air Compressor">Air Compressor</option>
+                                    <option value="Conveyor System">Conveyor System</option>
+                                    <option value="Industrial Oven">Industrial Oven</option>
+                                    <option value="Electric Furnace">Electric Furnace</option>
+                                    <option value="Heating Element">Heating Element</option>
+                                    <option value="Ventilation System">Ventilation System</option>
+                                    <option value="CNC Machine">CNC Machine</option>
+                                    <option value="Other">Other Equipment</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="machineDescription" class="form-label">Machine Description</label>
+                                <input type="text" class="form-control" id="machineDescription" placeholder="Enter machine description">
+                            </div>
+                            <div class="mb-3">
+                                <label for="machinePower" class="form-label">Power Rating (kW)</label>
+                                <input type="number" class="form-control" id="machinePower" placeholder="Enter power in kW" step="0.1">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="voltageLevel" class="form-label">Voltage Level</label>
+                                <select id="voltageLevel" class="form-select">
+                                    <option value="400">400V LV (Low Voltage)</option>
+                                    <option value="690">690V LV (Low Voltage)</option>
+                                    <option value="3300">3.3kV MV (Medium Voltage)</option>
+                                    <option value="6600">6.6kV MV (Medium Voltage)</option>
+                                    <option value="11000">11kV MV (Medium Voltage)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="efficiency" class="form-label">Efficiency (%)</label>
+                                <input type="number" class="form-control" id="efficiency" placeholder="Enter efficiency" value="92" step="0.1">
+                            </div>
+                            <div class="mb-3">
+                                <label for="powerFactor" class="form-label">Power Factor</label>
+                                <input type="number" class="form-control" id="powerFactor" placeholder="Enter power factor" value="0.85" step="0.01" min="0.5" max="1">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Motor Specific Settings -->
+                    <div id="motorSettings" style="display: none;">
+                        <hr>
+                        <h6><i class="fas fa-cog me-2"></i>Motor Starting Settings</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="startingMethod" class="form-label">Starting Method</label>
+                                    <select id="startingMethod" class="form-select">
+                                        <option value="DOL">Direct Online (DOL)</option>
+                                        <option value="StarDelta">Star-Delta</option>
+                                        <option value="SoftStarter">Soft Starter</option>
+                                        <option value="VFD">Variable Frequency Drive (VFD)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="startingCurrentMultiplier" class="form-label">Starting Current Multiplier</label>
+                                    <input type="number" class="form-control" id="startingCurrentMultiplier" placeholder="Auto-calculated" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="cableLength" class="form-label">Cable Length (meters)</label>
+                        <input type="number" class="form-control" id="cableLength" placeholder="Enter cable length" value="50">
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="highPowerEquipment">
+                        <label class="form-check-label" for="highPowerEquipment">
+                            High Power Equipment (Requires special consideration)
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveMachine">Save Machine</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-// Get the button that opens the modal
-var btn = document.getElementById("openModal");
+    <!-- Bootstrap & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-
-</script>
-
+    <script>
+        // Constants based on IEEE standards for industrial systems
+        const STANDARD_VOLTAGES = {
+            "400": 400,
+            "690": 690,
+            "3300": 3300,
+            "6600": 6600,
+            "11000": 11000
+        };
+        
+        const POWER_FACTOR = 0.85;
+        const EFFICIENCY = 0.92;
+        const RESISTIVITY_COPPER = 0.0172; // Ohm-mm²/m at 20°C
+        const MAX_VOLTAGE_DROP_PERCENT = 5; // IEEE recommended for industrial
+        
+        // Motor starting current multipliers (IEEE Std 141)
+        const STARTING_MULTIPLIERS = {
+            "DOL": 6.0,      // Direct Online - 6x FLC
+            "StarDelta": 2.5, // Star-Delta - 2.5x FLC
+            "SoftStarter": 3.0, // Soft Starter - 3x FLC
+            "VFD": 1.2       // VFD - 1.2x FLC
+        };
+        
+        // Industrial cable sizing table (IEC 60364-5-52 for XLPE)
+        const INDUSTRIAL_CABLE_SIZES = [
+            { current: 16, size: 1.5 },
+            { current: 21, size: 2.5 },
+            { current: 28, size: 4 },
+            { current: 36, size: 6 },
+            { current: 46, size: 10 },
+            { current: 63, size: 16 },
+            { current: 81, size: 25 },
+            { current: 99, size: 35 },
+            { current: 119, size: 50 },
+            { current: 146, size: 70 },
+            { current: 180, size: 95 },
+            { current: 218, size: 120 },
+            { current: 250, size: 150 },
+            { current: 292, size: 185 },
+            { current: 336, size: 240 },
+            { current: 383, size: 300 }
+        ];
+        
+        // Standard industrial breaker sizes
+        const INDUSTRIAL_BREAKER_SIZES = [16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000];
+        
+        // Common industrial machine power ratings
+        const COMMON_MACHINES = {
+            "Induction Motor": 55,
+            "Synchronous Motor": 75,
+            "Centrifugal Pump": 37,
+            "Air Compressor": 45,
+            "Conveyor System": 22,
+            "Industrial Oven": 80,
+            "Electric Furnace": 150,
+            "Heating Element": 50,
+            "Ventilation System": 18,
+            "CNC Machine": 15
+        };
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize modal
+            const machineModal = new bootstrap.Modal(document.getElementById('machineModal'));
+            
+            // Show/hide motor settings based on machine type
+            document.getElementById('machineType').addEventListener('change', function() {
+                const machineType = this.value;
+                const motorSettings = document.getElementById('motorSettings');
+                const isMotor = machineType.includes('Motor') || machineType.includes('Pump') || machineType.includes('Compressor');
+                
+                if (isMotor) {
+                    motorSettings.style.display = 'block';
+                    updateStartingMultiplier();
+                } else {
+                    motorSettings.style.display = 'none';
+                }
+            });
+            
+            // Update starting multiplier when starting method changes
+            document.getElementById('startingMethod').addEventListener('change', updateStartingMultiplier);
+            
+            function updateStartingMultiplier() {
+                const startingMethod = document.getElementById('startingMethod').value;
+                document.getElementById('startingCurrentMultiplier').value = STARTING_MULTIPLIERS[startingMethod];
+            }
+            
+            // Auto-fill power based on machine type
+            document.getElementById('machineType').addEventListener('change', function() {
+                const machineType = this.value;
+                if (COMMON_MACHINES[machineType]) {
+                    document.getElementById('machinePower').value = COMMON_MACHINES[machineType];
+                }
+            });
+            
+            // Open modal button
+            document.getElementById('openModal').addEventListener('click', function() {
+                resetModal();
+                machineModal.show();
+            });
+            
+            // Quick action buttons
+            document.getElementById('quickInductionMotor').addEventListener('click', function() {
+                setQuickMachine('Induction Motor', 55, '400');
+            });
+            
+            document.getElementById('quickPump').addEventListener('click', function() {
+                setQuickMachine('Centrifugal Pump', 37, '400');
+            });
+            
+            document.getElementById('quickCompressor').addEventListener('click', function() {
+                setQuickMachine('Air Compressor', 45, '400');
+            });
+            
+            document.getElementById('quickConveyor').addEventListener('click', function() {
+                setQuickMachine('Conveyor System', 22, '400');
+            });
+            
+            document.getElementById('quickHeater').addEventListener('click', function() {
+                setQuickMachine('Heating Element', 50, '400');
+            });
+            
+            // Save machine button
+            document.getElementById('saveMachine').addEventListener('click', function() {
+                saveMachine();
+            });
+            
+            // Perform analysis button
+            document.getElementById('performAnalysis').addEventListener('click', function() {
+                performAnalysis();
+            });
+            
+            // Load table on page load
+            updateTable();
+            
+            // Function to set quick machine values
+            function setQuickMachine(type, power, voltage) {
+                document.getElementById('machineType').value = type;
+                document.getElementById('voltageLevel').value = voltage;
+                document.getElementById('machinePower').value = power;
+                document.getElementById('machineDescription').value = type;
+                
+                // Show motor settings if applicable
+                const motorSettings = document.getElementById('motorSettings');
+                const isMotor = type.includes('Motor') || type.includes('Pump') || type.includes('Compressor');
+                motorSettings.style.display = isMotor ? 'block' : 'none';
+                
+                if (isMotor) {
+                    updateStartingMultiplier();
+                }
+                
+                machineModal.show();
+            }
+            
+            // Function to reset modal
+            function resetModal() {
+                document.getElementById('machineType').value = '';
+                document.getElementById('machineDescription').value = '';
+                document.getElementById('machinePower').value = '';
+                document.getElementById('voltageLevel').value = '400';
+                document.getElementById('efficiency').value = '92';
+                document.getElementById('powerFactor').value = '0.85';
+                document.getElementById('startingMethod').value = 'DOL';
+                document.getElementById('cableLength').value = '50';
+                document.getElementById('highPowerEquipment').checked = false;
+                document.getElementById('motorSettings').style.display = 'none';
+            }
+            
+            // Function to save machine
+            function saveMachine() {
+                const type = document.getElementById('machineType').value;
+                const description = document.getElementById('machineDescription').value;
+                const power = parseFloat(document.getElementById('machinePower').value);
+                const voltage = parseFloat(document.getElementById('voltageLevel').value);
+                const efficiency = parseFloat(document.getElementById('efficiency').value) / 100;
+                const powerFactor = parseFloat(document.getElementById('powerFactor').value);
+                const cableLength = parseFloat(document.getElementById('cableLength').value);
+                const highPowerEquipment = document.getElementById('highPowerEquipment').checked;
+                
+                if (!type || !power || !voltage) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Missing Information',
+                        text: 'Please fill in all required fields.',
+                    });
+                    return;
+                }
+                
+                // Get motor-specific settings if applicable
+                const isMotor = type.includes('Motor') || type.includes('Pump') || type.includes('Compressor');
+                let startingMethod = null;
+                let startingMultiplier = null;
+                
+                if (isMotor) {
+                    startingMethod = document.getElementById('startingMethod').value;
+                    startingMultiplier = parseFloat(document.getElementById('startingCurrentMultiplier').value);
+                }
+                
+                let machines = JSON.parse(localStorage.getItem('industrialMachines')) || [];
+                machines.push({ 
+                    type,
+                    description: description || type,
+                    power, // in kW
+                    voltage,
+                    efficiency: efficiency || 0.92,
+                    powerFactor: powerFactor || 0.85,
+                    cableLength: cableLength || 50,
+                    highPowerEquipment,
+                    startingMethod,
+                    startingMultiplier,
+                    isMotor,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('industrialMachines', JSON.stringify(machines));
+                
+                updateTable();
+                machineModal.hide();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Machine Saved',
+                    text: 'The industrial machine has been successfully added.',
+                });
+            }
+            
+            // Function to update the table
+            function updateTable() {
+                const machines = JSON.parse(localStorage.getItem('industrialMachines')) || [];
+                const loadTableBody = document.getElementById('loadTableBody');
+                loadTableBody.innerHTML = '';
+                
+                if (machines.length === 0) {
+                    loadTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="9" class="text-center py-4">
+                                <i class="fas fa-industry fa-2x text-muted mb-2"></i>
+                                <p class="text-muted">No industrial machines added yet. Click "Add Machine" to get started.</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                machines.forEach((machine, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>
+                            <div class="fw-bold">${machine.description}</div>
+                            <small class="text-muted">${machine.type}</small>
+                            ${machine.highPowerEquipment ? '<span class="badge bg-danger ms-1">High Power</span>' : ''}
+                            ${machine.isMotor ? '<span class="badge bg-info ms-1">Motor</span>' : ''}
+                        </td>
+                        <td>${machine.power} kW</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="editMachine(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteMachine(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    loadTableBody.appendChild(row);
+                });
+            }
+            
+            // Function to perform analysis
+            function performAnalysis() {
+                const machines = JSON.parse(localStorage.getItem('industrialMachines')) || [];
+                
+                if (machines.length === 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No Machine Data',
+                        text: 'Please add at least one machine before performing analysis.',
+                    });
+                    return;
+                }
+                
+                let totalPower = 0;
+                let totalRunningCurrent = 0;
+                let maxStartingCurrent = 0;
+                let totalVoltageDrop = 0;
+                const loadTableBody = document.getElementById('loadTableBody');
+                
+                // Clear previous results
+                loadTableBody.innerHTML = '';
+                
+                machines.forEach((machine, index) => {
+                    // Calculate full load current (IEEE Std 141 formula)
+                    const fullLoadCurrent = (machine.power * 1000) / (Math.sqrt(3) * machine.voltage * machine.powerFactor * machine.efficiency);
+                    
+                    // Calculate starting current for motors
+                    let startingCurrent = fullLoadCurrent;
+                    if (machine.isMotor && machine.startingMultiplier) {
+                        startingCurrent = fullLoadCurrent * machine.startingMultiplier;
+                    }
+                    
+                    // Calculate breaker size (125% of FLC for motors, 100% for others)
+                    const breakerSize = calculateBreakerSize(fullLoadCurrent, machine.isMotor);
+                    
+                    // Calculate cable size
+                    const cableSize = calculateCableSize(fullLoadCurrent, machine.voltage);
+                    
+                    // Calculate voltage drop
+                    const voltageDrop = calculateVoltageDrop(fullLoadCurrent, cableSize, machine.cableLength, machine.voltage);
+                    totalVoltageDrop += voltageDrop;
+                    
+                    // Update totals
+                    totalPower += machine.power;
+                    totalRunningCurrent += fullLoadCurrent;
+                    maxStartingCurrent = Math.max(maxStartingCurrent, startingCurrent);
+                    
+                    // Add row to table
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>
+                            <div class="fw-bold">${machine.description}</div>
+                            <small class="text-muted">${machine.type}</small>
+                            ${machine.highPowerEquipment ? '<span class="badge bg-danger ms-1">High Power</span>' : ''}
+                            ${machine.isMotor ? '<span class="badge bg-info ms-1">Motor</span>' : ''}
+                        </td>
+                        <td>${machine.power} kW</td>
+                        <td><span class="badge badge-current">${fullLoadCurrent.toFixed(2)} A</span></td>
+                        <td><span class="badge bg-primary">${breakerSize} A</span></td>
+                        <td><span class="badge badge-cable">${cableSize} mm²</span></td>
+                        <td><span class="badge badge-voltage">${voltageDrop.toFixed(2)} V</span></td>
+                        <td><span class="badge bg-warning">${startingCurrent.toFixed(2)} A</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="editMachine(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteMachine(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    loadTableBody.appendChild(row);
+                });
+                
+                // Calculate main supply requirements
+                const mainCableSize = calculateCableSize(totalRunningCurrent, 400);
+                const mainBreakerSize = calculateMainBreakerSize(totalRunningCurrent, maxStartingCurrent);
+                const voltageDropPercent = (totalVoltageDrop / 400) * 100;
+                
+                // Update summary
+                document.getElementById('totalPowerValue').textContent = totalPower.toFixed(2) + ' kW';
+                document.getElementById('totalCurrentValue').textContent = totalRunningCurrent.toFixed(2) + ' A';
+                document.getElementById('totalBreakerSizeValue').textContent = mainBreakerSize + ' A';
+                document.getElementById('totalCableSizeValue').textContent = mainCableSize + ' mm²';
+                document.getElementById('totalVoltageDropValue').textContent = totalVoltageDrop.toFixed(2) + ' V';
+                document.getElementById('maxStartingCurrent').textContent = maxStartingCurrent.toFixed(2) + ' A';
+                
+                // Visual feedback for high power equipment
+                if (totalPower > 300) {
+                    document.getElementById('totalPowerValue').classList.add('text-danger', 'fw-bold');
+                }
+                
+                // Update charts
+                updateCharts(machines);
+                
+                // Show success message with industrial-specific information
+                Swal.fire({
+                    icon: totalPower > 500 ? 'warning' : 'success',
+                    title: totalPower > 500 ? 'High Power Installation' : 'Analysis Complete',
+                    html: `
+                        <div class="text-start">
+                            <p><strong>Total Connected Power:</strong> ${totalPower.toFixed(2)} kW</p>
+                            <p><strong>Maximum Starting Current:</strong> ${maxStartingCurrent.toFixed(2)} A</p>
+                            <p><strong>Main Breaker Size:</strong> ${mainBreakerSize} A</p>
+                            <p><strong>Main Cable Size:</strong> ${mainCableSize} mm²</p>
+                            ${totalPower > 500 ? 
+                                '<p class="text-warning"><strong>Consider:</strong> Medium voltage supply for efficiency</p>' : 
+                                ''}
+                        </div>
+                    `,
+                });
+            }
+            
+            // Function to calculate breaker size
+            function calculateBreakerSize(current, isMotor) {
+                // IEEE Std 141: Motors require 125% of full load current
+                const requiredSize = isMotor ? current * 1.25 : current * 1.1;
+                
+                for (let size of INDUSTRIAL_BREAKER_SIZES) {
+                    if (size >= requiredSize) {
+                        return size;
+                    }
+                }
+                
+                return INDUSTRIAL_BREAKER_SIZES[INDUSTRIAL_BREAKER_SIZES.length - 1];
+            }
+            
+            // Function to calculate main breaker size
+            function calculateMainBreakerSize(runningCurrent, maxStartingCurrent) {
+                // Apply diversity factor for industrial (not all motors start simultaneously)
+                const diversifiedCurrent = Math.max(runningCurrent * 0.8, maxStartingCurrent * 0.5);
+                const requiredSize = diversifiedCurrent * 1.25;
+                
+                for (let size of [400, 630, 800, 1000, 1250, 1600, 2000]) {
+                    if (size >= requiredSize) {
+                        return size;
+                    }
+                }
+                
+                return 2000;
+            }
+            
+            // Function to calculate cable size
+            function calculateCableSize(current, voltage) {
+                // Apply derating factors for industrial environment
+                const deratedCurrent = current * 0.85; // Grouping and ambient temperature derating
+                
+                // Find appropriate cable size
+                for (let cable of INDUSTRIAL_CABLE_SIZES) {
+                    if (deratedCurrent <= cable.current) {
+                        return cable.size;
+                    }
+                }
+                
+                return INDUSTRIAL_CABLE_SIZES[INDUSTRIAL_CABLE_SIZES.length - 1].size;
+            }
+            
+            // Function to calculate voltage drop (three-phase formula)
+            function calculateVoltageDrop(current, cableSize, length, voltage) {
+                // VD = (√3 × I × R × L) / 1000
+                // R = resistivity / cableSize
+                const resistance = RESISTIVITY_COPPER / cableSize;
+                return (Math.sqrt(3) * current * resistance * length) / 1000;
+            }
+            
+            // Function to update the charts
+            function updateCharts(machines) {
+                // Load Distribution Chart
+                const loadCtx = document.getElementById('loadChart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (window.loadChartInstance) {
+                    window.loadChartInstance.destroy();
+                }
+                
+                const labels = machines.map(machine => machine.description);
+                const data = machines.map(machine => machine.power);
+                
+                window.loadChartInstance = new Chart(loadCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Power (kW)',
+                            data: data,
+                            backgroundColor: 'rgba(46, 134, 171, 0.7)',
+                            borderColor: 'rgba(46, 134, 171, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Machine Power Distribution'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Power (kW)'
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                // Starting Current Chart
+                const startingCtx = document.getElementById('startingCurrentChart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (window.startingChartInstance) {
+                    window.startingChartInstance.destroy();
+                }
+                
+                const motorMachines = machines.filter(m => m.isMotor);
+                if (motorMachines.length > 0) {
+                    const motorLabels = motorMachines.map(machine => machine.description);
+                    const runningData = motorMachines.map(machine => 
+                        (machine.power * 1000) / (Math.sqrt(3) * machine.voltage * machine.powerFactor * machine.efficiency)
+                    );
+                    const startingData = motorMachines.map(machine => 
+                        runningData[motorMachines.indexOf(machine)] * (machine.startingMultiplier || 1)
+                    );
+                    
+                    window.startingChartInstance = new Chart(startingCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: motorLabels,
+                            datasets: [
+                                {
+                                    label: 'Running Current (A)',
+                                    data: runningData,
+                                    backgroundColor: 'rgba(40, 167, 69, 0.7)',
+                                    borderColor: 'rgba(40, 167, 69, 1)',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Starting Current (A)',
+                                    data: startingData,
+                                    backgroundColor: 'rgba(255, 193, 7, 0.7)',
+                                    borderColor: 'rgba(255, 193, 7, 1)',
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Motor Starting vs Running Current'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Current (A)'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        
+        // Global functions for table actions
+        function deleteMachine(index) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let machines = JSON.parse(localStorage.getItem('industrialMachines')) || [];
+                    machines.splice(index, 1);
+                    localStorage.setItem('industrialMachines', JSON.stringify(machines));
+                    updateTable();
+                    
+                    Swal.fire(
+                        'Deleted!',
+                        'The industrial machine has been deleted.',
+                        'success'
+                    );
+                }
+            });
+        }
+        
+        function editMachine(index) {
+            const machines = JSON.parse(localStorage.getItem('industrialMachines')) || [];
+            const machine = machines[index];
+            
+            // This would require a more complex modal setup for editing
+            // For now, we'll just delete and let user re-add
+            Swal.fire({
+                title: 'Edit Machine',
+                text: 'For editing industrial machines, please delete and re-add with correct values.',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+        }
+        
+        function clearDataAndRefresh() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will delete all your industrial machine data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, clear all data!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('industrialMachines');
+                    location.reload();
+                }
+            });
+        }
+        
+        // Make updateTable function globally available
+        window.updateTable = function() {
+            const machines = JSON.parse(localStorage.getItem('industrialMachines')) || [];
+            const loadTableBody = document.getElementById('loadTableBody');
+            loadTableBody.innerHTML = '';
+            
+            if (machines.length === 0) {
+                loadTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="text-center py-4">
+                            <i class="fas fa-industry fa-2x text-muted mb-2"></i>
+                            <p class="text-muted">No industrial machines added yet. Click "Add Machine" to get started.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            machines.forEach((machine, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${index + 1}</th>
+                    <td>
+                        <div class="fw-bold">${machine.description}</div>
+                        <small class="text-muted">${machine.type}</small>
+                        ${machine.highPowerEquipment ? '<span class="badge bg-danger ms-1">High Power</span>' : ''}
+                        ${machine.isMotor ? '<span class="badge bg-info ms-1">Motor</span>' : ''}
+                    </td>
+                    <td>${machine.power} kW</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editMachine(${index})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteMachine(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                loadTableBody.appendChild(row);
+            });
+        };
+    </script>
 </body>
-
- 
 </html>

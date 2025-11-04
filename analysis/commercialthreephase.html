@@ -1,460 +1,1431 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wastech_wire_sizing</title>
-	<link href="../css/bootstrap.min.css" rel="stylesheet">
-	<link href="../css/global.css" rel="stylesheet">
-	<link href="../css/blog.css" rel="stylesheet">
-
-	<link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Alata&display=swap" rel="stylesheet">
-	<script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
- <!-- SweetAlert2 CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<style>
-	.modal {
-			display: none;
-			position: fixed;
-			z-index: 1;
-			padding-top: 100px;
-			left: 0;
-			top: 100px;
-			width: 100%;
-			height: 100%;
-			overflow: auto;
-			background-color: rgba(0,0,0,0.4);
-	}
-	.modal-content {
-			background-color: #fefefe;
-			margin: auto;
-			padding: 20px;
-			border: 1px solid #888;
-			width: 80%;
-			max-width: 500px;
-	}
-	.close {
-			color: #aaa;
-			float: right;
-			font-size: 28px;
-			font-weight: bold;
-	}
-	.close:hover,
-	.close:focus {
-			color: black;
-			text-decoration: none;
-			cursor: pointer;
-	}
-	tr > th, tr > td {
-			font-size: 12px;
-			text-align: center;
-	}
-</style>
-<!-- SweetAlert2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <title>Electricmate - Commercial Three Phase Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #A23B72;
+            --accent: #F18F01;
+            --dark: #1B1B1E;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: #f5f7fa;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .navbar-brand span {
+            color: var(--accent);
+        }
+        
+        .top-bar {
+            background-color: var(--dark);
+            color: white;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+        
+        .navbar {
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .page-header {
+            background: linear-gradient(rgba(46, 134, 171, 0.9), rgba(46, 134, 171, 0.9)), 
+                        url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 60px 0 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1c6b8c;
+            border-color: #1c6b8c;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-warning {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-warning:hover {
+            background-color: #c57101;
+            border-color: #c57101;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+        
+        .table th {
+            background-color: var(--light);
+            font-weight: 600;
+            border-top: none;
+        }
+        
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, var(--primary), #1c6b8c);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-card h5 {
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(46, 134, 171, 0.25);
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-item i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .copyright {
+            border-top: 1px solid #343a40;
+            padding-top: 20px;
+            margin-top: 30px;
+            text-align: center;
+            color: #adb5bd;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .badge-voltage {
+            background-color: #17a2b8;
+        }
+        
+        .badge-current {
+            background-color: #28a745;
+        }
+        
+        .badge-power {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-cable {
+            background-color: #6f42c1;
+        }
+        
+        .action-buttons .btn {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .phase-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .badge-red {
+            background-color: #dc3545;
+        }
+        
+        .badge-yellow {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-blue {
+            background-color: #0d6efd;
+        }
+        
+        .phase-input-group {
+            border-left: 4px solid;
+            padding-left: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .phase-red {
+            border-left-color: #dc3545;
+        }
+        
+        .phase-yellow {
+            border-left-color: #ffc107;
+        }
+        
+        .phase-blue {
+            border-left-color: #0d6efd;
+        }
+        
+        .load-distribution {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .action-buttons .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<section id="top">
-	<div class="container">
-			<div class="row">
-					<div class="top_1 clearfix">
-							<div class="col-sm-4">
-									<div class="top_1l clearfix">
-											<p class="mgt col"><i class="fa fa-map-marker col_1"></i> Osun State University Osogbo Campus</p>
-											<p class="col"><i class="fa fa-clock-o col_1"></i> Available</p>
-									</div>
-							</div>
-							<div class="col-sm-4">
-									<div class="top_1m text-center clearfix">
-											<h1 class="mgt"><a href="index.html">Wastech <span>Wire Sizing Web Application</span></a></h1>
-									</div>
-							</div>
-							<div class="col-sm-4" id="Contact">
-									<div class="top_1r text-center clearfix">
-											<h3 class="mgt"><a href="#"><i class="fa fa-phone col_1"></i> +234 805 577 6749 <span>Call us now. Resistance is futile!</span></a></h3>
-									</div>
-							</div>
-					</div>
-			</div>
-	</div>
-</section>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex flex-wrap">
+                        <p class="mb-0 me-4"><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</p>
+                        <p class="mb-0"><i class="far fa-clock me-2"></i> Available 24/7</p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0"><i class="fas fa-phone me-2"></i> +234 805 577 6749 <span class="d-none d-md-inline"> | Call us now. Resistance is futile!</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="main clearfix">
-	<section id="header" class="clearfix">
-			<div class="container">
-					<div class="row">
-							<div class="header clearfix">
-									<nav class="navbar">
-											<div class="navbar-header">
-													<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
-															<span class="sr-only">Toggle navigation</span>
-															<span class="icon-bar"></span>
-															<span class="icon-bar"></span>
-															<span class="icon-bar"></span>
-													</button>
-													<a class="navbar-brand" href="index.html">Electronica</a>
-											</div>
-											<div class="collapse navbar-collapse js-navbar-collapse">
-													<ul class="nav navbar-nav">
-															<li><a class="font_tag" href="../index.html">Home</a></li>
-															<li><a class="font_tag active_tab" href="../pages/commercial.html">Commercial</a></li>
-															<li><a class="font_tag" href="../pages/industry.html">Industrial</a></li>
-															<li><a class="font_tag" href="../pages/resident.html">Residential</a></li>
-															<li><a class="font_tag" href="#Service">Services</a></li>
-															<li><a class="font_tag" href="#Contact">Contact Us</a></li>
-													</ul>
-											</div>
-									</nav>
-							</div>
-					</div>
-			</div>
-	</section>
-</div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">Electric<span>mate</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../pages/commercial.html">Commercial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/industry.html">Industrial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/resident.html">Residential</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-<section id="center" class="center_shop clearfix">
-	<div class="container">
-			<div class="row">
-					<div class="center_shop_1 text-center clearfix">
-							<div class="col-sm-12">
-									<h1 class="mgt">Three Phase Commercial Load Data</h1>
-							</div>
-					</div>
-					<div class="blog_1 clearfix">
-							<div class="col-sm-9">
-									<div class="blog_1l mgt clearfix" style="overflow: scroll;width:100%">
-											<table class="table table-bordered">
-													<thead>
-															<tr>
-																	<th scope="col">S/N</th>
-																	<th scope="col">Load</th>
-																	<th scope="col">Red (W)</th>
-																	<th scope="col">Yellow (W)</th>
-																	<th scope="col">Blue (W)</th>
-																	<th scope="col">Breaker Size</th>
-																	<th scope="col">Cable Size</th>
-																	<th scope="col">Voltage Drop</th>
-																	<th scope="col">Actions</th>
-															</tr>
-													</thead>
-													<tbody id="loadTableBody">
-															<!-- Dynamic rows will be added here -->
-													</tbody>
-													<tfoot>
-															<tr>
-																	<th colspan="3">Total Power (TP):</th>
-																	<td colspan="1" id="totalPowerValue">0 kW</td>
-																	<th colspan="2">Recommended Cable Size:</th>
-																	<td id="totalCableSizeValue">0mm²</td>
-															</tr>
-															<tr>
-																	<th colspan="3">Total Breaker Size (TBS):</th>
-																	<td colspan="1" id="totalBreakerSizeValue">0A</td>
-																	<th colspan="2">Total Voltage Drop (TVD):</th>
-																	<td id="totalVoltageDropValue">0V</td>
-															</tr>
-													</tfoot>
-											</table>
-									</div>
-									<button id="performAnalysis" class="btn btn-success" style="margin-top: 10px;">Perform Analysis</button>
-									<button class="btn btn-warning" onclick="window.print()" style="margin-top: 10px;">Print Data</button>
-							</div>
-							<div class="col-sm-3">
-									<button id="openModal" class="btn-primary" style="border-radius:10px;padding:10px 15px">Enter Load</button>
-									<button onclick="clearDataAndRefresh()" class="btn-danger" style="border-radius:10px;padding:10px 15px">Clear Data</button>
-									<div id="myModal" class="modal">
-											<div class="modal-content">
-													<span class="close">&times;</span>
-													<p>Select Load Type and Enter Phase Values:</p>
-													<select id="loadType" class="form-control">
-															<option value="">Select Load Type</option>
-															<option value="Lightening circuit">Lightening circuit</option>
-															<option value="Socket 13Amps circuit">Socket 13Amps circuit</option>
-															<option value="Socket 15Amps circuit">Socket 15Amps circuit</option>
-															<option value="Water heater">Water heater</option>
-															<option value="Electric motor (fan)">Electric motor (fan)</option>
-															<option value="Electric motor (pumping machine)">Electric motor (pumping machine)</option>
-															<option value="AC Circuit 1">AC Circuit 1</option>
-															<option value="AC Circuit 2">AC Circuit 2</option>
-													</select>
-													<input type="number" id="redValue" class="form-control" style="margin-top: 10px;" placeholder="Red Phase Value (W)">
-													<input type="number" id="yellowValue" class="form-control" style="margin-top: 10px;" placeholder="Yellow Phase Value (W)">
-													<input type="number" id="blueValue" class="form-control" style="margin-top: 10px;" placeholder="Blue Phase Value (W)">
-													<button id="saveLoad" class="btn btn-primary" style="margin-top: 10px;">Save</button>
-											</div>
-									</div>
-							</div>
-					</div>
-			</div>
-	</div>
-</section>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1>Commercial Three Phase Analysis</h1>
+                    <p class="lead">Professional three-phase load balancing and wire sizing calculations</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section id="proj_h">
-	<div class="container">
-			<div class="row">
-					<div class="proj_h1 clearfix">
-							<div class="col-sm-3">
-									<div class="proj_h1i text-center clearfix">
-											<span><i class="fa fa-users"></i></span>
-											<h4>Easy to use</h4>
-									</div>
-							</div>
-							<div class="col-sm-3">
-									<div class="proj_h1i text-center clearfix">
-											<span><i class="fa fa-building"></i></span>
-											<h4>Trusted Results</h4>
-									</div>
-							</div>
-							<div class="col-sm-3">
-									<div class="proj_h1i text-center clearfix">
-											<span><i class="fa fa-map"></i></span>
-											<h4>Best Calculations</h4>
-									</div>
-							</div>
-							<div class="col-sm-3">
-									<div class="proj_h1i text-center clearfix">
-											<span><i class="fa fa-user-plus"></i></span>
-											<h4>100 %</h4>
-									</div>
-							</div>
-					</div>
-			</div>
-	</div>
-</section>
+    <!-- Main Content -->
+    <section class="main-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-table me-2"></i> Three Phase Load Data Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Load Type</th>
+                                            <th scope="col">Red (W)</th>
+                                            <th scope="col">Yellow (W)</th>
+                                            <th scope="col">Blue (W)</th>
+                                            <th scope="col">Current</th>
+                                            <th scope="col">Breaker Size</th>
+                                            <th scope="col">Cable Size</th>
+                                            <th scope="col">Voltage Drop</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="loadTableBody">
+                                        <!-- Dynamic rows will be added here -->
+                                    </tbody>
+                                    <tfoot class="table-group-divider">
+                                        <tr>
+                                            <th colspan="2">Total Power:</th>
+                                            <td id="totalRedPower">0 W</td>
+                                            <td id="totalYellowPower">0 W</td>
+                                            <td id="totalBluePower">0 W</td>
+                                            <th>Total Current:</th>
+                                            <td id="totalCurrentValue">0 A</td>
+                                            <th>Total Breaker Size:</th>
+                                            <td id="totalBreakerSizeValue">0 A</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2">Phase Balance:</th>
+                                            <td colspan="3" id="phaseBalanceValue">Balanced</td>
+                                            <th>Recommended Cable:</th>
+                                            <td id="totalCableSizeValue">0 mm²</td>
+                                            <th>Voltage Drop:</th>
+                                            <td id="totalVoltageDropValue">0 V</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            
+                            <div class="action-buttons mt-4">
+                                <button id="performAnalysis" class="btn btn-success">
+                                    <i class="fas fa-calculator me-2"></i>Perform Analysis
+                                </button>
+                                <button id="openModal" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Add Load
+                                </button>
+                                <button onclick="clearDataAndRefresh()" class="btn btn-danger">
+                                    <i class="fas fa-trash me-2"></i>Clear Data
+                                </button>
+                                <button class="btn btn-warning" onclick="window.print()">
+                                    <i class="fas fa-print me-2"></i>Print Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Load Distribution Visualization -->
+                    <div class="load-distribution">
+                        <h5 class="mb-3"><i class="fas fa-chart-pie me-2"></i>Phase Load Distribution</h5>
+                        <canvas id="phaseChart" height="250"></canvas>
+                    </div>
+                    
+                    <!-- Phase Current Visualization -->
+                    <div class="chart-container">
+                        <h5 class="mb-3"><i class="fas fa-chart-bar me-2"></i>Phase Current Analysis</h5>
+                        <canvas id="currentChart" height="250"></canvas>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <!-- Summary Card -->
+                    <div class="summary-card">
+                        <h5><i class="fas fa-clipboard-list me-2"></i>Three Phase Analysis Summary</h5>
+                        <div class="summary-item">
+                            <span>System Voltage:</span>
+                            <span>400V / 230V</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Power Factor:</span>
+                            <span>0.85</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Phase Balance:</span>
+                            <span id="balanceStatus">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Max Phase Current:</span>
+                            <span id="maxPhaseCurrent">- A</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Cable Type:</span>
+                            <span>Copper XLPE</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Installation:</span>
+                            <span>Conduit</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="quickBalancedLoad">
+                                    <i class="fas fa-balance-scale me-2"></i>Add Balanced Load
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickLighting">
+                                    <i class="fas fa-lightbulb me-2"></i>Add Lighting Circuit
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickMotor">
+                                    <i class="fas fa-cog me-2"></i>Add Motor Load
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Standards Reference -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-book me-2"></i>Three Phase Standards</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    IEEE Std 141
+                                    <span class="badge bg-primary rounded-pill">i</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    IEC 60364-5-52
+                                    <span class="badge bg-primary rounded-pill">i</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    NEC Article 430
+                                    <span class="badge bg-primary rounded-pill">i</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    AS/NZS 3000
+                                    <span class="badge bg-primary rounded-pill">i</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase Balance Info -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Phase Balance Guide</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="small">For optimal three-phase system performance:</p>
+                            <ul class="small">
+                                <li>Keep phase imbalance below 10%</li>
+                                <li>Distribute single-phase loads evenly</li>
+                                <li>Size neutral conductor for imbalance</li>
+                                <li>Consider harmonic currents</li>
+                            </ul>
+                            <div class="progress mb-2">
+                                <div id="balanceProgress" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small id="balanceText" class="text-muted">Phase balance: -</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section id="footer">
-	<div class="container">
-			<div class="row">
-					<div class="footer_3 clearfix">
-							<div class="col-sm-12">
-									<div class="footer_3l clearfix">
-											<p class="mgt col">© 2024 WASTECH. All Rights Reserved | Design by <a class="col" href="http://awofesobipeace1.netlify.app" target="_blank">CODEMaster</a></p>
-									</div>
-							</div>
-					</div>
-			</div>
-	</div>
-</section>
-<script>
-	document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById("myModal");
-    const btn = document.getElementById("openModal");
-    const span = document.getElementsByClassName("close")[0];
-    const loadType = document.getElementById("loadType");
-    const redValue = document.getElementById("redValue");
-    const yellowValue = document.getElementById("yellowValue");
-    const blueValue = document.getElementById("blueValue");
-    const saveLoad = document.getElementById("saveLoad");
-    const loadTableBody = document.getElementById("loadTableBody");
-    const performAnalysis = document.getElementById("performAnalysis");
-    const totalPowerValue = document.getElementById("totalPowerValue");
-    const totalCableSizeValue = document.getElementById("totalCableSizeValue");
-    const totalBreakerSizeValue = document.getElementById("totalBreakerSizeValue");
-    const totalVoltageDropValue = document.getElementById("totalVoltageDropValue");
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2>Three Phase Analysis Features</h2>
+                    <p class="lead">Professional electrical calculations for commercial three-phase systems</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-balance-scale"></i>
+                        <h5>Phase Balancing</h5>
+                        <p>Automatic phase load balancing analysis with imbalance detection</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-bolt"></i>
+                        <h5>IEEE Compliant</h5>
+                        <p>Three-phase calculations following IEEE and IEC standards</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <h5>Visual Analytics</h5>
+                        <p>Comprehensive phase distribution and current analysis charts</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-cogs"></i>
+                        <h5>Motor Calculations</h5>
+                        <p>Specialized calculations for three-phase motor loads</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // Constants for calculations
-    const VOLTAGE = 415; // Line to line voltage for 3-phase
-    const POWER_FACTOR = 0.85;
-    const RESISTIVITY = 1.68e-3; // Copper resistivity in ohm-meters
-    const CABLE_LENGTH = 30; // Assumed cable length in meters
-    const VOLTAGE_DROP_LIMIT = 0.06 * VOLTAGE; // 6% voltage drop limit
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5>Electricmate</h5>
+                    <p>Professional wire sizing solutions for commercial, industrial, and residential applications. Ensuring safety and efficiency in all electrical installations.</p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="../index.html" class="text-white-50 text-decoration-none">Home</a></li>
+                        <li><a href="../pages/commercial.html" class="text-white-50 text-decoration-none">Commercial</a></li>
+                        <li><a href="../pages/industry.html" class="text-white-50 text-decoration-none">Industrial</a></li>
+                        <li><a href="../pages/resident.html" class="text-white-50 text-decoration-none">Residential</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</li>
+                        <li><i class="fas fa-phone me-2"></i> +234 805 577 6749</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@electricmate.com</li>
+                        <li><i class="far fa-clock me-2"></i> Available 24/7</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Newsletter</h5>
+                    <p>Subscribe to our newsletter for the latest updates and features.</p>
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" aria-label="Your Email">
+                            <button class="btn btn-primary" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="mb-0">© 2024 Electricmate. All Rights Reserved | Design by <a href="http://awofesobipeace1.netlify.app" target="_blank" class="text-white">CODEMaster</a></p>
+            </div>
+        </div>
+    </footer>
 
-    // Modal open and close functions
-    btn.onclick = () => modal.style.display = "block";
-    span.onclick = () => modal.style.display = "none";
-    window.onclick = event => { if (event.target == modal) modal.style.display = "none"; };
+    <!-- Add Load Modal -->
+    <div class="modal fade" id="loadModal" tabindex="-1" aria-labelledby="loadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loadModalLabel">Add Three Phase Load</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="loadType" class="form-label">Load Type</label>
+                                <select id="loadType" class="form-select">
+                                    <option value="">Select Load Type</option>
+                                    <option value="Lighting circuit">Lighting Circuit</option>
+                                    <option value="Socket circuit">Socket Circuit</option>
+                                    <option value="Water heater">Water Heater</option>
+                                    <option value="AC Unit">AC Unit</option>
+                                    <option value="Three Phase Motor">Three Phase Motor</option>
+                                    <option value="Ventilation System">Ventilation System</option>
+                                    <option value="Commercial Oven">Commercial Oven</option>
+                                    <option value="Refrigeration">Refrigeration</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="loadDescription" class="form-label">Description (Optional)</label>
+                                <input type="text" class="form-control" id="loadDescription" placeholder="Enter load description">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Phase Configuration</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="phaseConfig" id="balancedConfig" value="balanced" checked>
+                                    <label class="form-check-label" for="balancedConfig">
+                                        Balanced (Equal across phases)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="phaseConfig" id="singlePhaseConfig" value="single">
+                                    <label class="form-check-label" for="singlePhaseConfig">
+                                        Single Phase (One phase only)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="phaseConfig" id="customConfig" value="custom">
+                                    <label class="form-check-label" for="customConfig">
+                                        Custom (Specify each phase)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="balancedInput" class="phase-input">
+                        <div class="mb-3">
+                            <label for="balancedPower" class="form-label">Total Three Phase Power (W)</label>
+                            <input type="number" class="form-control" id="balancedPower" placeholder="Enter total power">
+                        </div>
+                    </div>
+                    
+                    <div id="singlePhaseInput" class="phase-input" style="display: none;">
+                        <div class="mb-3">
+                            <label for="singlePhasePower" class="form-label">Single Phase Power (W)</label>
+                            <input type="number" class="form-control" id="singlePhasePower" placeholder="Enter single phase power">
+                        </div>
+                        <div class="mb-3">
+                            <label for="singlePhaseSelect" class="form-label">Select Phase</label>
+                            <select id="singlePhaseSelect" class="form-select">
+                                <option value="red">Red Phase</option>
+                                <option value="yellow">Yellow Phase</option>
+                                <option value="blue">Blue Phase</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="customInput" class="phase-input" style="display: none;">
+                        <div class="phase-input-group phase-red">
+                            <label for="redValue" class="form-label"><span class="badge badge-red phase-badge">R</span> Red Phase Power (W)</label>
+                            <input type="number" class="form-control" id="redValue" placeholder="Enter red phase power">
+                        </div>
+                        <div class="phase-input-group phase-yellow">
+                            <label for="yellowValue" class="form-label"><span class="badge badge-yellow phase-badge">Y</span> Yellow Phase Power (W)</label>
+                            <input type="number" class="form-control" id="yellowValue" placeholder="Enter yellow phase power">
+                        </div>
+                        <div class="phase-input-group phase-blue">
+                            <label for="blueValue" class="form-label"><span class="badge badge-blue phase-badge">B</span> Blue Phase Power (W)</label>
+                            <input type="number" class="form-control" id="blueValue" placeholder="Enter blue phase power">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="cableLength" class="form-label">Cable Length (meters)</label>
+                        <input type="number" class="form-control" id="cableLength" placeholder="Enter cable length" value="20">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveLoad">Save Load</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    // Enable only one phase input at a time
-    [redValue, yellowValue, blueValue].forEach(input => {
-        input.addEventListener('focus', () => {
-            [redValue, yellowValue, blueValue].forEach(i => {
-                if (i !== input) i.disabled = true;
+    <!-- Bootstrap & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Constants based on IEEE standards for three-phase systems
+        const LINE_VOLTAGE = 400; // Line-to-line voltage
+        const PHASE_VOLTAGE = 230; // Line-to-neutral voltage
+        const POWER_FACTOR = 0.85; // Standard power factor
+        const RESISTIVITY_COPPER = 0.0172; // Ohm-mm²/m at 20°C
+        const MAX_VOLTAGE_DROP_PERCENT = 5; // IEEE recommended max voltage drop for three-phase
+        const MAX_PHASE_IMBALANCE = 10; // Maximum acceptable phase imbalance percentage
+        
+        // Three-phase cable sizing table based on IEC 60364-5-52
+        const CABLE_SIZES_3PHASE = [
+            { current: 16, size: 1.5 },
+            { current: 21, size: 2.5 },
+            { current: 28, size: 4 },
+            { current: 36, size: 6 },
+            { current: 46, size: 10 },
+            { current: 63, size: 16 },
+            { current: 81, size: 25 },
+            { current: 99, size: 35 },
+            { current: 119, size: 50 },
+            { current: 146, size: 70 },
+            { current: 180, size: 95 },
+            { current: 218, size: 120 },
+            { current: 250, size: 150 }
+        ];
+        
+        // Standard three-phase breaker sizes
+        const BREAKER_SIZES_3PHASE = [16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630];
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize modal
+            const loadModal = new bootstrap.Modal(document.getElementById('loadModal'));
+            
+            // Phase configuration toggle
+            const phaseConfigRadios = document.querySelectorAll('input[name="phaseConfig"]');
+            const phaseInputs = {
+                balanced: document.getElementById('balancedInput'),
+                single: document.getElementById('singlePhaseInput'),
+                custom: document.getElementById('customInput')
+            };
+            
+            phaseConfigRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Hide all inputs first
+                    Object.values(phaseInputs).forEach(input => input.style.display = 'none');
+                    // Show selected input
+                    phaseInputs[this.value].style.display = 'block';
+                });
             });
-        });
-        input.addEventListener('blur', () => {
-            if (!input.value) {
-                [redValue, yellowValue, blueValue].forEach(i => i.disabled = false);
+            
+            // Open modal button
+            document.getElementById('openModal').addEventListener('click', function() {
+                resetModal();
+                loadModal.show();
+            });
+            
+            // Quick action buttons
+            document.getElementById('quickBalancedLoad').addEventListener('click', function() {
+                setQuickLoad('balanced', 5000);
+            });
+            
+            document.getElementById('quickLighting').addEventListener('click', function() {
+                setQuickLoad('single', 2000, 'Lighting circuit');
+            });
+            
+            document.getElementById('quickMotor').addEventListener('click', function() {
+                setQuickLoad('balanced', 7500, 'Three Phase Motor');
+            });
+            
+            // Save load button
+            document.getElementById('saveLoad').addEventListener('click', function() {
+                saveLoad();
+            });
+            
+            // Perform analysis button
+            document.getElementById('performAnalysis').addEventListener('click', function() {
+                performAnalysis();
+            });
+            
+            // Load table on page load
+            updateTable();
+            
+            // Function to set quick load values
+            function setQuickLoad(config, power, type = 'Other') {
+                document.getElementById('loadType').value = type;
+                
+                if (config === 'balanced') {
+                    document.getElementById('balancedConfig').checked = true;
+                    document.getElementById('balancedInput').style.display = 'block';
+                    document.getElementById('singlePhaseInput').style.display = 'none';
+                    document.getElementById('customInput').style.display = 'none';
+                    document.getElementById('balancedPower').value = power;
+                } else if (config === 'single') {
+                    document.getElementById('singlePhaseConfig').checked = true;
+                    document.getElementById('balancedInput').style.display = 'none';
+                    document.getElementById('singlePhaseInput').style.display = 'block';
+                    document.getElementById('customInput').style.display = 'none';
+                    document.getElementById('singlePhasePower').value = power;
+                }
+                
+                loadModal.show();
+            }
+            
+            // Function to reset modal
+            function resetModal() {
+                document.getElementById('loadType').value = '';
+                document.getElementById('loadDescription').value = '';
+                document.getElementById('balancedConfig').checked = true;
+                document.getElementById('balancedPower').value = '';
+                document.getElementById('singlePhasePower').value = '';
+                document.getElementById('redValue').value = '';
+                document.getElementById('yellowValue').value = '';
+                document.getElementById('blueValue').value = '';
+                document.getElementById('cableLength').value = '20';
+                
+                // Show balanced input by default
+                phaseInputs.balanced.style.display = 'block';
+                phaseInputs.single.style.display = 'none';
+                phaseInputs.custom.style.display = 'none';
+            }
+            
+            // Function to save load
+            function saveLoad() {
+                const type = document.getElementById('loadType').value;
+                const description = document.getElementById('loadDescription').value;
+                const cableLength = parseFloat(document.getElementById('cableLength').value);
+                const config = document.querySelector('input[name="phaseConfig"]:checked').value;
+                
+                let red = 0, yellow = 0, blue = 0;
+                
+                if (config === 'balanced') {
+                    const totalPower = parseFloat(document.getElementById('balancedPower').value);
+                    if (!totalPower) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Missing Information',
+                            text: 'Please enter the total three-phase power.',
+                        });
+                        return;
+                    }
+                    // Distribute equally across phases
+                    red = yellow = blue = totalPower / 3;
+                } else if (config === 'single') {
+                    const singlePower = parseFloat(document.getElementById('singlePhasePower').value);
+                    const selectedPhase = document.getElementById('singlePhaseSelect').value;
+                    
+                    if (!singlePower) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Missing Information',
+                            text: 'Please enter the single phase power.',
+                        });
+                        return;
+                    }
+                    
+                    if (selectedPhase === 'red') red = singlePower;
+                    else if (selectedPhase === 'yellow') yellow = singlePower;
+                    else if (selectedPhase === 'blue') blue = singlePower;
+                } else if (config === 'custom') {
+                    red = parseFloat(document.getElementById('redValue').value) || 0;
+                    yellow = parseFloat(document.getElementById('yellowValue').value) || 0;
+                    blue = parseFloat(document.getElementById('blueValue').value) || 0;
+                    
+                    if (red === 0 && yellow === 0 && blue === 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Missing Information',
+                            text: 'Please enter power values for at least one phase.',
+                        });
+                        return;
+                    }
+                }
+                
+                if (!type) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Missing Information',
+                        text: 'Please select a load type.',
+                    });
+                    return;
+                }
+                
+                let loads = JSON.parse(localStorage.getItem('commercialThreePhaseLoads')) || [];
+                loads.push({ 
+                    type, 
+                    red, 
+                    yellow, 
+                    blue,
+                    description: description || type,
+                    cableLength: cableLength || 20
+                });
+                localStorage.setItem('commercialThreePhaseLoads', JSON.stringify(loads));
+                
+                updateTable();
+                loadModal.hide();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Load Saved',
+                    text: 'The three-phase load has been successfully added.',
+                });
+            }
+            
+            // Function to update the table
+            function updateTable() {
+                const loads = JSON.parse(localStorage.getItem('commercialThreePhaseLoads')) || [];
+                const loadTableBody = document.getElementById('loadTableBody');
+                loadTableBody.innerHTML = '';
+                
+                if (loads.length === 0) {
+                    loadTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="10" class="text-center py-4">
+                                <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                                <p class="text-muted">No three-phase loads added yet. Click "Add Load" to get started.</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                loads.forEach((load, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>${load.description}</td>
+                        <td>${load.red} W</td>
+                        <td>${load.yellow} W</td>
+                        <td>${load.blue} W</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="editLoad(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteLoad(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    loadTableBody.appendChild(row);
+                });
+            }
+            
+            // Function to perform analysis
+            function performAnalysis() {
+                const loads = JSON.parse(localStorage.getItem('commercialThreePhaseLoads')) || [];
+                
+                if (loads.length === 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No Load Data',
+                        text: 'Please add at least one load before performing analysis.',
+                    });
+                    return;
+                }
+                
+                let totalRedPower = 0;
+                let totalYellowPower = 0;
+                let totalBluePower = 0;
+                let maxPhaseCurrent = 0;
+                let totalVoltageDrop = 0;
+                const loadTableBody = document.getElementById('loadTableBody');
+                
+                // Clear previous results
+                loadTableBody.innerHTML = '';
+                
+                loads.forEach((load, index) => {
+                    // Calculate phase currents
+                    const redCurrent = load.red / (PHASE_VOLTAGE * POWER_FACTOR);
+                    const yellowCurrent = load.yellow / (PHASE_VOLTAGE * POWER_FACTOR);
+                    const blueCurrent = load.blue / (PHASE_VOLTAGE * POWER_FACTOR);
+                    
+                    // For three-phase loads, calculate line current
+                    const totalPower = load.red + load.yellow + load.blue;
+                    const lineCurrent = totalPower / (Math.sqrt(3) * LINE_VOLTAGE * POWER_FACTOR);
+                    
+                    // Use the maximum phase current for sizing
+                    const maxCurrent = Math.max(redCurrent, yellowCurrent, blueCurrent, lineCurrent);
+                    
+                    // Adjust for motor loads
+                    let adjustedCurrent = maxCurrent;
+                    if (load.type.includes("Motor") || load.type.includes("motor")) {
+                        adjustedCurrent *= 1.25; // 25% extra for starting current
+                    }
+                    
+                    // Calculate breaker size
+                    const breakerSize = calculateBreakerSize(adjustedCurrent);
+                    
+                    // Calculate cable size
+                    const cableSize = calculateCableSize(adjustedCurrent);
+                    
+                    // Calculate voltage drop
+                    const voltageDrop = calculateVoltageDrop(adjustedCurrent, cableSize, load.cableLength);
+                    totalVoltageDrop += voltageDrop;
+                    
+                    // Update totals
+                    totalRedPower += load.red;
+                    totalYellowPower += load.yellow;
+                    totalBluePower += load.blue;
+                    maxPhaseCurrent = Math.max(maxPhaseCurrent, adjustedCurrent);
+                    
+                    // Add row to table
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>${load.description}</td>
+                        <td>${load.red} W</td>
+                        <td>${load.yellow} W</td>
+                        <td>${load.blue} W</td>
+                        <td><span class="badge badge-current">${adjustedCurrent.toFixed(2)} A</span></td>
+                        <td><span class="badge bg-primary">${breakerSize} A</span></td>
+                        <td><span class="badge badge-cable">${cableSize} mm²</span></td>
+                        <td><span class="badge badge-voltage">${voltageDrop.toFixed(2)} V</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="editLoad(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteLoad(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    loadTableBody.appendChild(row);
+                });
+                
+                // Calculate phase balance
+                const averagePower = (totalRedPower + totalYellowPower + totalBluePower) / 3;
+                const redDeviation = Math.abs((totalRedPower - averagePower) / averagePower) * 100;
+                const yellowDeviation = Math.abs((totalYellowPower - averagePower) / averagePower) * 100;
+                const blueDeviation = Math.abs((totalBluePower - averagePower) / averagePower) * 100;
+                const maxDeviation = Math.max(redDeviation, yellowDeviation, blueDeviation);
+                
+                // Calculate totals
+                const totalPower = totalRedPower + totalYellowPower + totalBluePower;
+                const totalCurrent = totalPower / (Math.sqrt(3) * LINE_VOLTAGE * POWER_FACTOR);
+                const totalCableSize = calculateCableSize(totalCurrent);
+                const totalBreakerSize = calculateBreakerSize(totalCurrent);
+                const voltageDropPercent = (totalVoltageDrop / LINE_VOLTAGE) * 100;
+                
+                // Update summary
+                document.getElementById('totalRedPower').textContent = totalRedPower + ' W';
+                document.getElementById('totalYellowPower').textContent = totalYellowPower + ' W';
+                document.getElementById('totalBluePower').textContent = totalBluePower + ' W';
+                document.getElementById('totalCurrentValue').textContent = totalCurrent.toFixed(2) + ' A';
+                document.getElementById('totalBreakerSizeValue').textContent = totalBreakerSize + ' A';
+                document.getElementById('totalCableSizeValue').textContent = totalCableSize + ' mm²';
+                document.getElementById('totalVoltageDropValue').textContent = totalVoltageDrop.toFixed(2) + ' V';
+                
+                // Update phase balance information
+                const balanceStatus = maxDeviation <= MAX_PHASE_IMBALANCE ? 'Balanced' : 'Imbalanced';
+                document.getElementById('phaseBalanceValue').textContent = balanceStatus + ` (${maxDeviation.toFixed(1)}% max deviation)`;
+                document.getElementById('balanceStatus').textContent = balanceStatus;
+                document.getElementById('maxPhaseCurrent').textContent = maxPhaseCurrent.toFixed(2) + ' A';
+                
+                // Update balance progress bar
+                const balanceProgress = document.getElementById('balanceProgress');
+                const balanceText = document.getElementById('balanceText');
+                const balancePercentage = Math.max(0, 100 - (maxDeviation / MAX_PHASE_IMBALANCE) * 100);
+                
+                balanceProgress.style.width = balancePercentage + '%';
+                if (maxDeviation <= MAX_PHASE_IMBALANCE) {
+                    balanceProgress.classList.remove('bg-warning', 'bg-danger');
+                    balanceProgress.classList.add('bg-success');
+                    balanceText.textContent = `Phase balance: Good (${maxDeviation.toFixed(1)}% imbalance)`;
+                } else if (maxDeviation <= MAX_PHASE_IMBALANCE * 2) {
+                    balanceProgress.classList.remove('bg-success', 'bg-danger');
+                    balanceProgress.classList.add('bg-warning');
+                    balanceText.textContent = `Phase balance: Fair (${maxDeviation.toFixed(1)}% imbalance)`;
+                } else {
+                    balanceProgress.classList.remove('bg-success', 'bg-warning');
+                    balanceProgress.classList.add('bg-danger');
+                    balanceText.textContent = `Phase balance: Poor (${maxDeviation.toFixed(1)}% imbalance)`;
+                }
+                
+                // Update charts
+                updateCharts(totalRedPower, totalYellowPower, totalBluePower, maxPhaseCurrent);
+                
+                // Show success message
+                Swal.fire({
+                    icon: maxDeviation <= MAX_PHASE_IMBALANCE ? 'success' : 'warning',
+                    title: maxDeviation <= MAX_PHASE_IMBALANCE ? 'Analysis Complete' : 'Phase Imbalance Detected',
+                    html: `
+                        <div class="text-start">
+                            <p><strong>Total Power:</strong> ${(totalPower / 1000).toFixed(2)} kW</p>
+                            <p><strong>Phase Balance:</strong> ${maxDeviation.toFixed(1)}% ${maxDeviation <= MAX_PHASE_IMBALANCE ? 
+                                '<span class="badge bg-success">Good</span>' : 
+                                '<span class="badge bg-warning">Needs Attention</span>'}</p>
+                            <p><strong>Max Phase Current:</strong> ${maxPhaseCurrent.toFixed(2)} A</p>
+                            <p><strong>Recommended Cable:</strong> ${totalCableSize} mm²</p>
+                            <p><strong>Voltage Drop:</strong> ${voltageDropPercent.toFixed(2)}% 
+                            ${voltageDropPercent > MAX_VOLTAGE_DROP_PERCENT ? 
+                                '<span class="badge bg-danger">Exceeds Limit</span>' : 
+                                '<span class="badge bg-success">Within Limit</span>'}
+                            </p>
+                        </div>
+                    `,
+                });
+            }
+            
+            // Function to calculate breaker size
+            function calculateBreakerSize(current) {
+                // Find the next standard breaker size that is >= 125% of current
+                const requiredSize = current * 1.25;
+                
+                for (let size of BREAKER_SIZES_3PHASE) {
+                    if (size >= requiredSize) {
+                        return size;
+                    }
+                }
+                
+                // If current exceeds largest breaker, return the largest
+                return BREAKER_SIZES_3PHASE[BREAKER_SIZES_3PHASE.length - 1];
+            }
+            
+            // Function to calculate cable size
+            function calculateCableSize(current) {
+                // Apply derating factors
+                const deratedCurrent = current * 0.9; // Simple derating for example
+                
+                // Find appropriate cable size
+                for (let cable of CABLE_SIZES_3PHASE) {
+                    if (deratedCurrent <= cable.current) {
+                        return cable.size;
+                    }
+                }
+                
+                // If current exceeds table, return the largest size
+                return CABLE_SIZES_3PHASE[CABLE_SIZES_3PHASE.length - 1].size;
+            }
+            
+            // Function to calculate voltage drop (three-phase formula)
+            function calculateVoltageDrop(current, cableSize, length) {
+                // VD = (√3 × I × R × L) / 1000
+                // R = resistivity / cableSize
+                const resistance = RESISTIVITY_COPPER / cableSize;
+                return (Math.sqrt(3) * current * resistance * length) / 1000;
+            }
+            
+            // Function to update the charts
+            function updateCharts(redPower, yellowPower, bluePower, maxCurrent) {
+                // Phase Distribution Chart
+                const phaseCtx = document.getElementById('phaseChart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (window.phaseChartInstance) {
+                    window.phaseChartInstance.destroy();
+                }
+                
+                window.phaseChartInstance = new Chart(phaseCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Red Phase', 'Yellow Phase', 'Blue Phase'],
+                        datasets: [{
+                            data: [redPower, yellowPower, bluePower],
+                            backgroundColor: ['#dc3545', '#ffc107', '#0d6efd'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Power Distribution by Phase'
+                            }
+                        }
+                    }
+                });
+                
+                // Current Analysis Chart
+                const currentCtx = document.getElementById('currentChart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (window.currentChartInstance) {
+                    window.currentChartInstance.destroy();
+                }
+                
+                // Calculate phase currents for the bar chart
+                const redCurrent = redPower / (PHASE_VOLTAGE * POWER_FACTOR);
+                const yellowCurrent = yellowPower / (PHASE_VOLTAGE * POWER_FACTOR);
+                const blueCurrent = bluePower / (PHASE_VOLTAGE * POWER_FACTOR);
+                
+                window.currentChartInstance = new Chart(currentCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Red Phase', 'Yellow Phase', 'Blue Phase'],
+                        datasets: [{
+                            label: 'Phase Current (A)',
+                            data: [redCurrent, yellowCurrent, blueCurrent],
+                            backgroundColor: ['#dc3545', '#ffc107', '#0d6efd'],
+                            borderColor: ['#dc3545', '#ffc107', '#0d6efd'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Phase Current Analysis'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Current (A)'
+                                }
+                            }
+                        }
+                    }
+                });
             }
         });
-    });
-
-    // Save load data
-    saveLoad.onclick = () => {
-        const type = loadType.value;
-        const red = parseFloat(redValue.value) || 0;
-        const yellow = parseFloat(yellowValue.value) || 0;
-        const blue = parseFloat(blueValue.value) || 0;
-
-        if (!type || (red === 0 && yellow === 0 && blue === 0)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Missing Information',
-                text: 'Please select a load type and enter a value for at least one phase.',
-            });
-            return;
-        }
-
-        // Save load to local storage
-        const loads = JSON.parse(localStorage.getItem('loads')) || [];
-        loads.push({ type, red, yellow, blue });
-        localStorage.setItem('loads', JSON.stringify(loads));
-
-        updateTable();
-        modal.style.display = "none";
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Load Saved',
-            text: 'The load has been successfully saved.',
-        });
-    };
-
-    // Perform load analysis
-    performAnalysis.onclick = () => {
-        const loads = JSON.parse(localStorage.getItem('loads')) || [];
-
-        if (loads.length === 0) {
-            Swal.fire({
-                icon: 'error',
-                title: 'No Load Data',
-                text: 'Please enter at least one load before performing the analysis.',
-            });
-            return;
-        }
-
-        let totalPower = 0;
-        let maxPhaseCurrent = 0;
-
-        loads.forEach((load, index) => {
-            const power = load.red + load.yellow + load.blue;
-            const current = calculateCurrent(power);
-            const phaseCurrent = current / Math.sqrt(3); // Convert line current to phase current
-            maxPhaseCurrent = Math.max(maxPhaseCurrent, phaseCurrent);
-
-            const breakerSize = determineBreakerSize(current);
-            const cableSize = determineCableSize(current);
-            const voltageDrop = calculateVoltageDrop(current, cableSize);
-
-            totalPower += power;
-
-            const row = loadTableBody.rows[index];
-            row.cells[5].innerText = breakerSize + ' A';
-            row.cells[6].innerText = cableSize;
-            row.cells[7].innerText = voltageDrop.toFixed(2) + " V";
-        });
-
-        const totalBreakerSize = determineTotalBreakerSize(maxPhaseCurrent * Math.sqrt(3));
-        const totalCableSize = determineCableSize(maxPhaseCurrent * Math.sqrt(3));
-        const totalVoltageDrop = calculateVoltageDrop(maxPhaseCurrent * Math.sqrt(3), totalCableSize);
-
-        totalPowerValue.innerText = (totalPower / 1000).toFixed(2) + " kW";
-        totalCableSizeValue.innerText = totalCableSize;
-        totalBreakerSizeValue.innerText = totalBreakerSize;
-        totalVoltageDropValue.innerText = totalVoltageDrop.toFixed(2) + " V";
-    };
-
-    function calculateCurrent(power) {
-        return power / (Math.sqrt(3) * VOLTAGE * POWER_FACTOR);
-    }
-
-    function determineBreakerSize(current) {
-        const standardSizes = [10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 320, 400, 500, 630, 800, 1000];
-        return standardSizes.find(size => size >= current * 1.25) || 'Custom';
-    }
-
-    function determineTotalBreakerSize(current) {
-        return determineBreakerSize(current);
-    }
-
-    function determineCableSize(current) {
-        // This is a simplified version. In practice, you'd use tables or more complex calculations
-        const sizes = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300];
-        const ampacities = [18, 25, 34, 43, 60, 80, 106, 131, 159, 202, 245, 284, 330, 375, 430, 497];
         
-        const index = ampacities.findIndex(amp => amp >= current);
-        return index !== -1 ? sizes[index] + ' mm²' : 'Custom';
-    }
-
-    function calculateVoltageDrop(current, cableSize) {
-        const size = parseFloat(cableSize);
-        if (isNaN(size)) return 0;
-        return (Math.sqrt(3) * RESISTIVITY * CABLE_LENGTH * current * 1000) / size;
-    }
-
-    // Update the load table with current data
-    function updateTable() {
-			const loads = JSON.parse(localStorage.getItem('loads')) || [];
-			loadTableBody.innerHTML = "";
-	
-			let totalRed = 0;
-			let totalYellow = 0;
-			let totalBlue = 0;
-	
-			loads.forEach((load, index) => {
-					const row = `<tr>
-							<th scope="row">${index + 1}</th>
-							<td>${load.type}</td>
-							<td>${load.red}</td>
-							<td>${load.yellow}</td>
-							<td>${load.blue}</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>
-									<button class="btn btn-sm btn-danger" onclick="deleteLoad(${index})">Delete</button>
-							</td>
-					</tr>`;
-					loadTableBody.innerHTML += row;
-	
-					// Update totals
-					totalRed += load.red;
-					totalYellow += load.yellow;
-					totalBlue += load.blue;
-			});
-	
-			// Add a row for the total
-			const totalRow = `<tr>
-					<th scope="row">Total</th>
-					<td></td>
-					<td><b>${totalRed} </b></td>
-					<td><b>${totalYellow}</b></td>
-					<td><b>${totalBlue}</b></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-			</tr>`;
-			loadTableBody.innerHTML += totalRow;
-	}
-	
-
-    // Delete a load entry
-    window.deleteLoad = (index) => {
-        const loads = JSON.parse(localStorage.getItem('loads')) || [];
-        loads.splice(index, 1);
-        localStorage.setItem('loads', JSON.stringify(loads));
-        updateTable();
-    };
-
-    // Clear all data and refresh the table
-    window.clearDataAndRefresh = () => {
-        localStorage.clear();
-        updateTable();
-        totalPowerValue.innerText = "0 kW";
-        totalCableSizeValue.innerText = "";
-        totalBreakerSizeValue.innerText = "";
-        totalVoltageDropValue.innerText = "";
-    };
-
-    // Initialize the table on page load
-    updateTable();
-});
-</script>
-	
-
+        // Global functions for table actions
+        function deleteLoad(index) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let loads = JSON.parse(localStorage.getItem('commercialThreePhaseLoads')) || [];
+                    loads.splice(index, 1);
+                    localStorage.setItem('commercialThreePhaseLoads', JSON.stringify(loads));
+                    updateTable();
+                    
+                    Swal.fire(
+                        'Deleted!',
+                        'The three-phase load has been deleted.',
+                        'success'
+                    );
+                }
+            });
+        }
+        
+        function editLoad(index) {
+            const loads = JSON.parse(localStorage.getItem('commercialThreePhaseLoads')) || [];
+            const load = loads[index];
+            
+            // This would require a more complex modal setup for editing
+            // For now, we'll just delete and let user re-add
+            Swal.fire({
+                title: 'Edit Load',
+                text: 'For complex three-phase load editing, please delete and re-add the load with correct values.',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+        }
+        
+        function clearDataAndRefresh() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will delete all your three-phase load data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, clear all data!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('commercialThreePhaseLoads');
+                    location.reload();
+                }
+            });
+        }
+        
+        // Make updateTable function globally available
+        window.updateTable = function() {
+            const loads = JSON.parse(localStorage.getItem('commercialThreePhaseLoads')) || [];
+            const loadTableBody = document.getElementById('loadTableBody');
+            loadTableBody.innerHTML = '';
+            
+            if (loads.length === 0) {
+                loadTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="text-center py-4">
+                            <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                            <p class="text-muted">No three-phase loads added yet. Click "Add Load" to get started.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            loads.forEach((load, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${index + 1}</th>
+                    <td>${load.description}</td>
+                    <td>${load.red} W</td>
+                    <td>${load.yellow} W</td>
+                    <td>${load.blue} W</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editLoad(${index})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteLoad(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                loadTableBody.appendChild(row);
+            });
+        };
+    </script>
 </body>
-
- 
 </html>

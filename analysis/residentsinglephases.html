@@ -1,605 +1,1391 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wastech_wire_sizing</title>
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/global.css" rel="stylesheet">
-    <link href="../css/blog.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css" />
-    <link href="https://fonts.googleapis.com/css?family=Alata&display=swap" rel="stylesheet">
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-
+    <title>Electricmate - Residential Single Phase Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            padding-top: 190px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.4);
+        :root {
+            --primary: #2E86AB;
+            --secondary: #A23B72;
+            --accent: #F18F01;
+            --dark: #1B1B1E;
+            --light: #F8F9FA;
+            --gray: #6C757D;
         }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: #f5f7fa;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .navbar-brand span {
+            color: var(--accent);
+        }
+        
+        .top-bar {
+            background-color: var(--dark);
+            color: white;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+        
+        .navbar {
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .page-header {
+            background: linear-gradient(rgba(46, 134, 171, 0.9), rgba(46, 134, 171, 0.9)), 
+                        url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 60px 0 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1c6b8c;
+            border-color: #1c6b8c;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-warning {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-warning:hover {
+            background-color: #c57101;
+            border-color: #c57101;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+        
+        .table th {
+            background-color: var(--light);
+            font-weight: 600;
+            border-top: none;
+        }
+        
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, var(--accent), #c57101);
+            color: white;
+            border-radius: 10px;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+            margin-bottom: 20px;
         }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+        
+        .summary-card h5 {
+            margin-bottom: 15px;
+            font-weight: 600;
         }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
         }
-
-        tr>th {
-            font-size: 12px;
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(46, 134, 171, 0.25);
+        }
+        
+        .feature-item {
             text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 100%;
         }
-
-        tr>td {
-            font-size: 12px;
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-item i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .copyright {
+            border-top: 1px solid #343a40;
+            padding-top: 20px;
+            margin-top: 30px;
             text-align: center;
+            color: #adb5bd;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .badge-voltage {
+            background-color: #17a2b8;
+        }
+        
+        .badge-current {
+            background-color: #28a745;
+        }
+        
+        .badge-power {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-cable {
+            background-color: #6f42c1;
+        }
+        
+        .action-buttons .btn {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .room-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .room-header {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .appliance-badge {
+            font-size: 0.75rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .load-category {
+            background: rgba(46, 134, 171, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .action-buttons .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
     </style>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-    <section id="top">
+    <!-- Top Bar -->
+    <div class="top-bar">
         <div class="container">
-            <div class="row">
-                <div class="top_1 clearfix">
-                    <div class="col-sm-4">
-                        <div class="top_1l clearfix">
-                            <p class="mgt col"><i class="fa fa-map-marker col_1"></i> Osun State University Osogbo
-                                Campus</p>
-                            <p class="col"><i class="fa fa-clock-o col_1"></i> Available</p>
-                        </div>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex flex-wrap">
+                        <p class="mb-0 me-4"><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</p>
+                        <p class="mb-0"><i class="far fa-clock me-2"></i> Available 24/7</p>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="top_1m text-center clearfix">
-                            <h1 class="mgt"><a href="index.html">Wastech <span>Wire Sizing Web Application</span></a>
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="col-sm-4" id="Contact">
-                        <div class="top_1r text-center clearfix">
-                            <h3 class="mgt"><a href="#"><i class="fa fa-phone col_1"></i> +234 805 577 6749 <span>Call
-                                        us now. Resistance is futile!</span></a></h3>
-                        </div>
-                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0"><i class="fas fa-phone me-2"></i> +234 805 577 6749 <span class="d-none d-md-inline"> | Call us now. Resistance is futile!</span></p>
                 </div>
             </div>
         </div>
-    </section>
-
-    <div class="main clearfix">
-        <section id="header" class="clearfix">
-            <div class="container">
-                <div class="row">
-                    <div class="haeder clearfix">
-                        <nav class="navbar">
-                            <div class="navbar-header">
-                                <button class="navbar-toggle" type="button" data-toggle="collapse"
-                                    data-target=".js-navbar-collapse">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="index.html">Electronica</a>
-                            </div>
-
-                            <div class="collapse navbar-collapse js-navbar-collapse">
-                                <ul class="nav navbar-nav">
-                                    <li><a class="font_tag " href="../index.html">Home</a></li>
-                                    <li><a class="font_tag" href="../pages/commercial.html">Commercial</a></li>
-                                    <li><a class="font_tag" href="../pages/industry.html">Industrial</a></li>
-                                    <li><a class="font_tag active_tab" href="../pages/resident.html">Residential</a>
-                                    </li>
-                                    <li><a class="font_tag" href="#Service">Services</a></li>
-                                    <li><a class="font_tag" href="#Contact">Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </section>
     </div>
 
-    <section id="center" class="center_shop clearfix">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="center_shop_1 text-center clearfix">
-                    <div class="col-sm-12">
-                        <h2 class="mgt">Single Phase Residential Load Data</h2>
-                    </div>
-                </div>
-                <div class="blog_1 clearfix">
-                    <div class="col-sm-9">
-                        <div class="blog_1l mgt clearfix" style="overflow: scroll;width:100%">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">S/N</th>
-                                        <th scope="col">Load</th>
-                                        <th scope="col">Rating</th>
-                                        <th scope="col">Breaker Size</th>
-                                        <th scope="col">Cable Size</th>
-                                        <th scope="col">Voltage Drop</th>
-                                        <th scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="loadTableBody">
-                                    <!-- Dynamic rows will be added here -->
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="2">Total Power (TP):</th>
-                                        <td colspan="1" id="totalPowerValue">0 kW</td>
-                                        <th colspan="2">Recommended Cable Size:</th>
-                                        <td id="totalCableSizeValue">0mm</td>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">Total Breaker Size (TBS):</th>
-                                        <td colspan="1" id="totalBreakerSizeValue">0A</td>
-                                        <th colspan="2">Total Voltage Drop (TVD):</th>
-                                        <td id="totalVoltageDropValue">0V</td>
-                                    </tr>
-                                </tfoot>
-                                
-                            </table>
-
-
-                            <!-- <div id="totalPower" style="margin-top: 20px;">
-                                <strong>Total Power (TP): </strong> <span id="totalPowerValue">0</span> kW
-                            </div>
-                            <div id="totalCableSize" style="margin-top: 10px;" class="pb-5">
-                                <strong>Recommended Cable Size for Total Power: </strong> <span id="totalCableSizeValue">0mm</span>
-                            </div> -->
-                        </div>
-                        <button id="performAnalysis" class="btn btn-success" style="margin-top: 10px;">Perform
-                            Analysis</button>
-                        <button class="btn btn-warning" onclick="window.print()" style="margin-top: 10px;">Print
-                            Data</button>
-
-                    </div>
-                    <div class="col-sm-3">
-                        <!-- Scrollable modal -->
-                        <button id="openModal" class="btn-primary" style="border-radius:10px;padding:10px 15px">Enter
-                            Load</button>
-                        <button onclick="clearDataAndRefresh()" class="btn-danger"
-                            style="border-radius:10px;padding:10px 15px">Clear Data</button>
-                        <div id="myModal" class="modal">
-                            <div class="modal-content">
-                                <span class="close">&times;</span>
-                                <p>Select Load Type and Enter Value:</p>
-                                <select id="loadType" class="form-control">
-                                    <option value="">Select Load Type</option>
-                                    <option value="Lightening circuit">Lightening circuit</option>
-                                    <option value="Socket 13Amps circuit">Socket 13Amps circuit</option>
-                                    <option value="Socket 15Amps circuit">Socket 15Amps circuit</option>
-                                    <option value="Water heater">Water heater</option>
-                                    <option value="Electric motor (fan)">Electric motor (fan)</option>
-                                    <option value="Electric motor (pumping machine)">Electric motor (pumping machine)
-                                    </option>
-                                    <option value="AC Circuit 1">AC Circuit 1</option>
-                                    <option value="AC Circuit 2">AC Circuit 2</option>
-                                    <option value="Cooker Unit">Cooker Unit</option>
-                                </select>
-                                <input type="text" id="loadValue" class="form-control"
-                                    style="margin-top: 10px; display: none;" placeholder="Enter Value">
-                                <!-- <input type="text" id="lengthValue" class="form-control" style="margin-top: 10px; display: none;" placeholder="Enter Length (meters)"> -->
-                                <button id="saveLoad" class="btn btn-primary" style="margin-top: 10px;">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">Electric<span>mate</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/commercial.html">Commercial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/industry.html">Industrial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../pages/resident.html">Residential</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact Us</a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </section>
+    </nav>
 
-    <section id="proj_h">
+    <!-- Page Header -->
+    <section class="page-header">
         <div class="container">
             <div class="row">
-                <div class="proj_h1 clearfix">
-                    <div class="col-sm-3">
-                        <div class="proj_h1i text-center clearfix">
-                            <span><i class="fa fa-users"></i></span>
-                            <h4>Easy to use</h4>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="proj_h1i text-center clearfix">
-                            <span><i class="fa fa-database"></i></span>
-                            <h4>Accurate data</h4>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="proj_h1i text-center clearfix">
-                            <span><i class="fa fa-cogs"></i></span>
-                            <h4>Industry certified</h4>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="proj_h1i text-center clearfix">
-                            <span><i class="fa fa-clock-o"></i></span>
-                            <h4>Quick calculation</h4>
-                        </div>
-                    </div>
+                <div class="col-12">
+                    <h1>Residential Single Phase Analysis</h1>
+                    <p class="lead">Safe wire sizing calculations for homes and family living spaces</p>
                 </div>
             </div>
         </div>
     </section>
-    <section id="footer">
+
+    <!-- Main Content -->
+    <section class="main-content">
         <div class="container">
             <div class="row">
-
-                <div class="footer_3 clearfix">
-                    <div class="col-sm-7">
-                        <div class="footer_3l clearfix">
-                            <p class="mgt col">© 2024 WASTECH. All Rights Reserved | Design by <a class="col"
-                                    href="http://awofesobipeace1.netlify.app" target="_blank">CODEMaster</a></p>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-home me-2"></i> Residential Load Data Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Room/Appliance</th>
+                                            <th scope="col">Rating</th>
+                                            <th scope="col">Current</th>
+                                            <th scope="col">Breaker Size</th>
+                                            <th scope="col">Cable Size</th>
+                                            <th scope="col">Voltage Drop</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="loadTableBody">
+                                        <!-- Dynamic rows will be added here -->
+                                    </tbody>
+                                    <tfoot class="table-group-divider">
+                                        <tr>
+                                            <th colspan="2">Total Power:</th>
+                                            <td id="totalPowerValue">0 kW</td>
+                                            <th>Total Current:</th>
+                                            <td id="totalCurrentValue">0 A</td>
+                                            <th>Main Breaker Size:</th>
+                                            <td id="totalBreakerSizeValue">0 A</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2">Recommended Main Cable:</th>
+                                            <td id="totalCableSizeValue">0 mm²</td>
+                                            <th>Total Voltage Drop:</th>
+                                            <td id="totalVoltageDropValue">0 V</td>
+                                            <th>Voltage Drop %:</th>
+                                            <td id="voltageDropPercent">0 %</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            
+                            <div class="action-buttons mt-4">
+                                <button id="performAnalysis" class="btn btn-success">
+                                    <i class="fas fa-calculator me-2"></i>Perform Analysis
+                                </button>
+                                <button id="openModal" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Add Appliance
+                                </button>
+                                <button onclick="clearDataAndRefresh()" class="btn btn-danger">
+                                    <i class="fas fa-trash me-2"></i>Clear Data
+                                </button>
+                                <button class="btn btn-warning" onclick="window.print()">
+                                    <i class="fas fa-print me-2"></i>Print Report
+                                </button>
+                            </div>
                         </div>
                     </div>
-
+                    
+                    <!-- Load Distribution Visualization -->
+                    <div class="chart-container">
+                        <h5 class="mb-3"><i class="fas fa-chart-pie me-2"></i>Appliance Load Distribution</h5>
+                        <canvas id="loadChart" height="250"></canvas>
+                    </div>
+                    
+                    <!-- Room-wise Load Summary -->
+                    <div class="room-section">
+                        <div class="room-header">
+                            <h5><i class="fas fa-door-open me-2"></i>Room-wise Load Summary</h5>
+                        </div>
+                        <div id="roomSummary">
+                            <!-- Dynamic room summary will be added here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <!-- Summary Card -->
+                    <div class="summary-card">
+                        <h5><i class="fas fa-clipboard-list me-2"></i>Residential Analysis Summary</h5>
+                        <div class="summary-item">
+                            <span>System Voltage:</span>
+                            <span>230V AC</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Power Factor:</span>
+                            <span>0.95</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Safety Standard:</span>
+                            <span>IEC & NEC</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Cable Type:</span>
+                            <span>Copper PVC</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Installation:</span>
+                            <span>Conduit/Trunking</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Ambient Temp:</span>
+                            <span>30°C</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Add Appliances</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" id="quickLighting">
+                                    <i class="fas fa-lightbulb me-2"></i>Lighting Circuit
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickSocket">
+                                    <i class="fas fa-plug me-2"></i>Socket Circuit
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickKitchen">
+                                    <i class="fas fa-utensils me-2"></i>Kitchen Appliance
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickAC">
+                                    <i class="fas fa-wind me-2"></i>AC Unit
+                                </button>
+                                <button class="btn btn-outline-primary" id="quickWaterHeater">
+                                    <i class="fas fa-shower me-2"></i>Water Heater
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Common Residential Loads -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-list me-2"></i>Common Residential Loads</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="load-category">
+                                <h6 class="text-primary">Lighting</h6>
+                                <span class="badge appliance-badge bg-light text-dark">LED Bulb: 10W</span>
+                                <span class="badge appliance-badge bg-light text-dark">Tube Light: 40W</span>
+                                <span class="badge appliance-badge bg-light text-dark">Chandelier: 100W</span>
+                            </div>
+                            <div class="load-category">
+                                <h6 class="text-primary">Kitchen</h6>
+                                <span class="badge appliance-badge bg-light text-dark">Refrigerator: 150W</span>
+                                <span class="badge appliance-badge bg-light text-dark">Microwave: 1200W</span>
+                                <span class="badge appliance-badge bg-light text-dark">Electric Kettle: 2200W</span>
+                            </div>
+                            <div class="load-category">
+                                <h6 class="text-primary">Living Room</h6>
+                                <span class="badge appliance-badge bg-light text-dark">TV: 150W</span>
+                                <span class="badge appliance-badge bg-light text-dark">Sound System: 200W</span>
+                                <span class="badge appliance-badge bg-light text-dark">AC: 1500W</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Safety Tips -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Home Electrical Safety</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Use RCD protection for wet areas</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Don't overload sockets</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Keep cables away from heat sources</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Use proper cable sizes</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Regular maintenance checks</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2>Residential Electrical Solutions</h2>
+                    <p class="lead">Safe and efficient electrical planning for your home</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-home"></i>
+                        <h5>Home-Focused</h5>
+                        <p>Specifically designed for residential electrical systems and typical household loads</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h5>Family Safety</h5>
+                        <p>Prioritizing electrical safety for families and residential environments</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-bolt"></i>
+                        <h5>Modern Appliances</h5>
+                        <p>Calculations account for today's high-demand residential electrical appliances</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-expand"></i>
+                        <h5>Future-Proofing</h5>
+                        <p>Consideration for future electrical needs and potential home expansions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5>Electricmate</h5>
+                    <p>Professional wire sizing solutions for commercial, industrial, and residential applications. Ensuring safety and efficiency in all electrical installations.</p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="../index.html" class="text-white-50 text-decoration-none">Home</a></li>
+                        <li><a href="../pages/commercial.html" class="text-white-50 text-decoration-none">Commercial</a></li>
+                        <li><a href="../pages/industry.html" class="text-white-50 text-decoration-none">Industrial</a></li>
+                        <li><a href="../pages/resident.html" class="text-white-50 text-decoration-none">Residential</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</li>
+                        <li><i class="fas fa-phone me-2"></i> +234 805 577 6749</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@electricmate.com</li>
+                        <li><i class="far fa-clock me-2"></i> Available 24/7</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Newsletter</h5>
+                    <p>Subscribe to our newsletter for the latest updates and features.</p>
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" aria-label="Your Email">
+                            <button class="btn btn-primary" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="mb-0">© 2024 Electricmate. All Rights Reserved | Design by <a href="http://awofesobipeace1.netlify.app" target="_blank" class="text-white">CODEMaster</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Appliance Modal -->
+    <div class="modal fade" id="applianceModal" tabindex="-1" aria-labelledby="applianceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="applianceModalLabel">Add Residential Appliance</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="roomSelect" class="form-label">Room Location</label>
+                        <select id="roomSelect" class="form-select">
+                            <option value="Living Room">Living Room</option>
+                            <option value="Kitchen">Kitchen</option>
+                            <option value="Bedroom">Bedroom</option>
+                            <option value="Bathroom">Bathroom</option>
+                            <option value="Dining Room">Dining Room</option>
+                            <option value="Home Office">Home Office</option>
+                            <option value="Garage">Garage</option>
+                            <option value="Outdoor">Outdoor</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="applianceType" class="form-label">Appliance Type</label>
+                        <select id="applianceType" class="form-select">
+                            <option value="">Select Appliance Type</option>
+                            <option value="Lighting circuit">Lighting Circuit</option>
+                            <option value="Socket circuit">Socket Circuit</option>
+                            <option value="Water heater">Water Heater</option>
+                            <option value="AC Unit">AC Unit</option>
+                            <option value="Refrigerator">Refrigerator</option>
+                            <option value="Washing Machine">Washing Machine</option>
+                            <option value="Dishwasher">Dishwasher</option>
+                            <option value="Electric Oven">Electric Oven</option>
+                            <option value="Microwave">Microwave</option>
+                            <option value="Electric Kettle">Electric Kettle</option>
+                            <option value="TV & Entertainment">TV & Entertainment</option>
+                            <option value="Computer">Computer</option>
+                            <option value="Other">Other Appliance</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="applianceDescription" class="form-label">Appliance Description</label>
+                        <input type="text" class="form-control" id="applianceDescription" placeholder="Enter appliance description">
+                    </div>
+                    <div class="mb-3">
+                        <label for="appliancePower" class="form-label">Power Rating (Watts)</label>
+                        <input type="number" class="form-control" id="appliancePower" placeholder="Enter power in watts">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cableLength" class="form-label">Cable Length from DB (meters)</label>
+                        <input type="number" class="form-control" id="cableLength" placeholder="Enter cable length" value="10">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="dedicatedCircuit">
+                        <label class="form-check-label" for="dedicatedCircuit">
+                            Dedicated Circuit (Required for high-power appliances)
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveAppliance">Save Appliance</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const modal = document.getElementById("myModal");
-            const btn = document.getElementById("openModal");
-            const span = document.getElementsByClassName("close")[0];
-            const loadType = document.getElementById("loadType");
-            const loadValue = document.getElementById("loadValue");
-            const lengthValue = document.getElementById("lengthValue");
-            const saveLoad = document.getElementById("saveLoad");
-            const loadTableBody = document.getElementById("loadTableBody");
-            const performAnalysis = document.getElementById("performAnalysis");
-            const totalPowerValue = document.getElementById("totalPowerValue");
-            const totalCableSizeValue = document.getElementById("totalCableSizeValue");
-            const voltage = 230;
-            const powerFactor = 0.8;
-            const resistivity = 1.68; // Copper resistivity in ohms per meter per mm²
-    
-            btn.onclick = function () {
-                modal.style.display = "block";
-            }
-    
-            span.onclick = function () {
-                modal.style.display = "none";
-            }
-    
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
+        // Constants based on residential electrical standards
+        const VOLTAGE = 230; // Single-phase residential voltage
+        const POWER_FACTOR = 0.95; // Higher power factor for residential
+        const RESISTIVITY_COPPER = 0.0172; // Ohm-mm²/m at 20°C
+        const MAX_VOLTAGE_DROP_PERCENT = 3; // Stricter limit for residential
+        
+        // Residential cable sizing table
+        const RESIDENTIAL_CABLE_SIZES = [
+            { current: 16, size: 1.5 },
+            { current: 21, size: 2.5 },
+            { current: 28, size: 4 },
+            { current: 36, size: 6 },
+            { current: 46, size: 10 },
+            { current: 63, size: 16 },
+            { current: 81, size: 25 },
+            { current: 99, size: 35 }
+        ];
+        
+        // Standard residential breaker sizes
+        const RESIDENTIAL_BREAKER_SIZES = [6, 10, 16, 20, 25, 32, 40, 50, 63];
+        
+        // Common residential appliance power ratings
+        const COMMON_APPLIANCES = {
+            "Lighting circuit": 800,
+            "Socket circuit": 2000,
+            "Water heater": 3000,
+            "AC Unit": 1500,
+            "Refrigerator": 150,
+            "Washing Machine": 2200,
+            "Dishwasher": 1800,
+            "Electric Oven": 4000,
+            "Microwave": 1200,
+            "Electric Kettle": 2200,
+            "TV & Entertainment": 300,
+            "Computer": 200
+        };
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize modal
+            const applianceModal = new bootstrap.Modal(document.getElementById('applianceModal'));
+            
+            // Open modal button
+            document.getElementById('openModal').addEventListener('click', function() {
+                resetModal();
+                applianceModal.show();
+            });
+            
+            // Quick action buttons
+            document.getElementById('quickLighting').addEventListener('click', function() {
+                setQuickAppliance('Lighting circuit', 800, 'Living Room');
+            });
+            
+            document.getElementById('quickSocket').addEventListener('click', function() {
+                setQuickAppliance('Socket circuit', 2000, 'Living Room');
+            });
+            
+            document.getElementById('quickKitchen').addEventListener('click', function() {
+                setQuickAppliance('Electric Oven', 4000, 'Kitchen');
+            });
+            
+            document.getElementById('quickAC').addEventListener('click', function() {
+                setQuickAppliance('AC Unit', 1500, 'Bedroom');
+            });
+            
+            document.getElementById('quickWaterHeater').addEventListener('click', function() {
+                setQuickAppliance('Water heater', 3000, 'Bathroom');
+            });
+            
+            // Auto-fill power based on appliance type
+            document.getElementById('applianceType').addEventListener('change', function() {
+                const applianceType = this.value;
+                if (COMMON_APPLIANCES[applianceType]) {
+                    document.getElementById('appliancePower').value = COMMON_APPLIANCES[applianceType];
                 }
+            });
+            
+            // Save appliance button
+            document.getElementById('saveAppliance').addEventListener('click', function() {
+                saveAppliance();
+            });
+            
+            // Perform analysis button
+            document.getElementById('performAnalysis').addEventListener('click', function() {
+                performAnalysis();
+            });
+            
+            // Load table on page load
+            updateTable();
+            updateRoomSummary();
+            
+            // Function to set quick appliance values
+            function setQuickAppliance(type, power, room) {
+                document.getElementById('applianceType').value = type;
+                document.getElementById('roomSelect').value = room;
+                document.getElementById('appliancePower').value = power;
+                document.getElementById('applianceDescription').value = type + ' - ' + room;
+                applianceModal.show();
             }
-    
-            loadType.onchange = function () {
-                if (loadType.value) {
-                    loadValue.style.display = "block";
-                    lengthValue.style.display = "block";
-                } else {
-                    loadValue.style.display = "none";
-                    lengthValue.style.display = "none";
-                }
+            
+            // Function to reset modal
+            function resetModal() {
+                document.getElementById('roomSelect').value = 'Living Room';
+                document.getElementById('applianceType').value = '';
+                document.getElementById('applianceDescription').value = '';
+                document.getElementById('appliancePower').value = '';
+                document.getElementById('cableLength').value = '10';
+                document.getElementById('dedicatedCircuit').checked = false;
             }
-    
-            saveLoad.onclick = function () {
-                const type = loadType.value;
-                const value = parseFloat(loadValue.value);
-                const length = 3; // Fixed length value
-    
-                if (type && value && length) {
-                    // Validation for Lightening circuit and Socket 13Amps circuit
-                    if (type === "Lightening circuit" && value > 900) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Invalid Load Value',
-                            text: 'The load value for Lightening circuit should not exceed 900W.',
-                        });
-                        return;
-                    }
-                    if (type === "Socket 13Amps circuit" && value > 2000) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Invalid Load Value',
-                            text: 'The load value for Socket 13Amps circuit should not exceed 2000W.',
-                        });
-                        return;
-                    }
-    
-                    let loads = JSON.parse(localStorage.getItem('loads')) || [];
-                    loads.push({ type, value, length });
-                    localStorage.setItem('loads', JSON.stringify(loads));
-    
-                    updateTable();
-                    modal.style.display = "none";
-    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Load Saved',
-                        text: 'The load has been successfully saved.',
-                    });
-                } else {
+            
+            // Function to save appliance
+            function saveAppliance() {
+                const room = document.getElementById('roomSelect').value;
+                const type = document.getElementById('applianceType').value;
+                const description = document.getElementById('applianceDescription').value;
+                const power = parseFloat(document.getElementById('appliancePower').value);
+                const cableLength = parseFloat(document.getElementById('cableLength').value);
+                const dedicatedCircuit = document.getElementById('dedicatedCircuit').checked;
+                
+                if (!type || !power || !cableLength) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Missing Information',
-                        text: 'Please select a load type, enter a value, and specify the cable length.',
-                    });
-                }
-            }
-    
-            performAnalysis.onclick = function () {
-                const loads = JSON.parse(localStorage.getItem('loads')) || [];
-    
-                if (loads.length === 0) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'No Load Data',
-                        text: 'Please enter at least one load before performing the analysis.',
+                        text: 'Please fill in all required fields.',
                     });
                     return;
                 }
-    
-                let totalPower = 0;
-                let totalBreakerSize=0;
-                let totalVoltageDrop = 0;
-    
-                loads.forEach((load, index) => {
-                    let current = load.value / (voltage * powerFactor);
-    
-                    if (isNaN(current) || current <= 0) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Invalid Load Value',
-                            text: `Load ${index + 1} has an invalid value. Please check your input.`,
-                        });
-                        return;
-                    }
-    
-                    if (load.type.includes("AC Circuit")) {
-                        current *= 1.25; // Adjust current for AC circuits
-                    }
-    
-                    console.log(`Load ${index + 1}: ${load.type}, Power: ${load.value}W, Current: ${current.toFixed(2)}A`);
-    
-                    let breakerSize;
-                    if (current <= 5) {
-                        breakerSize = 5;
-                    } else if (current <= 10) {
-                        breakerSize = 10;
-                    } else if (current <= 15) {
-                        breakerSize = 15;
-                    } else if (current <= 20) {
-                        breakerSize = 20;
-                    } else if (current <= 25) {
-                        breakerSize = 25;
-                    } else {
-                        breakerSize = 32;
-                    }
-    
-                    const cableSize = breakerSize / (1.03 * 0.7);
-                    let cableSizeMM;
-                    if (cableSize >= 0 && cableSize <= 11) {
-                        cableSizeMM = "1mm";
-                    } else if (cableSize > 11 && cableSize <= 15) {
-                        cableSizeMM = "1.5mm";
-                    } else if (cableSize > 15 && cableSize <= 25) {
-                        cableSizeMM = "2.5mm";
-                    } else if (cableSize > 25) {
-                        cableSizeMM = "4mm";
-                    }
-    
-                    // Voltage drop calculation
-                    const voltageDrop = (2 * current * resistivity * 3) / 1000;
-                    // Total Voltage drop calculation
-                    const voltageDrops = (2 * current * resistivity * 5) / 1000;
-                    totalVoltageDrop += voltageDrops;
-    
-                    const row = document.querySelector(`#loadTableBody tr:nth-child(${index + 1})`);
-                    row.cells[3].innerText = breakerSize;
-                    row.cells[4].innerText = cableSizeMM;
-                    row.cells[5].innerText = voltageDrop.toFixed(2) + "V";
-    
-                    // Summing up the power
-                    totalPower += load.value;
-                    console.log(totalPower)
-                    
-                   
-                   
-                });
-    
-                // Calculate total current and cable size for total power
-                const totalCurrent = totalPower / (voltage * powerFactor);
-                let totalCableSize = totalCurrent / (1.03 * 0.7);
-                let totalCableSizeMM;
-    
-               
-
-                if (totalCurrent <= 15) {
-                    totalBreakerSize= 15;
-                } else if (totalCurrent <= 20) {
-                    totalBreakerSize = 20;
-                } else if (totalCurrent <= 25) {
-                    totalBreakerSize = 25;
-                } else if (totalCurrent <= 30) {
-                    totalBreakerSize = 30;
-                } else if (totalCurrent <= 35) {
-                    totalBreakerSize = 35;
-                }else if (totalCurrent <= 40) {
-                    totalBreakerSize = 40;
-                }else if (totalCurrent <= 45) {
-                    totalBreakerSize = 45;
-                }else if (totalCurrent <= 50) {
-                    totalBreakerSize = 50;
-                }else if (totalCurrent <= 60) {
-                    totalBreakerSize = 60;
-                }else if (totalCurrent <= 70) {
-                    totalBreakerSize = 70;
-                }else if (totalCurrent <= 80) {
-                    totalBreakerSize = 80;
-                }else if (totalCurrent <= 90) {
-                    totalBreakerSize = 90;
-                }else if (totalCurrent <= 100) {
-                    totalBreakerSize = 100;
-                }else if (totalCurrent <= 110) {
-                    totalBreakerSize = 110;
-                }else if (totalCurrent <= 125) {
-                    totalBreakerSize = 125;
-                }else if (totalCurrent <= 150) {
-                    totalBreakerSize = 150;
-                }else if (totalCurrent <= 175) {
-                    totalBreakerSize = 175;
-                }else if (totalCurrent <= 200) {
-                    totalBreakerSize = 200;
-                }else if (totalCurrent <= 225) {
-                    totalBreakerSize = 225;
-                }else if (totalCurrent <= 250) {
-                    totalBreakerSize = 250;
-                }else if (totalCurrent <= 250) {
-                    totalBreakerSize = 250;
-                }else if (totalCurrent <= 300) {
-                    totalBreakerSize = 300;
-                }else if (totalCurrent <= 350) {
-                    totalBreakerSize = 350;
-                }
-                else {
-                    totalBreakerSize = 400;
-                }
-
-                if (totalCableSize <= 29) {
-                    totalCableSizeMM = "1.5mm";
-                } else if (totalCableSize <= 39) {
-                    totalCableSizeMM = "2.5mm";
-                } else if (totalCableSize <= 49) {
-                    totalCableSizeMM = "4mm";
-                } else if (totalCableSize <= 61) {
-                    totalCableSizeMM = "6mm";
-                } else if (totalCableSize <= 83) {
-                    totalCableSizeMM = "10mm";
-                }else if (totalCableSize <= 105) {
-                    totalCableSizeMM = "16mm";
-                } else if (totalCableSize <= 135) {
-                    totalCableSizeMM = "25mm";
-                } else{
-                    totalCableSizeMM = "35mm";
-                } 
-                // console.log(totalCurrent)
-                // console.log(totalCab)
-
-                console.log(totalBreakerSize)
-                console.log(totalCableSizeMM)
-
-    
-                   // Update total power, cable size, breaker size, and voltage drop in the table footer
-                totalPowerValue.innerText = (totalPower / 1000).toFixed(2) + " kW";  // Convert to kW
-                totalCableSizeValue.innerText = totalCableSizeMM;
-                totalBreakerSizeValue.innerText = totalBreakerSize ;
-                totalVoltageDropValue.innerText = totalVoltageDrop.toFixed(2) + "V";
-            }
-    
-            updateTable();
-        });
-    
-        function deleteLoad(index) {
-            let loads = JSON.parse(localStorage.getItem('loads')) || [];
-            loads.splice(index, 1);  // Remove the specific load
-            localStorage.setItem('loads', JSON.stringify(loads));
-            updateTable();  // Refresh the table
-        }
-    
-        function editLoad(index) {
-            let loads = JSON.parse(localStorage.getItem('loads')) || [];
-            let load = loads[index];
-        
-            // Populate the modal with the existing load data
-            document.getElementById("loadType").value = load.type;
-            document.getElementById("loadValue").value = load.value;
-        
-            // Show the modal
-            modal.style.display = "block";
-        
-            // Update the save button functionality to save the edited load
-            saveLoad.onclick = function() {
-                const type = loadType.value;
-                const value = parseFloat(loadValue.value);
-                const length = 3; // Fixed length value
-        
-                if (type && value && length) {
-                    loads[index] = { type, value, length };  // Update the specific load
-                    localStorage.setItem('loads', JSON.stringify(loads));
-                    updateTable();
-                    modal.style.display = "none";
-                    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Load Updated',
-                        text: 'The load has been successfully updated.',
-                    });
-                } else {
+                
+                // Validation for residential circuits
+                if (type === "Lighting circuit" && power > 1200) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Missing Information',
-                        text: 'Please select a load type, enter a value, and specify the cable length.',
+                        title: 'High Lighting Load',
+                        text: 'Lighting circuit typically should not exceed 1200W for residential applications.',
                     });
+                    return;
                 }
-            };
-        }
-    
-        function updateTable() {
-            const loads = JSON.parse(localStorage.getItem('loads')) || [];
-            const loadTableBody = document.getElementById("loadTableBody");
-            loadTableBody.innerHTML = "";
-    
-            loads.forEach((load, index) => {
-                const row = `<tr>
-                    <th scope="row">${index + 1}</th>
-                    <td>${load.type}</td>
-                    <td>${load.value}W</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button class="btn btn-sm btn-danger" onclick="deleteLoad(${index})">Delete</button>
-                    </td>
-                </tr>`;
-                loadTableBody.innerHTML += row;
+                
+                if (type === "Socket circuit" && power > 3000) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'High Socket Load',
+                        text: 'Standard socket circuit should not exceed 3000W. Consider dedicated circuit.',
+                    });
+                    return;
+                }
+                
+                let appliances = JSON.parse(localStorage.getItem('residentialAppliances')) || [];
+                appliances.push({ 
+                    room,
+                    type, 
+                    description: description || `${type} - ${room}`,
+                    power,
+                    cableLength: cableLength || 10,
+                    dedicatedCircuit,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('residentialAppliances', JSON.stringify(appliances));
+                
+                updateTable();
+                updateRoomSummary();
+                applianceModal.hide();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Appliance Saved',
+                    text: 'The residential appliance has been successfully added.',
+                });
+            }
+            
+            // Function to update the table
+            function updateTable() {
+                const appliances = JSON.parse(localStorage.getItem('residentialAppliances')) || [];
+                const loadTableBody = document.getElementById('loadTableBody');
+                loadTableBody.innerHTML = '';
+                
+                if (appliances.length === 0) {
+                    loadTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                <i class="fas fa-home fa-2x text-muted mb-2"></i>
+                                <p class="text-muted">No appliances added yet. Click "Add Appliance" to get started.</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                appliances.forEach((appliance, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>
+                            <div class="fw-bold">${appliance.description}</div>
+                            <small class="text-muted">${appliance.room}</small>
+                            ${appliance.dedicatedCircuit ? '<span class="badge bg-warning ms-1">Dedicated</span>' : ''}
+                        </td>
+                        <td>${appliance.power} W</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="editAppliance(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteAppliance(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    loadTableBody.appendChild(row);
+                });
+            }
+            
+            // Function to update room summary
+            function updateRoomSummary() {
+                const appliances = JSON.parse(localStorage.getItem('residentialAppliances')) || [];
+                const roomSummary = document.getElementById('roomSummary');
+                roomSummary.innerHTML = '';
+                
+                if (appliances.length === 0) {
+                    roomSummary.innerHTML = '<p class="text-muted text-center">No appliances added yet.</p>';
+                    return;
+                }
+                
+                // Group appliances by room
+                const roomData = {};
+                appliances.forEach(appliance => {
+                    if (!roomData[appliance.room]) {
+                        roomData[appliance.room] = {
+                            totalPower: 0,
+                            applianceCount: 0,
+                            dedicatedCircuits: 0
+                        };
+                    }
+                    roomData[appliance.room].totalPower += appliance.power;
+                    roomData[appliance.room].applianceCount++;
+                    if (appliance.dedicatedCircuit) {
+                        roomData[appliance.room].dedicatedCircuits++;
+                    }
+                });
+                
+                // Create room summary cards
+                Object.keys(roomData).forEach(room => {
+                    const data = roomData[room];
+                    const roomCard = document.createElement('div');
+                    roomCard.className = 'mb-3 p-3 border rounded';
+                    roomCard.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">${room}</h6>
+                            <span class="badge bg-primary">${data.applianceCount} appliances</span>
+                        </div>
+                        <div class="mt-2">
+                            <small class="text-muted">Total Power: ${(data.totalPower / 1000).toFixed(2)} kW</small>
+                            ${data.dedicatedCircuits > 0 ? 
+                                `<small class="text-warning ms-2"><i class="fas fa-bolt"></i> ${data.dedicatedCircuits} dedicated circuit(s)</small>` : 
+                                ''}
+                        </div>
+                    `;
+                    roomSummary.appendChild(roomCard);
+                });
+            }
+            
+            // Function to perform analysis
+            function performAnalysis() {
+                const appliances = JSON.parse(localStorage.getItem('residentialAppliances')) || [];
+                
+                if (appliances.length === 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No Appliance Data',
+                        text: 'Please add at least one appliance before performing analysis.',
+                    });
+                    return;
+                }
+                
+                let totalPower = 0;
+                let maxCircuitCurrent = 0;
+                let totalVoltageDrop = 0;
+                const loadTableBody = document.getElementById('loadTableBody');
+                
+                // Clear previous results
+                loadTableBody.innerHTML = '';
+                
+                appliances.forEach((appliance, index) => {
+                    // Calculate current
+                    let current = appliance.power / (VOLTAGE * POWER_FACTOR);
+                    
+                    // Adjust for motor loads (refrigerator, AC, washing machine)
+                    if (appliance.type.includes("AC") || appliance.type.includes("Refrigerator") || 
+                        appliance.type.includes("Washing Machine")) {
+                        current *= 1.25; // 25% extra for starting current
+                    }
+                    
+                    // Calculate breaker size
+                    const breakerSize = calculateBreakerSize(current, appliance.dedicatedCircuit);
+                    
+                    // Calculate cable size
+                    const cableSize = calculateCableSize(current);
+                    
+                    // Calculate voltage drop
+                    const voltageDrop = calculateVoltageDrop(current, cableSize, appliance.cableLength);
+                    totalVoltageDrop += voltageDrop;
+                    
+                    // Update totals
+                    totalPower += appliance.power;
+                    maxCircuitCurrent = Math.max(maxCircuitCurrent, current);
+                    
+                    // Add row to table
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${index + 1}</th>
+                        <td>
+                            <div class="fw-bold">${appliance.description}</div>
+                            <small class="text-muted">${appliance.room}</small>
+                            ${appliance.dedicatedCircuit ? '<span class="badge bg-warning ms-1">Dedicated</span>' : ''}
+                        </td>
+                        <td>${appliance.power} W</td>
+                        <td><span class="badge badge-current">${current.toFixed(2)} A</span></td>
+                        <td><span class="badge bg-primary">${breakerSize} A</span></td>
+                        <td><span class="badge badge-cable">${cableSize} mm²</span></td>
+                        <td><span class="badge badge-voltage">${voltageDrop.toFixed(2)} V</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="editAppliance(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteAppliance(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    loadTableBody.appendChild(row);
+                });
+                
+                // Calculate totals
+                const totalCurrent = totalPower / (VOLTAGE * POWER_FACTOR);
+                const totalCableSize = calculateCableSize(totalCurrent);
+                const totalBreakerSize = calculateMainBreakerSize(totalCurrent);
+                const voltageDropPercent = (totalVoltageDrop / VOLTAGE) * 100;
+                
+                // Update summary
+                document.getElementById('totalPowerValue').textContent = (totalPower / 1000).toFixed(2) + ' kW';
+                document.getElementById('totalCurrentValue').textContent = totalCurrent.toFixed(2) + ' A';
+                document.getElementById('totalBreakerSizeValue').textContent = totalBreakerSize + ' A';
+                document.getElementById('totalCableSizeValue').textContent = totalCableSize + ' mm²';
+                document.getElementById('totalVoltageDropValue').textContent = totalVoltageDrop.toFixed(2) + ' V';
+                document.getElementById('voltageDropPercent').textContent = voltageDropPercent.toFixed(2) + ' %';
+                
+                // Visual feedback for voltage drop
+                const voltageDropCell = document.getElementById('voltageDropPercent');
+                if (voltageDropPercent > MAX_VOLTAGE_DROP_PERCENT) {
+                    voltageDropCell.classList.remove('badge-voltage');
+                    voltageDropCell.classList.add('bg-danger');
+                } else {
+                    voltageDropCell.classList.remove('bg-danger');
+                    voltageDropCell.classList.add('badge-voltage');
+                }
+                
+                // Update chart
+                updateChart(appliances);
+                updateRoomSummary();
+                
+                // Show success message
+                Swal.fire({
+                    icon: voltageDropPercent > MAX_VOLTAGE_DROP_PERCENT ? 'warning' : 'success',
+                    title: voltageDropPercent > MAX_VOLTAGE_DROP_PERCENT ? 'Check Voltage Drop' : 'Analysis Complete',
+                    html: `
+                        <div class="text-start">
+                            <p><strong>Total Home Power:</strong> ${(totalPower / 1000).toFixed(2)} kW</p>
+                            <p><strong>Main Breaker Size:</strong> ${totalBreakerSize} A</p>
+                            <p><strong>Main Cable Size:</strong> ${totalCableSize} mm²</p>
+                            <p><strong>Voltage Drop:</strong> ${voltageDropPercent.toFixed(2)}% 
+                            ${voltageDropPercent > MAX_VOLTAGE_DROP_PERCENT ? 
+                                '<span class="badge bg-warning">Consider Larger Cable</span>' : 
+                                '<span class="badge bg-success">Within Limit</span>'}
+                            </p>
+                        </div>
+                    `,
+                });
+            }
+            
+            // Function to calculate breaker size
+            function calculateBreakerSize(current, isDedicated) {
+                // For dedicated circuits, use next standard size
+                // For general circuits, ensure adequate margin
+                const requiredSize = isDedicated ? current * 1.25 : current * 1.1;
+                
+                for (let size of RESIDENTIAL_BREAKER_SIZES) {
+                    if (size >= requiredSize) {
+                        return size;
+                    }
+                }
+                
+                return RESIDENTIAL_BREAKER_SIZES[RESIDENTIAL_BREAKER_SIZES.length - 1];
+            }
+            
+            // Function to calculate main breaker size
+            function calculateMainBreakerSize(current) {
+                // Apply diversity factor for residential (not all appliances run simultaneously)
+                const diversifiedCurrent = current * 0.7;
+                const requiredSize = diversifiedCurrent * 1.25;
+                
+                for (let size of [40, 50, 63, 80, 100]) {
+                    if (size >= requiredSize) {
+                        return size;
+                    }
+                }
+                
+                return 100;
+            }
+            
+            // Function to calculate cable size
+            function calculateCableSize(current) {
+                // Apply derating factors for residential installation
+                const deratedCurrent = current * 0.9;
+                
+                // Find appropriate cable size
+                for (let cable of RESIDENTIAL_CABLE_SIZES) {
+                    if (deratedCurrent <= cable.current) {
+                        return cable.size;
+                    }
+                }
+                
+                return RESIDENTIAL_CABLE_SIZES[RESIDENTIAL_CABLE_SIZES.length - 1].size;
+            }
+            
+            // Function to calculate voltage drop
+            function calculateVoltageDrop(current, cableSize, length) {
+                // VD = (2 × I × R × L) / 1000
+                // R = resistivity / cableSize
+                const resistance = RESISTIVITY_COPPER / cableSize;
+                return (2 * current * resistance * length) / 1000;
+            }
+            
+            // Function to update the chart
+            function updateChart(appliances) {
+                const ctx = document.getElementById('loadChart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (window.loadChartInstance) {
+                    window.loadChartInstance.destroy();
+                }
+                
+                // Group by appliance type for chart
+                const typeData = {};
+                appliances.forEach(appliance => {
+                    if (!typeData[appliance.type]) {
+                        typeData[appliance.type] = 0;
+                    }
+                    typeData[appliance.type] += appliance.power;
+                });
+                
+                const labels = Object.keys(typeData);
+                const data = Object.values(typeData);
+                
+                window.loadChartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: [
+                                '#2E86AB', '#A23B72', '#F18F01', '#28a745', 
+                                '#17a2b8', '#6f42c1', '#dc3545', '#fd7e14'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Power Distribution by Appliance Type'
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        
+        // Global functions for table actions
+        function deleteAppliance(index) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let appliances = JSON.parse(localStorage.getItem('residentialAppliances')) || [];
+                    appliances.splice(index, 1);
+                    localStorage.setItem('residentialAppliances', JSON.stringify(appliances));
+                    updateTable();
+                    updateRoomSummary();
+                    
+                    Swal.fire(
+                        'Deleted!',
+                        'The appliance has been deleted.',
+                        'success'
+                    );
+                }
             });
         }
-    
-        function clearDataAndRefresh() {
-            localStorage.clear();
-            location.reload();
+        
+        function editAppliance(index) {
+            const appliances = JSON.parse(localStorage.getItem('residentialAppliances')) || [];
+            const appliance = appliances[index];
+            
+            // This would require a more complex modal setup for editing
+            // For now, we'll just delete and let user re-add
+            Swal.fire({
+                title: 'Edit Appliance',
+                text: 'For editing appliances, please delete and re-add with correct values.',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
         }
+        
+        function clearDataAndRefresh() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will delete all your residential appliance data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, clear all data!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('residentialAppliances');
+                    location.reload();
+                }
+            });
+        }
+        
+        // Make updateTable function globally available
+        window.updateTable = function() {
+            const appliances = JSON.parse(localStorage.getItem('residentialAppliances')) || [];
+            const loadTableBody = document.getElementById('loadTableBody');
+            loadTableBody.innerHTML = '';
+            
+            if (appliances.length === 0) {
+                loadTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-4">
+                            <i class="fas fa-home fa-2x text-muted mb-2"></i>
+                            <p class="text-muted">No appliances added yet. Click "Add Appliance" to get started.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            appliances.forEach((appliance, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${index + 1}</th>
+                    <td>
+                        <div class="fw-bold">${appliance.description}</div>
+                        <small class="text-muted">${appliance.room}</small>
+                        ${appliance.dedicatedCircuit ? '<span class="badge bg-warning ms-1">Dedicated</span>' : ''}
+                    </td>
+                    <td>${appliance.power} W</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editAppliance(${index})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteAppliance(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                loadTableBody.appendChild(row);
+            });
+        };
+        
+        // Make updateRoomSummary function globally available
+        window.updateRoomSummary = function() {
+            const appliances = JSON.parse(localStorage.getItem('residentialAppliances')) || [];
+            const roomSummary = document.getElementById('roomSummary');
+            roomSummary.innerHTML = '';
+            
+            if (appliances.length === 0) {
+                roomSummary.innerHTML = '<p class="text-muted text-center">No appliances added yet.</p>';
+                return;
+            }
+            
+            // Group appliances by room
+            const roomData = {};
+            appliances.forEach(appliance => {
+                if (!roomData[appliance.room]) {
+                    roomData[appliance.room] = {
+                        totalPower: 0,
+                        applianceCount: 0,
+                        dedicatedCircuits: 0
+                    };
+                }
+                roomData[appliance.room].totalPower += appliance.power;
+                roomData[appliance.room].applianceCount++;
+                if (appliance.dedicatedCircuit) {
+                    roomData[appliance.room].dedicatedCircuits++;
+                }
+            });
+            
+            // Create room summary cards
+            Object.keys(roomData).forEach(room => {
+                const data = roomData[room];
+                const roomCard = document.createElement('div');
+                roomCard.className = 'mb-3 p-3 border rounded';
+                roomCard.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">${room}</h6>
+                        <span class="badge bg-primary">${data.applianceCount} appliances</span>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">Total Power: ${(data.totalPower / 1000).toFixed(2)} kW</small>
+                        ${data.dedicatedCircuits > 0 ? 
+                            `<small class="text-warning ms-2"><i class="fas fa-bolt"></i> ${data.dedicatedCircuits} dedicated circuit(s)</small>` : 
+                            ''}
+                    </div>
+                `;
+                roomSummary.appendChild(roomCard);
+            });
+        };
     </script>
-    
 </body>
-
 </html>

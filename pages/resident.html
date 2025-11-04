@@ -1,258 +1,762 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wastech_wire_sizing</title>
-	<link href="../css/bootstrap.min.css" rel="stylesheet">
-	<link href="../css/global.css" rel="stylesheet">
-	<link href="../css/index.css" rel="stylesheet">
-	
-	<link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Alata&display=swap" rel="stylesheet">
-	<script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
+    <title>Electricmate - Residential Wire Sizing Solutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary: #2E86AB;
+        --secondary: #A23B72;
+        --accent: #F18F01;
+        --dark: #1B1B1E;
+        --light: #F8F9FA;
+        --gray: #6C757D;
+      }
+      
+      body {
+        font-family: 'Roboto', sans-serif;
+        color: var(--dark);
+        line-height: 1.6;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+      }
+      
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--primary);
+      }
+      
+      .navbar-brand span {
+        color: var(--accent);
+      }
+      
+      .hero-section {
+        background: linear-gradient(rgba(30, 30, 30, 0.7), rgba(30, 30, 30, 0.7)), 
+                    url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 150px 0 100px;
+        text-align: center;
+      }
+      
+      .hero-section h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+      
+      .hero-section p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      
+      .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        padding: 12px 30px;
+        font-weight: 500;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-primary:hover {
+        background-color: #1c6b8c;
+        border-color: #1c6b8c;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+      
+      .btn-residential {
+        background-color: var(--accent);
+        border-color: var(--accent);
+        padding: 12px 30px;
+        font-weight: 500;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        color: white;
+      }
+      
+      .btn-residential:hover {
+        background-color: #c57101;
+        border-color: #c57101;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        color: white;
+      }
+      
+      .section-title {
+        position: relative;
+        margin-bottom: 3rem;
+        text-align: center;
+      }
+      
+      .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--accent);
+      }
+      
+      .feature-card {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        text-align: center;
+      }
+      
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      }
+      
+      .feature-card i {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+      }
+      
+      .solution-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+      
+      .solution-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      }
+      
+      .solution-card img {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+      }
+      
+      .solution-card-body {
+        padding: 25px;
+      }
+      
+      .service-card {
+        background: white;
+        border-radius: 10px;
+        padding: 40px 30px;
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        height: 100%;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .service-card:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.4);
+        z-index: 1;
+      }
+      
+      .service-card .content {
+        position: relative;
+        z-index: 2;
+      }
+      
+      .service-card:hover {
+        transform: scale(1.05);
+      }
+      
+      .service-card.residential {
+        background: linear-gradient(135deg, var(--accent), #c57101), 
+                    url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80');
+        background-size: cover;
+        background-position: center;
+      }
+      
+      .stats-section {
+        background: linear-gradient(rgba(46, 134, 171, 0.9), rgba(46, 134, 171, 0.9)), 
+                    url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 80px 0;
+      }
+      
+      .stat-item {
+        text-align: center;
+      }
+      
+      .stat-item i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      
+      .stat-item h3 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      
+      footer {
+        background-color: var(--dark);
+        color: white;
+        padding: 60px 0 30px;
+      }
+      
+      .footer-links h5 {
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 10px;
+      }
+      
+      .footer-links h5:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: var(--accent);
+      }
+      
+      .footer-links ul {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .footer-links ul li {
+        margin-bottom: 10px;
+      }
+      
+      .footer-links ul li a {
+        color: #adb5bd;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      
+      .footer-links ul li a:hover {
+        color: white;
+        padding-left: 5px;
+      }
+      
+      .copyright {
+        border-top: 1px solid #343a40;
+        padding-top: 20px;
+        margin-top: 40px;
+        text-align: center;
+        color: #adb5bd;
+      }
+      
+      .top-bar {
+        background-color: var(--dark);
+        color: white;
+        padding: 10px 0;
+        font-size: 0.9rem;
+      }
+      
+      .top-bar a {
+        color: white;
+        text-decoration: none;
+      }
+      
+      .navbar {
+        padding: 15px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      
+      .navbar-nav .nav-link {
+        font-weight: 500;
+        padding: 8px 15px;
+        margin: 0 5px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+      }
+      
+      .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+        background-color: var(--primary);
+        color: white;
+      }
+      
+      .residential-features {
+        background-color: var(--light);
+        padding: 80px 0;
+      }
+      
+      .residential-applications {
+        padding: 80px 0;
+      }
+      
+      .application-item {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      
+      .application-item i {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+      }
+      
+      @media (max-width: 768px) {
+        .hero-section h1 {
+          font-size: 2.5rem;
+        }
+        
+        .hero-section p {
+          font-size: 1.2rem;
+        }
+      }
+      
+      .residential-highlight {
+        background: linear-gradient(135deg, var(--accent), #c57101);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+      }
+      
+      .home-types {
+        padding: 80px 0;
+      }
+      
+      .home-type-card {
+        text-align: center;
+        padding: 30px 20px;
+        border-radius: 10px;
+        background: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+      
+      .home-type-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      }
+      
+      .home-type-card i {
+        font-size: 3rem;
+        color: var(--accent);
+        margin-bottom: 1.5rem;
+      }
+    </style>
   </head>
   
-<body>
-<section id="top">
- <div class="container">
-  <div class="row">
-   <div class="top_1 clearfix">
-    <div class="col-sm-4">
-	 <div class="top_1l clearfix">
-	  <p class="mgt col"><i class="fa fa-map-marker col_1"></i> Osun State University Osogbo Campus</p>
-	  <p class="col"><i class="fa fa-clock-o col_1"></i> Available</p>
-	 </div>
-	</div>
-	<div class="col-sm-4">
-	 <div class="top_1m text-center clearfix">
-	  <h1 class="mgt"><a href="index.html">Wastech <span>Wire Sizing Web Application</span></a></h1>
-	 </div>
-	</div>
-	<div class="col-sm-4" id="Contact">
-	 <div class="top_1r text-center clearfix">
-	  <h3 class="mgt"><a href="#"><i class="fa fa-phone col_1"></i> +234 805 577 6749 <span>Call us now. Resistance is futile!</span></a></h3>
-	 </div>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
+  <body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div class="d-flex flex-wrap">
+              <p class="mb-0 me-4"><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</p>
+              <p class="mb-0"><i class="far fa-clock me-2"></i> Available 24/7</p>
+            </div>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <p class="mb-0"><i class="fas fa-phone me-2"></i> +234 805 577 6749 <span class="d-none d-md-inline"> | Call us now. Resistance is futile!</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<div class="main clearfix">
- <section id="header" class="clearfix">
-	 <div class="container">
-	  <div class="row">
-	   <div class="haeder clearfix">
-		<nav class="navbar">
-		<div class="navbar-header">
-			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="index.html">Electronica</a>
-		</div>
-		
-		
-		<div class="collapse navbar-collapse js-navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li><a class="font_tag " href="../index.html">Home</a></li>
-        <li><a class="font_tag" href="commercial.html">Commercial</a></li>
-				<li><a class="font_tag " href="industry.html">Industrial</a></li>
-				<li><a class="font_tag active_tab" href="resident.html">Residential</a></li>
-				<li><a class="font_tag" href="#Service">Services</a></li>
-				<li><a class="font_tag" href="#Contact">Contact Us</a></li>
-				
-			</ul>
-			
-		</div><!-- /.nav-collapse -->
-	</nav>
-	   </div>
-	  </div>
-	 </div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="../index.html">Electric<span>mate</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="commercial.html">Commercial</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="industry.html">Industrial</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="resident.html">Residential</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#services">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <h1>Residential Solutions</h1>
+            <p>Safe Wire Sizing for Homes and Living Spaces</p>
+            <p class="lead">Accurate calculations for optimal performance and safety in residential electrical installations</p>
+            <a href="#services" class="btn btn-primary btn-lg">Get Started <i class="fas fa-arrow-right ms-2"></i></a>
+          </div>
+        </div>
+      </div>
     </section>
-	
- <section id="center" class="center_home clearfix">
-<div class="center_main clearfix">
- <div class="w3-content w3-section clearfix">
-  <img class="mySlides w3-animate-top" src="https://i0.wp.com/www.anelectricalengineer.com/wp-content/uploads/2017/07/Cable-Classification-and-Specification.jpg" alt="abc" style="width: 100%; height:100%" >
-</div>
- <div class="center_main_1 text-center clearfix">
-  <h1>WASTECH  </h1>
-  <p>WIRE SIZING</p>
-  <h4>WEB APPLICATION</h4>
-  <h4><a class="button" href="#Cat">GET STARTED</a></h4>
- </div>
-</div>
-</section>
- 
-</div>
 
+    <!-- About Residential Section -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80" 
+                 alt="Residential Electrical" class="img-fluid rounded shadow">
+          </div>
+          <div class="col-lg-6">
+            <h2 class="section-title">Residential <span class="text-primary">Wire Sizing</span></h2>
+            <p class="mb-4">Electricmate's residential wire sizing solutions are designed for homes, apartments, and living spaces. Our application provides precise calculations to ensure your electrical systems meet household needs while maintaining the highest safety standards.</p>
+            <p class="mb-4">Residential applications require consideration of factors like typical household appliance loads, lighting circuits, kitchen and laundry requirements, and compliance with residential electrical codes. Electricmate handles all these factors to deliver accurate wire sizing recommendations for your home.</p>
+            <ul class="list-unstyled">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Compliant with residential electrical codes</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Calculations for household appliances and lighting</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Consideration of modern home electrical demands</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Solutions for all types of residential properties</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section id="about_home">
- <div class="container">
-  <div class="row">
-   <div class="about_home_1 text-center clearfix">
-    <div class="col-sm-12">
-	 <h1 class="mgt">About <span class="col_1">Application</span></h1>
-	 <p>This web application serves the purpose of determining the appropriate wire size according to the specific load requirements applied. It provides a comprehensive solution for accurately sizing wires to ensure optimal performance and safety in electrical installations.</p>
-	</div>
-   </div>
-   <div class="about_home_2 clearfix">
-    <div class="col-sm-5">
-     <div class="about_home_2l clearfix">
-	  <img src="https://www.kei-ind.com/wp-content/uploads/2023/06/benefits-and-types-of-electrical-wire.jpg" class="iw" alt="abc">
-	 </div>
-	</div>
-	<div class="col-sm-7">
-     <div class="about_home_2r clearfix">
-	  <p class="mgt">This web application stands as a formidable pillar in the realm of electrical engineering, meticulously crafted to meet the intricate demands of determining the ideal wire size tailored to precise load requirements. It serves as an indispensable tool, offering a panoramic solution for sizing wires with unparalleled accuracy, thereby guaranteeing not only optimal performance but also paramount safety in electrical installations.</p>
-	  <ul>
-	   <li><i class="fa fa-check col_1"></i> Good and Intuitive User Interface</li>
-	   <li><i class="fa fa-check col_1"></i> Wiring Sizing</li>
-	   <li><i class="fa fa-check col_1"></i> Load Calulations</li>
-	   <li><i class="fa fa-check col_1"></i> Virtually any electrical needs you have – just ask!</li>
-	  </ul>
-	  <!-- <h5><a class="button" href="#"><i class="fa fa-fire"></i> Know More</a></h5> -->
-	 </div>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
+    <!-- Residential Highlight Section -->
+    <section class="residential-highlight">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h2 class="mb-4">Single-Phase Power for Residential Applications</h2>
+            <p class="lead mb-4">Most residential properties utilize single-phase power systems for their simplicity and efficiency in powering household appliances and lighting. Electricmate specializes in single-phase wire sizing calculations tailored to residential requirements.</p>
+            <a href="../analysis/residentsinglephases.html" class="btn btn-light btn-lg">Start Single-Phase Calculation</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section id="info">
- <div class="container" id="Service">
-  <div class="row">
-   <div class="info_1 clearfix">
-  
-	<div class="col-sm-12">
-	 <div class="info_1i info_1io text-center clearfix" style=" 
- background-image: url(https://media.istockphoto.com/id/1293762741/photo/modern-living-room-interior-3d-render.jpg?s=612x612&w=0&k=20&c=iZ561ZIXOtPYGSzqlKUnLrliorreOYVz1pzu8WJmrnc=);
- ">
-	  <div class="info_1im clearfix">
-	   	  <h3 class="mgt col">SINGLE PHASE</h3>
-	      <h5><a class="button" href="../analysis/residentsinglephases.html">GET STARTED</a></h5>
-	  </div>
-	 </div>
-	</div>
+    <!-- Home Types Section -->
+    <section class="home-types">
+      <div class="container">
+        <h2 class="section-title">Residential <span class="text-primary">Property Types</span></h2>
+        <p class="text-center mb-5">Our solutions cater to various residential property types</p>
+        
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="home-type-card">
+              <i class="fas fa-home"></i>
+              <h4>Single-Family Homes</h4>
+              <p>Detached houses with standard residential electrical requirements and typical household loads.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="home-type-card">
+              <i class="fas fa-building"></i>
+              <h4>Apartments & Condos</h4>
+              <p>Multi-unit residential buildings with individual unit electrical systems and common area circuits.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="home-type-card">
+              <i class="fas fa-tree"></i>
+              <h4>Vacation Homes</h4>
+              <p>Seasonal properties with specific electrical needs and potentially different usage patterns.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="home-type-card">
+              <i class="fas fa-warehouse"></i>
+              <h4>Townhouses</h4>
+              <p>Attached residential units with shared walls and individual electrical service entrances.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="home-type-card">
+              <i class="fas fa-plus-square"></i>
+              <h4>Home Additions</h4>
+              <p>Room additions, garage conversions, and home expansion projects requiring new circuits.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="home-type-card">
+              <i class="fas fa-tools"></i>
+              <h4>Renovations</h4>
+              <p>Home remodeling projects that require electrical system upgrades and new circuit installations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
- 
-   </div>
- 
-   </div>
-  </div>
- </div>
-</section>
+    <!-- Services Section -->
+    <section id="services" class="py-5 bg-light">
+      <div class="container">
+        <h2 class="section-title">Residential <span class="text-primary">Solutions</span></h2>
+        <p class="text-center mb-5">Choose the appropriate solution for your residential application</p>
+        
+        <div class="row justify-content-center">
+          <div class="col-md-8 mb-4">
+            <div class="service-card residential">
+              <div class="content">
+                <h3>Single Phase Residential</h3>
+                <p>Comprehensive wire sizing for residential single-phase systems, including lighting circuits, kitchen appliances, HVAC systems, and general household electrical needs.</p>
+                <a href="../analysis/residentsinglephases.html" class="btn btn-light mt-3">Get Started</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row mt-5">
+          <div class="col-12">
+            <div class="alert alert-info text-center">
+              <h4>Residential Focus</h4>
+              <p class="mb-0">Residential applications primarily use single-phase power systems. For three-phase residential applications (typically larger properties), please contact our technical support team for specialized assistance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Residential Features -->
+    <section class="residential-features">
+      <div class="container">
+        <h2 class="section-title">Residential <span class="text-primary">Applications</span></h2>
+        <p class="text-center mb-5">Our solutions cover all aspects of residential electrical systems</p>
+        
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="application-item">
+              <i class="fas fa-lightbulb"></i>
+              <h4>Lighting Circuits</h4>
+              <p>General lighting, switched outlets, and dedicated lighting circuits throughout the home.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="application-item">
+              <i class="fas fa-plug"></i>
+              <h4>Outlet Circuits</h4>
+              <p>General purpose outlets, kitchen countertop circuits, and bathroom GFCI protection.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="application-item">
+              <i class="fas fa-utensils"></i>
+              <h4>Kitchen Appliances</h4>
+              <p>Refrigerators, ovens, ranges, microwaves, and other kitchen electrical requirements.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="application-item">
+              <i class="fas fa-wind"></i>
+              <h4>HVAC Systems</h4>
+              <p>Air conditioning units, heating systems, and ventilation equipment circuits.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="application-item">
+              <i class="fas fa-tv"></i>
+              <h4>Entertainment Systems</h4>
+              <p>Home theater setups, television circuits, and audio system electrical requirements.</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="application-item">
+              <i class="fas fa-car"></i>
+              <h4>Garage & Outdoor</h4>
+              <p>Garage door openers, outdoor lighting, and electric vehicle charging circuits.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Solutions Section -->
+    <section class="residential-applications">
+      <div class="container">
+        <h2 class="section-title">Residential <span class="text-primary">Wire Sizing Solutions</span></h2>
+        <p class="text-center mb-5">Comprehensive electrical solutions for all your residential needs</p>
+        
+        <div class="row justify-content-center">
+          <div class="col-md-8 mb-4">
+            <div class="solution-card">
+              <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80" alt="Single Phase Residential">
+              <div class="solution-card-body">
+                <h3>Single Phase Residential Solutions</h3>
+                <p>Advanced calculations for single-phase residential systems, including lighting circuits, kitchen appliances, HVAC systems, and general household electrical needs. Our solutions account for residential-specific factors like modern appliance loads, code requirements for kitchens and bathrooms, and future expansion considerations.</p>
+                <a href="../analysis/residentsinglephases.html" class="btn btn-residential">Start Calculation</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section id="switch">
- <div class="container">
-  <div class="row">
-   <div class="switch_1 text-center clearfix">
-    <div class="col-sm-4">
-	  <div class="switch_1i clearfix">
-	   <img src="https://theengineeringmindset.com/wp-content/uploads/2019/05/single-phase-electricity-explained-fb.png" class="iw" alt="abc">
-	   <h3>Single <br> Phase <span class="col_1">Solutions</span></h3>
-	   <p>for quality work and safety</p>
-	  </div>
-	</div>
-	<div class="col-sm-4">
-	  <div class="switch_1i clearfix">
-	   <img src="https://theengineeringmindset.com/wp-content/uploads/2019/05/3-phase-fb.png" class="iw" alt="abc">
-	   <h3>Three <br> Phase <span class="col_1">Solutions</span></h3>
-	   <p>for quality work and safety</p>
-	  </div>
-	</div>
-	<div class="col-sm-4">
-	  <div class="switch_1i clearfix">
-	   <img src="https://cdn.crownenergy.co.uk/wp-content/uploads/2023/06/CE-Blog-Image-Size-min.png" class="iw" alt="abc">
-	   <h3>Both <br> Single and Three Phase <span class="col_1">Solutions</span></h3>
-	   <p>for quality work and safety</p>
-	  </div>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <h2 class="section-title">Residential <span class="text-primary">Advantages</span></h2>
+        <p class="text-center mb-5">Why Electricmate is the ideal choice for residential applications</p>
+        
+        <div class="row">
+          <div class="col-md-3 mb-4">
+            <div class="feature-card">
+              <i class="fas fa-home"></i>
+              <h4>Home-Focused</h4>
+              <p>Specifically designed for residential electrical systems and typical household loads.</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="feature-card">
+              <i class="fas fa-shield-alt"></i>
+              <h4>Safety First</h4>
+              <p>Prioritizing electrical safety for families and residential environments.</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="feature-card">
+              <i class="fas fa-bolt"></i>
+              <h4>Modern Appliances</h4>
+              <p>Calculations account for today's high-demand residential electrical appliances.</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="feature-card">
+              <i class="fas fa-expand"></i>
+              <h4>Future-Proofing</h4>
+              <p>Consideration for future electrical needs and potential home expansions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-home"></i>
+              <h3>2,500+</h3>
+              <p>Residential Projects</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-bolt"></i>
+              <h3>15,000+</h3>
+              <p>Residential Calculations</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-check-circle"></i>
+              <h3>100%</h3>
+              <p>Code Compliance</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-user"></i>
+              <h3>1,200+</h3>
+              <p>Homeowner Clients</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section id="proj_h">
- <div class="container">
-  <div class="row">
-   <div class="proj_h1 clearfix">
-    <div class="col-sm-3">
-	 <div class="proj_h1i text-center clearfix">
-	  <span><i class="fa fa-users"></i></span>
-	  <h4>Easy to use</h4>
-	
-	 </div>
-	</div>
-	<div class="col-sm-3">
-	 <div class="proj_h1i text-center clearfix">
-	  <span><i class="fa fa-building"></i></span>
-	  <h4> Trusted Results</h4>
-	 
-	 </div>
-	</div>
-	<div class="col-sm-3">
-	 <div class="proj_h1i text-center clearfix">
-	  <span><i class="fa fa-map"></i></span>
-	  <h4>Best Calculations</h4>
-	 
-	 </div>
-	</div>
-	<div class="col-sm-3">
-	 <div class="proj_h1i text-center clearfix">
-	  <span><i class="fa fa-user-plus"></i></span>
-	  <h4>100 %</h4>
-	 
-	 </div>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
+    <!-- Footer -->
+    <footer id="contact">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="footer-links">
+              <h5>Electricmate</h5>
+              <p>Professional wire sizing solutions for commercial, industrial, and residential applications. Ensuring safety and efficiency in all electrical installations.</p>
+              <div class="mt-4">
+                <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-6 mb-4">
+            <div class="footer-links">
+              <h5>Quick Links</h5>
+              <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="commercial.html">Commercial</a></li>
+                <li><a href="industry.html">Industrial</a></li>
+                <li><a href="resident.html">Residential</a></li>
+                <li><a href="#services">Services</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="footer-links">
+              <h5>Contact Info</h5>
+              <ul>
+                <li><i class="fas fa-map-marker-alt me-2"></i> Osun State University Osogbo Campus</li>
+                <li><i class="fas fa-phone me-2"></i> +234 805 577 6749</li>
+                <li><i class="fas fa-envelope me-2"></i> info@electricmate.com</li>
+                <li><i class="far fa-clock me-2"></i> Available 24/7</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="footer-links">
+              <h5>Newsletter</h5>
+              <p>Subscribe to our newsletter for the latest updates and features.</p>
+              <form>
+                <div class="input-group mb-3">
+                  <input type="email" class="form-control" placeholder="Your Email" aria-label="Your Email">
+                  <button class="btn btn-primary" type="button">Subscribe</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <p class="mb-0">© 2024 Electricmate. All Rights Reserved | Design by <a href="http://awofesobipeace1.netlify.app" target="_blank" class="text-white">CODEMaster</a></p>
+        </div>
+      </div>
+    </footer>
 
-
-<section id="footer">
- <div class="container">
-  <div class="row">
-   
-   <div class="footer_3 clearfix">
-	 <div class="col-sm-7">
-	  <div class="footer_3l clearfix">
-       <p class="mgt col">© 2024 WASTECH. All Rights Reserved | Design by <a class="col" href="http://awofesobipeace1.netlify.app" target="_blank">CODEMaster</a></p>
-	  </div>
-	 </div>
-	
-	</div>
-  </div>
- </div>
-</section>
-
-<script>
-var myIndex = 0;
-carousel();
-
-function carousel() {
-  var i;
-  var x = document.getElementsByClassName("mySlides");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";  
-  }
-  myIndex++;
-  if (myIndex > x.length) {myIndex = 1}    
-  x[myIndex-1].style.display = "block";  
-  setTimeout(carousel, 2500);    
-}
-</script>
-</body>
- 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
